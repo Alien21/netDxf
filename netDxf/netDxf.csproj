@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net6.0</TargetFrameworks>
     <Version>3.0.1</Version>
     <Authors>Daniel Carvajal</Authors>
     <Owners>haplokuon</Owners>
@@ -23,11 +22,12 @@
     <Title>netDxf</Title>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>netDxf.xml</DocumentationFile>
-    <NoWarn>1701;1702</NoWarn>
+    <NoWarn>1701;1702;CS1591</NoWarn>
     <OutputPath></OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
@@ -36,7 +36,7 @@
     <DocumentationFile>netDxf.xml</DocumentationFile>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
-    <NoWarn>1701;1702</NoWarn>
+    <NoWarn>1701;1702;CS1591</NoWarn>
     <OutputPath></OutputPath>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
