@@ -253,10 +253,10 @@ namespace netDxf.Entities
                 throw new ArgumentOutOfRangeException(nameof(minorAxis), minorAxis, "The minor axis value must be greater than zero.");
             }
 
-            if (minorAxis > majorAxis)
-            {
-                throw new ArgumentException("The major axis must be greater than the minor axis.");
-            }
+            // if (minorAxis > majorAxis)
+            // {
+            //     throw new ArgumentException("The major axis must be greater than the minor axis.");
+            // }
 
             this.majorAxis = majorAxis;
             this.minorAxis = minorAxis;
