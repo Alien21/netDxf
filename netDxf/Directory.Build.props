@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(MSBuildProjectDirectory)\artifacts</ArtifactsPath>
+  </PropertyGroup>
+</Project>
