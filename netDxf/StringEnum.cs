@@ -48,7 +48,7 @@ namespace netDxf
         /// </summary>
         public StringEnum()
         {
-            this.enumType = typeof(T);
+            enumType = typeof(T);
         }
 
         #endregion
@@ -61,7 +61,7 @@ namespace netDxf
         /// <value></value>
         public Type EnumType
         {
-            get { return this.enumType; }
+            get { return enumType; }
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace netDxf
         {
             List<string> values = new List<string>();
             //Look for our string value associated with fields in this enum
-            foreach (FieldInfo fi in this.enumType.GetFields())
+            foreach (FieldInfo fi in enumType.GetFields())
             {
                 //Check for our custom attribute
                 StringValueAttribute[] attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
@@ -102,7 +102,7 @@ namespace netDxf
         {
             Dictionary<T, string> values = new Dictionary<T, string>();
             //Look for our string value associated with fields in this enum
-            foreach (FieldInfo fi in this.enumType.GetFields())
+            foreach (FieldInfo fi in enumType.GetFields())
             {
                 //Check for our custom attribute
                 StringValueAttribute[] attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
@@ -113,7 +113,7 @@ namespace netDxf
 
                 if (attrs.Length > 0)
                 {
-                    object str = Enum.Parse(this.enumType, fi.Name);
+                    object str = Enum.Parse(enumType, fi.Name);
                     values.Add((T) str, attrs[0].Value);
                 }
             }
@@ -265,7 +265,7 @@ namespace netDxf
         /// </summary>
         public string Value
         {
-            get { return this.value; }
+            get { return value; }
         }
     }
 

@@ -70,32 +70,32 @@ namespace netDxf.Objects
         /// </summary>
         public PlotSettings()
         {
-            this.pageSetupName = string.Empty;
-            this.plotterName = "none_device";
-            this.paperSizeName = "ISO_A4_(210.00_x_297.00_MM)";
-            this.viewName = string.Empty;
-            this.currentStyleSheet = string.Empty;
+            pageSetupName = string.Empty;
+            plotterName = "none_device";
+            paperSizeName = "ISO_A4_(210.00_x_297.00_MM)";
+            viewName = string.Empty;
+            currentStyleSheet = string.Empty;
 
-            this.paperMargin = new PaperMargin(7.5, 20.0, 7.5, 20.0);
+            paperMargin = new PaperMargin(7.5, 20.0, 7.5, 20.0);
 
-            this.paperSize = new Vector2(210.0, 297.0);
-            this.origin = Vector2.Zero;
-            this.windowUpRight = Vector2.Zero;
-            this.windowBottomLeft = Vector2.Zero;
+            paperSize = new Vector2(210.0, 297.0);
+            origin = Vector2.Zero;
+            windowUpRight = Vector2.Zero;
+            windowBottomLeft = Vector2.Zero;
 
-            this.scaleToFit = true;
-            this.numeratorScale = 1.0;
-            this.denominatorScale = 1.0;
-            this.flags = PlotFlags.DrawViewportsFirst | PlotFlags.PrintLineweights | PlotFlags.PlotPlotStyles | PlotFlags.UseStandardScale;
-            this.plotType = PlotType.DrawingExtents;
+            scaleToFit = true;
+            numeratorScale = 1.0;
+            denominatorScale = 1.0;
+            flags = PlotFlags.DrawViewportsFirst | PlotFlags.PrintLineweights | PlotFlags.PlotPlotStyles | PlotFlags.UseStandardScale;
+            plotType = PlotType.DrawingExtents;
 
-            this.paperUnits = PlotPaperUnits.Milimeters;
-            this.rotation = PlotRotation.Degrees90;
+            paperUnits = PlotPaperUnits.Milimeters;
+            rotation = PlotRotation.Degrees90;
 
-            this.shadePlotMode = ShadePlotMode.AsDisplayed;
-            this.shadePlotResolutionMode = ShadePlotResolutionMode.Normal;
-            this.shadePlotDPI = 300;
-            this.paperImageOrigin = Vector2.Zero;
+            shadePlotMode = ShadePlotMode.AsDisplayed;
+            shadePlotResolutionMode = ShadePlotResolutionMode.Normal;
+            shadePlotDPI = 300;
+            paperImageOrigin = Vector2.Zero;
         }
 
         #endregion
@@ -107,8 +107,8 @@ namespace netDxf.Objects
         /// </summary>
         public string PageSetupName
         {
-            get { return this.pageSetupName; }
-            set { this.pageSetupName = value; }
+            get { return pageSetupName; }
+            set { pageSetupName = value; }
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace netDxf.Objects
         /// </summary>
         public string PlotterName
         {
-            get { return this.plotterName; }
-            set { this.plotterName = value; }
+            get { return plotterName; }
+            set { plotterName = value; }
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace netDxf.Objects
         /// </summary>
         public string PaperSizeName
         {
-            get { return this.paperSizeName; }
-            set { this.paperSizeName = value; }
+            get { return paperSizeName; }
+            set { paperSizeName = value; }
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace netDxf.Objects
         /// </summary>
         public string ViewName
         {
-            get { return this.viewName; }
-            set { this.viewName = value; }
+            get { return viewName; }
+            set { viewName = value; }
         }
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace netDxf.Objects
         /// </summary>
         public string CurrentStyleSheet
         {
-            get { return this.currentStyleSheet; }
-            set { this.currentStyleSheet = value; }
+            get { return currentStyleSheet; }
+            set { currentStyleSheet = value; }
         }
 
         /// <summary>
@@ -152,8 +152,8 @@ namespace netDxf.Objects
         /// </summary>
         public PaperMargin PaperMargin
         {
-            get { return this.paperMargin; }
-            set { this.paperMargin = value; }
+            get { return paperMargin; }
+            set { paperMargin = value; }
         }
 
         /// <summary>
@@ -161,8 +161,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector2 PaperSize
         {
-            get { return this.paperSize; }
-            set { this.paperSize = value; }
+            get { return paperSize; }
+            set { paperSize = value; }
         }
 
         /// <summary>
@@ -170,8 +170,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector2 Origin
         {
-            get { return this.origin; }
-            set { this.origin = value; }
+            get { return origin; }
+            set { origin = value; }
         }
 
         /// <summary>
@@ -179,8 +179,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector2 WindowUpRight
         {
-            get { return this.windowUpRight; }
-            set { this.windowUpRight = value; }
+            get { return windowUpRight; }
+            set { windowUpRight = value; }
         }
 
         /// <summary>
@@ -188,8 +188,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector2 WindowBottomLeft
         {
-            get { return this.windowBottomLeft; }
-            set { this.windowBottomLeft = value; }
+            get { return windowBottomLeft; }
+            set { windowBottomLeft = value; }
         }
 
         /// <summary>
@@ -200,8 +200,8 @@ namespace netDxf.Objects
         /// </remarks>
         public bool ScaleToFit
         {
-            get { return this.scaleToFit; }
-            set { this.scaleToFit = value; }
+            get { return scaleToFit; }
+            set { scaleToFit = value; }
         }
 
         /// <summary>
@@ -212,14 +212,14 @@ namespace netDxf.Objects
         /// </remarks>
         public double PrintScaleNumerator
         {
-            get { return this.numeratorScale; }
+            get { return numeratorScale; }
             set
             {
                 if (value <= 0.0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The print scale numerator must be a number greater than zero.");
                 }
-                this.numeratorScale = value;
+                numeratorScale = value;
             }
         }
 
@@ -228,14 +228,14 @@ namespace netDxf.Objects
         /// </summary>
         public double PrintScaleDenominator
         {
-            get { return this.denominatorScale; }
+            get { return denominatorScale; }
             set
             {
                 if (value <= 0.0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The print scale denominator must be a number greater than zero.");
                 }
-                this.denominatorScale = value;
+                denominatorScale = value;
             }
         }
 
@@ -244,7 +244,7 @@ namespace netDxf.Objects
         /// </summary>
         public double PrintScale
         {
-            get { return this.numeratorScale / this.denominatorScale; }
+            get { return numeratorScale / denominatorScale; }
         }
 
         /// <summary>
@@ -252,8 +252,8 @@ namespace netDxf.Objects
         /// </summary>
         public PlotFlags Flags
         {
-            get { return this.flags; }
-            set { this.flags = value; }
+            get { return flags; }
+            set { flags = value; }
         }
 
         /// <summary>
@@ -261,8 +261,8 @@ namespace netDxf.Objects
         /// </summary>
         public PlotType PlotType
         {
-            get { return this.plotType; }
-            set { this.plotType = value; }
+            get { return plotType; }
+            set { plotType = value; }
         }
 
         /// <summary>
@@ -271,8 +271,8 @@ namespace netDxf.Objects
         /// <remarks>This value is only applicable to the scale parameter <c>PrintScaleNumerator</c>.</remarks>
         public PlotPaperUnits PaperUnits
         {
-            get { return this.paperUnits; }
-            set { this.paperUnits = value; }
+            get { return paperUnits; }
+            set { paperUnits = value; }
         }
 
         /// <summary>
@@ -280,8 +280,8 @@ namespace netDxf.Objects
         /// </summary>
         public PlotRotation PaperRotation
         {
-            get { return this.rotation; }
-            set { this.rotation = value; }
+            get { return rotation; }
+            set { rotation = value; }
         }
 
         /// <summary>
@@ -289,8 +289,8 @@ namespace netDxf.Objects
         /// </summary>
         public ShadePlotMode ShadePlotMode
         {
-            get { return this.shadePlotMode; }
-            set { this.shadePlotMode = value; }
+            get { return shadePlotMode; }
+            set { shadePlotMode = value; }
         }
 
         /// <summary>
@@ -301,8 +301,8 @@ namespace netDxf.Objects
         /// </remarks>
         public ShadePlotResolutionMode ShadePlotResolutionMode
         {
-            get { return this.shadePlotResolutionMode; }
-            set { this.shadePlotResolutionMode = value; }
+            get { return shadePlotResolutionMode; }
+            set { shadePlotResolutionMode = value; }
         }
 
         /// <summary>
@@ -310,14 +310,14 @@ namespace netDxf.Objects
         /// </summary>
         public short ShadePlotDPI
         {
-            get { return this.shadePlotDPI; }
+            get { return shadePlotDPI; }
             set
             {
                 if (value < 100)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The valid shade plot DPI values range from 100 to the maximum value allowed by the plot device.");
                 }
-                this.shadePlotDPI = value;
+                shadePlotDPI = value;
             }
         }
 
@@ -326,8 +326,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector2 PaperImageOrigin
         {
-            get { return this.paperImageOrigin; }
-            set { this.paperImageOrigin = value; }
+            get { return paperImageOrigin; }
+            set { paperImageOrigin = value; }
         }
 
         #endregion
@@ -342,27 +342,27 @@ namespace netDxf.Objects
         {
             return new PlotSettings
             {
-                PageSetupName = this.pageSetupName,
-                PlotterName = this.plotterName,
-                PaperSizeName = this.paperSizeName,
-                ViewName = this.viewName,
-                CurrentStyleSheet = this.currentStyleSheet,
-                PaperMargin = this.PaperMargin,
-                PaperSize = this.paperSize,
-                Origin = this.origin,
-                WindowUpRight = this.windowUpRight,
-                WindowBottomLeft = this.windowBottomLeft,
-                ScaleToFit = this.scaleToFit,
-                PrintScaleNumerator = this.numeratorScale,
-                PrintScaleDenominator = this.denominatorScale,
-                Flags = this.flags,
-                PlotType = this.plotType,
-                PaperUnits = this.paperUnits,
-                PaperRotation = this.rotation,
-                ShadePlotMode = this.shadePlotMode,
-                ShadePlotResolutionMode = this.shadePlotResolutionMode,
-                ShadePlotDPI = this.shadePlotDPI,
-                PaperImageOrigin = this.paperImageOrigin
+                PageSetupName = pageSetupName,
+                PlotterName = plotterName,
+                PaperSizeName = paperSizeName,
+                ViewName = viewName,
+                CurrentStyleSheet = currentStyleSheet,
+                PaperMargin = PaperMargin,
+                PaperSize = paperSize,
+                Origin = origin,
+                WindowUpRight = windowUpRight,
+                WindowBottomLeft = windowBottomLeft,
+                ScaleToFit = scaleToFit,
+                PrintScaleNumerator = numeratorScale,
+                PrintScaleDenominator = denominatorScale,
+                Flags = flags,
+                PlotType = plotType,
+                PaperUnits = paperUnits,
+                PaperRotation = rotation,
+                ShadePlotMode = shadePlotMode,
+                ShadePlotResolutionMode = shadePlotResolutionMode,
+                ShadePlotDPI = shadePlotDPI,
+                PaperImageOrigin = paperImageOrigin
             };
         }
 

@@ -46,7 +46,7 @@ namespace netDxf.Tables
         public event LinetypeSegmentAddedEventHandler LinetypeSegmentAdded;
         protected virtual void OnLinetypeSegmentAddedEvent(LinetypeSegment item)
         {
-            LinetypeSegmentAddedEventHandler ae = this.LinetypeSegmentAdded;
+            LinetypeSegmentAddedEventHandler ae = LinetypeSegmentAdded;
             if (ae != null)
             {
                 ae(this, new LinetypeSegmentChangeEventArgs(item));
@@ -57,7 +57,7 @@ namespace netDxf.Tables
         public event LinetypeSegmentRemovedEventHandler LinetypeSegmentRemoved;
         protected virtual void OnLinetypeSegmentRemovedEvent(LinetypeSegment item)
         {
-            LinetypeSegmentRemovedEventHandler ae = this.LinetypeSegmentRemoved;
+            LinetypeSegmentRemovedEventHandler ae = LinetypeSegmentRemoved;
             if (ae != null)
             {
                 ae(this, new LinetypeSegmentChangeEventArgs(item));
@@ -68,7 +68,7 @@ namespace netDxf.Tables
         public event LinetypeTextSegmentStyleChangedEventHandler LinetypeTextSegmentStyleChanged;
         protected virtual TextStyle OnLinetypeTextSegmentStyleChangedEvent(TextStyle oldTextStyle, TextStyle newTextStyle)
         {
-            LinetypeTextSegmentStyleChangedEventHandler ae = this.LinetypeTextSegmentStyleChanged;
+            LinetypeTextSegmentStyleChangedEventHandler ae = LinetypeTextSegmentStyleChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<TextStyle> eventArgs = new TableObjectChangedEventArgs<TextStyle>(oldTextStyle, newTextStyle);
@@ -82,7 +82,7 @@ namespace netDxf.Tables
         public event LinetypeShapeSegmentStyleChangedEventHandler LinetypeShapeSegmentStyleChanged;
         protected virtual ShapeStyle OnLinetypeShapeSegmentStyleChangedEvent(ShapeStyle oldShapeStyle, ShapeStyle newShapeStyle)
         {
-            LinetypeShapeSegmentStyleChangedEventHandler ae = this.LinetypeShapeSegmentStyleChanged;
+            LinetypeShapeSegmentStyleChangedEventHandler ae = LinetypeShapeSegmentStyleChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<ShapeStyle> eventArgs = new TableObjectChangedEventArgs<ShapeStyle>(oldShapeStyle, newShapeStyle);
@@ -266,16 +266,16 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(name), "The line type name should be at least one character long.");
             }
 
-            this.IsReserved = name.Equals(ByLayerName, StringComparison.OrdinalIgnoreCase) ||
+            IsReserved = name.Equals(ByLayerName, StringComparison.OrdinalIgnoreCase) ||
                               name.Equals(ByBlockName, StringComparison.OrdinalIgnoreCase) ||
                               name.Equals(DefaultName, StringComparison.OrdinalIgnoreCase);
             this.description = string.IsNullOrEmpty(description) ? string.Empty : description;
 
             this.segments = new ObservableCollection<LinetypeSegment>();
-            this.segments.BeforeAddItem += this.Segments_BeforeAddItem;
-            this.segments.AddItem += this.Segments_AddItem;
-            this.segments.BeforeRemoveItem += this.Segments_BeforeRemoveItem;
-            this.segments.RemoveItem += this.Segments_RemoveItem;
+            this.segments.BeforeAddItem += Segments_BeforeAddItem;
+            this.segments.AddItem += Segments_AddItem;
+            this.segments.BeforeRemoveItem += Segments_BeforeRemoveItem;
+            this.segments.RemoveItem += Segments_RemoveItem;
             if (segments != null)
             {
                 this.segments.AddRange(segments);
@@ -291,7 +291,7 @@ namespace netDxf.Tables
         /// </summary>
         public bool IsByLayer
         {
-            get { return this.Name.Equals(ByLayerName, StringComparison.InvariantCultureIgnoreCase); }
+            get { return Name.Equals(ByLayerName, StringComparison.InvariantCultureIgnoreCase); }
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace netDxf.Tables
         /// </summary>
         public bool IsByBlock
         {
-            get { return this.Name.Equals(ByBlockName, StringComparison.InvariantCultureIgnoreCase); }
+            get { return Name.Equals(ByBlockName, StringComparison.InvariantCultureIgnoreCase); }
         }
 
         /// <summary>
@@ -310,8 +310,8 @@ namespace netDxf.Tables
         /// </remarks>
         public string Description
         {
-            get { return this.description; }
-            set { this.description = string.IsNullOrEmpty(value) ? string.Empty : value; }
+            get { return description; }
+            set { description = string.IsNullOrEmpty(value) ? string.Empty : value; }
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace netDxf.Tables
         /// </summary>
         public ObservableCollection<LinetypeSegment> Segments
         {
-            get { return this.segments; }
+            get { return segments; }
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace netDxf.Tables
         public double Length()
         {
             double result = 0.0;
-            foreach (LinetypeSegment s in this.segments)
+            foreach (LinetypeSegment s in segments)
             {
                 result += Math.Abs(s.Length);
             }
@@ -521,9 +521,9 @@ namespace netDxf.Tables
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine(string.Format("*{0},{1}", this.Name, this.description));
+            sb.AppendLine(string.Format("*{0},{1}", Name, description));
             sb.Append("A"); // A (alignment field)
-            foreach (LinetypeSegment s in this.segments)
+            foreach (LinetypeSegment s in segments)
             {
                 switch (s.Type)
                 {
@@ -713,7 +713,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -728,7 +728,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -738,15 +738,15 @@ namespace netDxf.Tables
         /// <returns>A new Linetype that is a copy of this instance.</returns>
         public override TableObject Clone(string newName)
         {
-            List<LinetypeSegment> items = new List<LinetypeSegment>(this.segments.Count);
-            foreach (LinetypeSegment segment in this.segments)
+            List<LinetypeSegment> items = new List<LinetypeSegment>(segments.Count);
+            foreach (LinetypeSegment segment in segments)
             {
                 items.Add((LinetypeSegment)segment.Clone());
             }
 
-            Linetype copy = new Linetype(newName, items, this.description);
+            Linetype copy = new Linetype(newName, items, description);
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -760,7 +760,7 @@ namespace netDxf.Tables
         /// <returns>A new Linetype that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion
@@ -775,15 +775,15 @@ namespace netDxf.Tables
 
         private void Segments_AddItem(ObservableCollection<LinetypeSegment> sender, ObservableCollectionEventArgs<LinetypeSegment> e)
         {
-            this.OnLinetypeSegmentAddedEvent(e.Item);
+            OnLinetypeSegmentAddedEvent(e.Item);
 
             if (e.Item.Type == LinetypeSegmentType.Text)
             {
-                ((LinetypeTextSegment)e.Item).TextStyleChanged += this.LinetypeTextSegment_StyleChanged;
+                ((LinetypeTextSegment)e.Item).TextStyleChanged += LinetypeTextSegment_StyleChanged;
             }
             if (e.Item.Type == LinetypeSegmentType.Shape)
             {
-                ((LinetypeShapeSegment)e.Item).ShapeStyleChanged += this.LinetypeShapeSegment_StyleChanged;
+                ((LinetypeShapeSegment)e.Item).ShapeStyleChanged += LinetypeShapeSegment_StyleChanged;
             }
         }
 
@@ -793,15 +793,15 @@ namespace netDxf.Tables
 
         private void Segments_RemoveItem(ObservableCollection<LinetypeSegment> sender, ObservableCollectionEventArgs<LinetypeSegment> e)
         {
-            this.OnLinetypeSegmentRemovedEvent(e.Item);
+            OnLinetypeSegmentRemovedEvent(e.Item);
 
             if (e.Item.Type == LinetypeSegmentType.Text)
             {
-                ((LinetypeTextSegment)e.Item).TextStyleChanged -= this.LinetypeTextSegment_StyleChanged;
+                ((LinetypeTextSegment)e.Item).TextStyleChanged -= LinetypeTextSegment_StyleChanged;
             }
             if (e.Item.Type == LinetypeSegmentType.Shape)
             {
-                ((LinetypeShapeSegment)e.Item).ShapeStyleChanged -= this.LinetypeShapeSegment_StyleChanged;
+                ((LinetypeShapeSegment)e.Item).ShapeStyleChanged -= LinetypeShapeSegment_StyleChanged;
             }
         }
 
@@ -811,12 +811,12 @@ namespace netDxf.Tables
 
         private void LinetypeTextSegment_StyleChanged(LinetypeTextSegment sender, TableObjectChangedEventArgs<TextStyle> e)
         {
-            e.NewValue = this.OnLinetypeTextSegmentStyleChangedEvent(e.OldValue, e.NewValue);
+            e.NewValue = OnLinetypeTextSegmentStyleChangedEvent(e.OldValue, e.NewValue);
         }
 
         private void LinetypeShapeSegment_StyleChanged(LinetypeShapeSegment sender, TableObjectChangedEventArgs<ShapeStyle> e)
         {
-            e.NewValue = this.OnLinetypeShapeSegmentStyleChangedEvent(e.OldValue, e.NewValue);
+            e.NewValue = OnLinetypeShapeSegmentStyleChangedEvent(e.OldValue, e.NewValue);
         }
 
         #endregion

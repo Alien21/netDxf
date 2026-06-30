@@ -96,7 +96,7 @@ namespace netDxf.Entities
         public event TextStyleChangedEventHandler TextStyleChanged;
         protected virtual TextStyle OnTextStyleChangedEvent(TextStyle oldTextStyle, TextStyle newTextStyle)
         {
-            TextStyleChangedEventHandler ae = this.TextStyleChanged;
+            TextStyleChangedEventHandler ae = TextStyleChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<TextStyle> eventArgs = new TableObjectChangedEventArgs<TextStyle>(oldTextStyle, newTextStyle);
@@ -280,7 +280,7 @@ namespace netDxf.Entities
         {
             this.text = text;
             this.position = position;
-            this.attachmentPoint = MTextAttachmentPoint.TopLeft;
+            attachmentPoint = MTextAttachmentPoint.TopLeft;
             this.style = style ?? throw new ArgumentNullException(nameof(style));
             this.rectangleWidth = rectangleWidth;
             if (height <= 0.0)
@@ -288,10 +288,10 @@ namespace netDxf.Entities
                 throw new ArgumentOutOfRangeException(nameof(height), this.text, "The MText height must be greater than zero.");
             }
             this.height = height;
-            this.lineSpacing = 1.0;
-            this.lineSpacingStyle = MTextLineSpacingStyle.AtLeast;
-            this.drawingDirection = MTextDrawingDirection.ByStyle;
-            this.rotation = 0.0;
+            lineSpacing = 1.0;
+            lineSpacingStyle = MTextLineSpacingStyle.AtLeast;
+            drawingDirection = MTextDrawingDirection.ByStyle;
+            rotation = 0.0;
         }
 
         #endregion
@@ -312,8 +312,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Rotation
         {
-            get { return this.rotation; }
-            set { this.rotation = MathHelper.NormalizeAngle(value); }
+            get { return rotation; }
+            set { rotation = MathHelper.NormalizeAngle(value); }
         }
 
         /// <summary>
@@ -321,14 +321,14 @@ namespace netDxf.Entities
         /// </summary>
         public double Height
         {
-            get { return this.height; }
+            get { return height; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The MText height must be greater than zero.");
                 }
-                this.height = value;
+                height = value;
             }
         }
 
@@ -340,14 +340,14 @@ namespace netDxf.Entities
         /// </remarks>
         public double LineSpacingFactor
         {
-            get { return this.lineSpacing; }
+            get { return lineSpacing; }
             set
             {
                 if (value < 0.25 || value > 4.0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The MText LineSpacingFactor valid values range from 0.25 to 4.0");
                 }
-                this.lineSpacing = value;
+                lineSpacing = value;
             }
         }
 
@@ -360,14 +360,14 @@ namespace netDxf.Entities
         /// </remarks>
         public MTextLineSpacingStyle LineSpacingStyle
         {
-            get { return this.lineSpacingStyle; }
+            get { return lineSpacingStyle; }
             set
             {
                 if (value == MTextLineSpacingStyle.Default || value == MTextLineSpacingStyle.Multiple)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The Default and Multiple options are only applicable to MTextParagraphOptions objects.");
                 }
-                this.lineSpacingStyle = value;
+                lineSpacingStyle = value;
             }
         }
 
@@ -376,8 +376,8 @@ namespace netDxf.Entities
         /// </summary>
         public MTextDrawingDirection DrawingDirection
         {
-            get { return this.drawingDirection; }
-            set { this.drawingDirection = value; }
+            get { return drawingDirection; }
+            set { drawingDirection = value; }
         }
 
         /// <summary>
@@ -390,14 +390,14 @@ namespace netDxf.Entities
         ///  </remarks>
         public double RectangleWidth
         {
-            get { return this.rectangleWidth; }
+            get { return rectangleWidth; }
             set
             {
                 if (value < 0.0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The MText rectangle width must be equals or greater than zero.");
                 }
-                this.rectangleWidth = value;
+                rectangleWidth = value;
             }
         }
 
@@ -406,8 +406,8 @@ namespace netDxf.Entities
         /// </summary>
         public MTextAttachmentPoint AttachmentPoint
         {
-            get { return this.attachmentPoint; }
-            set { this.attachmentPoint = value; }
+            get { return attachmentPoint; }
+            set { attachmentPoint = value; }
         }
 
         /// <summary>
@@ -415,14 +415,14 @@ namespace netDxf.Entities
         /// </summary>
         public TextStyle Style
         {
-            get { return this.style; }
+            get { return style; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.style = this.OnTextStyleChangedEvent(this.style, value);
+                style = OnTextStyleChangedEvent(style, value);
             }
         }
 
@@ -431,8 +431,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Position
         {
-            get { return this.position; }
-            set { this.position = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         /// <summary>
@@ -440,8 +440,8 @@ namespace netDxf.Entities
         /// </summary>
         public string Value
         {
-            get { return this.text; }
-            set { this.text = value; }
+            get { return text; }
+            set { text = value; }
         }
 
         #endregion
@@ -460,7 +460,7 @@ namespace netDxf.Entities
         /// </remarks>
         public void WriteFraction(string numerator, string denominator, FractionFormatType fractionType)
         {
-           this.WriteFraction(numerator, denominator, fractionType, null);
+           WriteFraction(numerator, denominator, fractionType, null);
         }
 
         /// <summary>
@@ -491,7 +491,7 @@ namespace netDxf.Entities
                     break;
             }
 
-            this.Write(txt, options);
+            Write(txt, options);
         }
 
         /// <summary>
@@ -500,7 +500,7 @@ namespace netDxf.Entities
         /// <param name="txt">Text string.</param>
         public void Write(string txt)
         {
-            this.Write(txt, null);
+            Write(txt, null);
         }
 
         /// <summary>
@@ -512,7 +512,7 @@ namespace netDxf.Entities
         {
             if (options == null)
             {
-                this.text += txt;
+                text += txt;
                 return;
             }
 
@@ -533,7 +533,7 @@ namespace netDxf.Entities
             string f;
             if (string.IsNullOrEmpty(options.FontName))
             {
-                f = string.IsNullOrEmpty(this.style.FontFamilyName) ? this.style.FontFile : this.style.FontFamilyName;
+                f = string.IsNullOrEmpty(style.FontFamilyName) ? style.FontFile : style.FontFamilyName;
             }
             else
             {
@@ -601,7 +601,7 @@ namespace netDxf.Entities
                 formattedText = string.Format("\\W{0};{1}", options.WidthFactor.ToString(CultureInfo.InvariantCulture), formattedText);
             }
 
-            this.text += "{" + formattedText + "}";
+            text += "{" + formattedText + "}";
         }
 
         /// <summary>
@@ -609,7 +609,7 @@ namespace netDxf.Entities
         /// </summary>
         public void EndParagraph()
         {
-            this.text += "\\P";
+            text += "\\P";
         }
 
         /// <summary>
@@ -623,7 +623,7 @@ namespace netDxf.Entities
         /// </remarks>
         public void StartParagraph()
         {
-            this.StartParagraph(null);
+            StartParagraph(null);
 
         }
         /// <summary>
@@ -640,7 +640,7 @@ namespace netDxf.Entities
         {
             if (options == null)
             {
-                this.text += "\\A1;";
+                text += "\\A1;";
                 return;
             }
 
@@ -698,7 +698,7 @@ namespace netDxf.Entities
 
             codes = string.Format("\\A{0};\\H{1}x;{2}", (int)options.VerticalAlignment, options.HeightFactor.ToString(CultureInfo.InvariantCulture), codes);
 
-            this.text += codes;
+            text += codes;
         }
 
         /// <summary>
@@ -708,10 +708,10 @@ namespace netDxf.Entities
         /// <returns>MText text value without the formatting codes.</returns>
         public string PlainText()
         {
-            if (string.IsNullOrEmpty(this.text))
+            if (string.IsNullOrEmpty(text))
                 return string.Empty;
 
-            string txt = this.text;
+            string txt = text;
 
             //text = text.Replace("%%c", "Ø");
             //text = text.Replace("%%d", "°");
@@ -827,16 +827,16 @@ namespace netDxf.Entities
         /// </remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            bool mirrText = this.Owner == null ? DefaultMirrText : this.Owner.Record.Owner.Owner.DrawingVariables.MirrText;
+            bool mirrText = Owner == null ? DefaultMirrText : Owner.Record.Owner.Owner.DrawingVariables.MirrText;
 
-            Vector3 newPosition = transformation * this.Position + translation;
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newPosition = transformation * Position + translation;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
 
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal);
             transWO = transWO.Transpose();
@@ -846,7 +846,7 @@ namespace netDxf.Entities
                 {
                     Vector2.UnitX, Vector2.UnitY
                 }, 
-                this.Rotation * MathHelper.DegToRad,
+                Rotation * MathHelper.DegToRad,
                 CoordinateSystem.Object, CoordinateSystem.World);
 
             Vector3 v;
@@ -881,63 +881,63 @@ namespace netDxf.Entities
                     {
                         newRotation += 180;
 
-                        switch (this.AttachmentPoint)
+                        switch (AttachmentPoint)
                         {
                             case MTextAttachmentPoint.TopLeft:
-                                this.AttachmentPoint = MTextAttachmentPoint.TopRight;
+                                AttachmentPoint = MTextAttachmentPoint.TopRight;
                                 break;
                             case MTextAttachmentPoint.TopRight:
-                                this.AttachmentPoint = MTextAttachmentPoint.TopLeft;
+                                AttachmentPoint = MTextAttachmentPoint.TopLeft;
                                 break;
                             case MTextAttachmentPoint.MiddleLeft:
-                                this.AttachmentPoint = MTextAttachmentPoint.MiddleRight;
+                                AttachmentPoint = MTextAttachmentPoint.MiddleRight;
                                 break;
                             case MTextAttachmentPoint.MiddleRight:
-                                this.AttachmentPoint = MTextAttachmentPoint.MiddleLeft;
+                                AttachmentPoint = MTextAttachmentPoint.MiddleLeft;
                                 break;
                             case MTextAttachmentPoint.BottomLeft:
-                                this.AttachmentPoint = MTextAttachmentPoint.BottomRight;
+                                AttachmentPoint = MTextAttachmentPoint.BottomRight;
                                 break;
                             case MTextAttachmentPoint.BottomRight:
-                                this.AttachmentPoint = MTextAttachmentPoint.BottomLeft;
+                                AttachmentPoint = MTextAttachmentPoint.BottomLeft;
                                 break;
                         }
                     }
                     else
                     {
-                        switch (this.AttachmentPoint)
+                        switch (AttachmentPoint)
                         {
                             case MTextAttachmentPoint.TopLeft:
-                                this.AttachmentPoint = MTextAttachmentPoint.BottomLeft;
+                                AttachmentPoint = MTextAttachmentPoint.BottomLeft;
                                 break;
                             case MTextAttachmentPoint.TopCenter:
-                                this.attachmentPoint = MTextAttachmentPoint.BottomCenter;
+                                attachmentPoint = MTextAttachmentPoint.BottomCenter;
                                 break;
                             case MTextAttachmentPoint.TopRight:
-                                this.AttachmentPoint = MTextAttachmentPoint.BottomRight;
+                                AttachmentPoint = MTextAttachmentPoint.BottomRight;
                                 break;
                             case MTextAttachmentPoint.BottomLeft:
-                                this.AttachmentPoint = MTextAttachmentPoint.TopLeft;
+                                AttachmentPoint = MTextAttachmentPoint.TopLeft;
                                 break;
                             case MTextAttachmentPoint.BottomCenter:
-                                this.attachmentPoint = MTextAttachmentPoint.TopCenter;
+                                attachmentPoint = MTextAttachmentPoint.TopCenter;
                                 break;
                             case MTextAttachmentPoint.BottomRight:
-                                this.AttachmentPoint = MTextAttachmentPoint.TopRight;
+                                AttachmentPoint = MTextAttachmentPoint.TopRight;
                                 break;
                         }
                     }
                 }
             }
 
-            double newHeight = this.Height * scale;
+            double newHeight = Height * scale;
             newHeight = MathHelper.IsZero(newHeight) ? MathHelper.Epsilon : newHeight;
 
-            this.Position = newPosition;
-            this.Normal = newNormal;
-            this.Rotation = newRotation;
-            this.Height = newHeight;
-            this.RectangleWidth *= scale;
+            Position = newPosition;
+            Normal = newNormal;
+            Rotation = newRotation;
+            Height = newHeight;
+            RectangleWidth *= scale;
 
         }
 
@@ -950,27 +950,27 @@ namespace netDxf.Entities
             MText entity = new MText
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //MText properties
-                Position = this.position,
-                Rotation = this.rotation,
-                Height = this.height,
-                LineSpacingFactor = this.lineSpacing,
-                LineSpacingStyle = this.lineSpacingStyle,
-                RectangleWidth = this.rectangleWidth,
-                AttachmentPoint = this.attachmentPoint,
-                Style = (TextStyle) this.style.Clone(),
-                Value = this.text
+                Position = position,
+                Rotation = rotation,
+                Height = height,
+                LineSpacingFactor = lineSpacing,
+                LineSpacingStyle = lineSpacingStyle,
+                RectangleWidth = rectangleWidth,
+                AttachmentPoint = attachmentPoint,
+                Style = (TextStyle) style.Clone(),
+                Value = text
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

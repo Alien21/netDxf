@@ -41,7 +41,7 @@ namespace netDxf.Entities
         public event TextStyleChangedEventHandler TextStyleChanged;
         protected virtual TextStyle OnTextStyleChangedEvent(TextStyle oldTextStyle, TextStyle newTextStyle)
         {
-            TextStyleChangedEventHandler ae = this.TextStyleChanged;
+            TextStyleChangedEventHandler ae = TextStyleChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<TextStyle> eventArgs = new TableObjectChangedEventArgs<TextStyle>(oldTextStyle, newTextStyle);
@@ -135,20 +135,20 @@ namespace netDxf.Entities
         {
             this.text = text;
             this.position = position;
-            this.alignment = TextAlignment.BaselineLeft;
-            this.Normal = Vector3.UnitZ;
+            alignment = TextAlignment.BaselineLeft;
+            Normal = Vector3.UnitZ;
             this.style = style ?? throw new ArgumentNullException(nameof(style));
             if (height <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(height), this.text, "The Text height must be greater than zero.");
             }
             this.height = height;
-            this.width = 1.0;
-            this.widthFactor = style.WidthFactor;
-            this.obliqueAngle = style.ObliqueAngle;
-            this.rotation = 0.0;
-            this.isBackward = false;
-            this.isUpsideDown = false;
+            width = 1.0;
+            widthFactor = style.WidthFactor;
+            obliqueAngle = style.ObliqueAngle;
+            rotation = 0.0;
+            isBackward = false;
+            isUpsideDown = false;
         }
 
         #endregion
@@ -169,8 +169,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Position
         {
-            get { return this.position; }
-            set { this.position = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         /// <summary>
@@ -178,8 +178,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Rotation
         {
-            get { return this.rotation; }
-            set { this.rotation = MathHelper.NormalizeAngle(value); }
+            get { return rotation; }
+            set { rotation = MathHelper.NormalizeAngle(value); }
         }
 
         /// <summary>
@@ -191,14 +191,14 @@ namespace netDxf.Entities
         /// </remarks>
         public double Height
         {
-            get { return this.height; }
+            get { return height; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The Text height must be greater than zero.");
                 }
-                this.height = value;
+                height = value;
             }
         }
 
@@ -208,14 +208,14 @@ namespace netDxf.Entities
         /// <remarks>Valid values must be greater than zero. Default: 1.0.</remarks>
         public double Width
         {
-            get { return this.width; }
+            get { return width; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The Text width must be greater than zero.");
                 }
-                this.width = value;
+                width = value;
             }
         }
 
@@ -228,14 +228,14 @@ namespace netDxf.Entities
         /// </remarks>
         public double WidthFactor
         {
-            get { return this.widthFactor; }
+            get { return widthFactor; }
             set
             {
                 if (value < 0.01 || value > 100.0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The Text width factor valid values range from 0.01 to 100.");
                 }
-                this.widthFactor = value;
+                widthFactor = value;
             }
         }
 
@@ -245,14 +245,14 @@ namespace netDxf.Entities
         /// <remarks>Valid values range from -85 to 85. Default: 0.0.</remarks>
         public double ObliqueAngle
         {
-            get { return this.obliqueAngle; }
+            get { return obliqueAngle; }
             set
             {
                 if (value < -85.0 || value > 85.0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The Text oblique angle valid values range from -85 to 85.");
                 }
-                this.obliqueAngle = value;
+                obliqueAngle = value;
             }
         }
 
@@ -261,8 +261,8 @@ namespace netDxf.Entities
         /// </summary>
         public TextAlignment Alignment
         {
-            get { return this.alignment; }
-            set { this.alignment = value; }
+            get { return alignment; }
+            set { alignment = value; }
         }
 
         /// <summary>
@@ -270,14 +270,14 @@ namespace netDxf.Entities
         /// </summary>
         public TextStyle Style
         {
-            get { return this.style; }
+            get { return style; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.style = this.OnTextStyleChangedEvent(this.style, value);
+                style = OnTextStyleChangedEvent(style, value);
             }
         }
 
@@ -286,8 +286,8 @@ namespace netDxf.Entities
         /// </summary>
         public string Value
         {
-            get { return this.text; }
-            set { this.text = value; }
+            get { return text; }
+            set { text = value; }
         }
 
         /// <summary>
@@ -295,8 +295,8 @@ namespace netDxf.Entities
         /// </summary>
         public bool IsBackward
         {
-            get { return this.isBackward; }
-            set { this.isBackward = value; }
+            get { return isBackward; }
+            set { isBackward = value; }
         }
 
         /// <summary>
@@ -304,8 +304,8 @@ namespace netDxf.Entities
         /// </summary>
         public bool IsUpsideDown
         {
-            get { return this.isUpsideDown; }
-            set { this.isUpsideDown = value; }
+            get { return isUpsideDown; }
+            set { isUpsideDown = value; }
         }
 
         #endregion
@@ -326,16 +326,16 @@ namespace netDxf.Entities
         /// </remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            bool mirrText = this.Owner == null ? DefaultMirrText : this.Owner.Record.Owner.Owner.DrawingVariables.MirrText;
+            bool mirrText = Owner == null ? DefaultMirrText : Owner.Record.Owner.Owner.DrawingVariables.MirrText;
 
-            Vector3 newPosition = transformation * this.Position + translation;
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newPosition = transformation * Position + translation;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
 
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal);
             transWO = transWO.Transpose();
@@ -343,10 +343,10 @@ namespace netDxf.Entities
             List<Vector2> uv = MathHelper.Transform(
                 new[]
                 {
-                    this.WidthFactor * this.Height * Vector2.UnitX,
-                    new Vector2(this.Height * Math.Tan(this.ObliqueAngle * MathHelper.DegToRad), this.Height)
+                    WidthFactor * Height * Vector2.UnitX,
+                    new Vector2(Height * Math.Tan(ObliqueAngle * MathHelper.DegToRad), Height)
                 },
-                this.Rotation * MathHelper.DegToRad,
+                Rotation * MathHelper.DegToRad,
                 CoordinateSystem.Object, CoordinateSystem.World);
 
             Vector3 v;
@@ -368,8 +368,8 @@ namespace netDxf.Entities
                 if (Vector2.CrossProduct(newUvector, newVvector) < 0)
                 {
                     newObliqueAngle = 90 - (newRotation - newObliqueAngle);
-                    if(!(this.Alignment == TextAlignment.Fit || this.Alignment == TextAlignment.Aligned)) newRotation += 180;
-                    this.IsBackward = !this.IsBackward;
+                    if(!(Alignment == TextAlignment.Fit || Alignment == TextAlignment.Aligned)) newRotation += 180;
+                    IsBackward = !IsBackward;
                 }
                 else
                 {
@@ -386,55 +386,55 @@ namespace netDxf.Entities
                     {
                         newRotation += 180;
 
-                        switch (this.Alignment)
+                        switch (Alignment)
                         {
                             case TextAlignment.TopLeft:
-                                this.Alignment = TextAlignment.TopRight;
+                                Alignment = TextAlignment.TopRight;
                                 break;
                             case TextAlignment.TopRight:
-                                this.Alignment = TextAlignment.TopLeft;
+                                Alignment = TextAlignment.TopLeft;
                                 break;
                             case TextAlignment.MiddleLeft:
-                                this.Alignment = TextAlignment.MiddleRight;
+                                Alignment = TextAlignment.MiddleRight;
                                 break;
                             case TextAlignment.MiddleRight:
-                                this.Alignment = TextAlignment.MiddleLeft;
+                                Alignment = TextAlignment.MiddleLeft;
                                 break;
                             case TextAlignment.BaselineLeft:
-                                this.Alignment = TextAlignment.BaselineRight;
+                                Alignment = TextAlignment.BaselineRight;
                                 break;
                             case TextAlignment.BaselineRight:
-                                this.Alignment = TextAlignment.BaselineLeft;
+                                Alignment = TextAlignment.BaselineLeft;
                                 break;
                             case TextAlignment.BottomLeft:
-                                this.Alignment = TextAlignment.BottomRight;
+                                Alignment = TextAlignment.BottomRight;
                                 break;
                             case TextAlignment.BottomRight:
-                                this.Alignment = TextAlignment.BottomLeft;
+                                Alignment = TextAlignment.BottomLeft;
                                 break;
                         }
                     }
                     else
                     {
-                        switch (this.Alignment)
+                        switch (Alignment)
                         {
                             case TextAlignment.TopLeft:
-                                this.Alignment = TextAlignment.BottomLeft;
+                                Alignment = TextAlignment.BottomLeft;
                                 break;
                             case TextAlignment.TopCenter:
-                                this.Alignment = TextAlignment.BottomCenter;
+                                Alignment = TextAlignment.BottomCenter;
                                 break;
                             case TextAlignment.TopRight:
-                                this.Alignment = TextAlignment.BottomRight;
+                                Alignment = TextAlignment.BottomRight;
                                 break;
                             case TextAlignment.BottomLeft:
-                                this.Alignment = TextAlignment.TopLeft;
+                                Alignment = TextAlignment.TopLeft;
                                 break;
                             case TextAlignment.BottomCenter:
-                                this.Alignment = TextAlignment.TopCenter;
+                                Alignment = TextAlignment.TopCenter;
                                 break;
                             case TextAlignment.BottomRight:
-                                this.Alignment = TextAlignment.TopRight;
+                                Alignment = TextAlignment.TopRight;
                                 break;
                         }
                     }
@@ -477,12 +477,12 @@ namespace netDxf.Entities
                 newWidthFactor = 100;
             }
 
-            this.Position = newPosition;
-            this.Normal = newNormal;
-            this.Rotation = newRotation;
-            this.Height = newHeight;
-            this.WidthFactor = newWidthFactor;
-            this.ObliqueAngle = newObliqueAngle;
+            Position = newPosition;
+            Normal = newNormal;
+            Rotation = newRotation;
+            Height = newHeight;
+            WidthFactor = newWidthFactor;
+            ObliqueAngle = newObliqueAngle;
         }
 
         /// <summary>
@@ -494,29 +494,29 @@ namespace netDxf.Entities
             Text entity = new Text
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Text properties
-                Position = this.position,
-                Rotation = this.rotation,
-                Height = this.height,
-                Width = this.width,
-                WidthFactor = this.widthFactor,
-                ObliqueAngle = this.obliqueAngle,
-                Alignment = this.alignment,
-                IsBackward = this.isBackward,
-                isUpsideDown = this.isUpsideDown,
-                Style = (TextStyle) this.style.Clone(),
-                Value = this.text
+                Position = position,
+                Rotation = rotation,
+                Height = height,
+                Width = width,
+                WidthFactor = widthFactor,
+                ObliqueAngle = obliqueAngle,
+                Alignment = alignment,
+                IsBackward = isBackward,
+                isUpsideDown = isUpsideDown,
+                Style = (TextStyle) style.Clone(),
+                Value = text
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

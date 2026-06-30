@@ -45,7 +45,7 @@ namespace netDxf.Tables
         public event NameChangedEventHandler NameChanged;
         protected virtual void OnNameChangedEvent(string oldName, string newName)
         {
-            NameChangedEventHandler ae = this.NameChanged;
+            NameChangedEventHandler ae = NameChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<string> eventArgs = new TableObjectChangedEventArgs<string>(oldName, newName);
@@ -84,7 +84,7 @@ namespace netDxf.Tables
             }
 
             this.name = name;
-            this.reserved = false;
+            reserved = false;
         }
 
         #endregion
@@ -97,8 +97,8 @@ namespace netDxf.Tables
         /// <remarks>Table object names are case insensitive.</remarks>
         public string Name
         {
-            get { return this.name; }
-            set { this.SetName(value, true); }
+            get { return name; }
+            set { SetName(value, true); }
         }
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace netDxf.Tables
         /// </summary>
         public bool IsReserved
         {
-            get { return this.reserved; }
-            internal set { this.reserved = value; }
+            get { return reserved; }
+            internal set { reserved = value; }
         }
 
         /// <summary>
@@ -174,12 +174,12 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(newName));
             }
 
-            if (this.IsReserved)
+            if (IsReserved)
             {
                 throw new ArgumentException("Reserved table objects cannot be renamed.", nameof(newName));
             }
 
-            if (string.Equals(this.name, newName, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(name, newName, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
@@ -191,8 +191,8 @@ namespace netDxf.Tables
                     throw new ArgumentException("The following characters \\<>/?\":;*|,=` are not supported for table object names.", nameof(newName));
                 }
             }
-            this.OnNameChangedEvent(this.name, newName);
-            this.name = newName;
+            OnNameChangedEvent(name, newName);
+            name = newName;
         }
 
         #endregion
@@ -205,7 +205,7 @@ namespace netDxf.Tables
         /// <returns>The string representation.</returns>
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
 
         #endregion
@@ -224,7 +224,7 @@ namespace netDxf.Tables
         /// <remarks>If both table objects are no of the same type it will return zero. The comparison is made by their names.</remarks>
         public int CompareTo(object other)
         {
-            return this.CompareTo((TableObject) other);
+            return CompareTo((TableObject) other);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(other));
             }
 
-            return this.GetType() == other.GetType() ? string.Compare(this.Name, other.Name, StringComparison.OrdinalIgnoreCase) : 0;
+            return GetType() == other.GetType() ? string.Compare(Name, other.Name, StringComparison.OrdinalIgnoreCase) : 0;
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace netDxf.Tables
         /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
         public override int GetHashCode()
         {
-            return this.Name.GetHashCode();
+            return Name.GetHashCode();
         }
 
         ///// <summary>
@@ -338,12 +338,12 @@ namespace netDxf.Tables
                 return false;
             }
 
-            if (this.GetType() != other.GetType())
+            if (GetType() != other.GetType())
             {
                 return false;
             }
 
-            return this.Equals((TableObject) other);
+            return Equals((TableObject) other);
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace netDxf.Tables
                 return false;
             }
 
-            return string.Equals(this.Name, other.Name, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase);
         }
 
         #endregion

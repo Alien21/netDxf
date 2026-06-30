@@ -85,17 +85,17 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(name), "The viewport name should be at least one character long.");
             }
 
-            this.IsReserved = name.Equals("*Active", StringComparison.OrdinalIgnoreCase);
-            this.center = Vector2.Zero;
-            this.snapBasePoint = Vector2.Zero;
-            this.snapSpacing = new Vector2(0.5);
-            this.gridSpacing = new Vector2(10.0);
-            this.target = Vector3.Zero;
-            this.direction = Vector3.UnitZ;
-            this.height = 10;
-            this.aspectRatio = 1.0;
-            this.showGrid = true;
-            this.snapMode = false;
+            IsReserved = name.Equals("*Active", StringComparison.OrdinalIgnoreCase);
+            center = Vector2.Zero;
+            snapBasePoint = Vector2.Zero;
+            snapSpacing = new Vector2(0.5);
+            gridSpacing = new Vector2(10.0);
+            target = Vector3.Zero;
+            direction = Vector3.UnitZ;
+            height = 10;
+            aspectRatio = 1.0;
+            showGrid = true;
+            snapMode = false;
         }
 
         #endregion
@@ -107,8 +107,8 @@ namespace netDxf.Tables
         /// </summary>
         public Vector2 ViewCenter
         {
-            get { return this.center; }
-            set { this.center = value; }
+            get { return center; }
+            set { center = value; }
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace netDxf.Tables
         /// </summary>
         public Vector2 SnapBasePoint
         {
-            get { return this.snapBasePoint; }
-            set { this.snapBasePoint = value; }
+            get { return snapBasePoint; }
+            set { snapBasePoint = value; }
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace netDxf.Tables
         /// </summary>
         public Vector2 SnapSpacing
         {
-            get { return this.snapSpacing; }
-            set { this.snapSpacing = value; }
+            get { return snapSpacing; }
+            set { snapSpacing = value; }
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace netDxf.Tables
         /// </summary>
         public Vector2 GridSpacing
         {
-            get { return this.gridSpacing; }
-            set { this.gridSpacing = value; }
+            get { return gridSpacing; }
+            set { gridSpacing = value; }
         }
 
         /// <summary>
@@ -143,11 +143,11 @@ namespace netDxf.Tables
         /// </summary>
         public Vector3 ViewDirection
         {
-            get { return this.direction; }
+            get { return direction; }
             set
             {
-                this.direction =  Vector3.Normalize(value);
-                if (Vector3.IsZero(this.direction))
+                direction =  Vector3.Normalize(value);
+                if (Vector3.IsZero(direction))
                 {
                     throw new ArgumentException("The direction can not be the zero vector.", nameof(value));
                 }
@@ -159,8 +159,8 @@ namespace netDxf.Tables
         /// </summary>
         public Vector3 ViewTarget
         {
-            get { return this.target; }
-            set { this.target = value; }
+            get { return target; }
+            set { target = value; }
         }
 
         /// <summary>
@@ -168,8 +168,8 @@ namespace netDxf.Tables
         /// </summary>
         public double ViewHeight
         {
-            get { return this.height; }
-            set { this.height = value; }
+            get { return height; }
+            set { height = value; }
         }
 
         /// <summary>
@@ -177,14 +177,14 @@ namespace netDxf.Tables
         /// </summary>
         public double ViewAspectRatio
         {
-            get { return this.aspectRatio; }
+            get { return aspectRatio; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The VPort aspect ratio must be greater than zero.");
                 }
-                this.aspectRatio = value;
+                aspectRatio = value;
             }
         }
 
@@ -193,8 +193,8 @@ namespace netDxf.Tables
         /// </summary>
         public bool ShowGrid
         {
-            get { return this.showGrid; }
-            set { this.showGrid = value; }
+            get { return showGrid; }
+            set { showGrid = value; }
         }
 
         /// <summary>
@@ -202,8 +202,8 @@ namespace netDxf.Tables
         /// </summary>
         public bool SnapMode
         {
-            get { return this.snapMode; }
-            set { this.snapMode = value; }
+            get { return snapMode; }
+            set { snapMode = value; }
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -258,18 +258,18 @@ namespace netDxf.Tables
         {
             VPort copy = new VPort(newName)
             {
-                ViewCenter = this.center,
-                SnapBasePoint = this.snapBasePoint,
-                SnapSpacing = this.snapSpacing,
-                GridSpacing = this.gridSpacing,
-                ViewTarget = this.target,
-                ViewDirection = this.direction,
-                ViewHeight = this.height,
-                ViewAspectRatio = this.aspectRatio,
-                ShowGrid = this.showGrid
+                ViewCenter = center,
+                SnapBasePoint = snapBasePoint,
+                SnapSpacing = snapSpacing,
+                GridSpacing = gridSpacing,
+                ViewTarget = target,
+                ViewDirection = direction,
+                ViewHeight = height,
+                ViewAspectRatio = aspectRatio,
+                ShowGrid = showGrid
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -283,7 +283,7 @@ namespace netDxf.Tables
         /// <returns>A new VPort that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

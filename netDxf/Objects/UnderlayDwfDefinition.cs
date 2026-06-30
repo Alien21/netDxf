@@ -92,7 +92,7 @@ namespace netDxf.Objects
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -107,12 +107,12 @@ namespace netDxf.Objects
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            if (this.Owner == null)
+            if (Owner == null)
             {
                 return null;
             }
 
-            return this.Owner.GetReferences(this.Name);
+            return Owner.GetReferences(Name);
         }
 
         /// <summary>
@@ -122,9 +122,9 @@ namespace netDxf.Objects
         /// <returns>A new UnderlayDwfDefinition that is a copy of this instance.</returns>
         public override TableObject Clone(string newName)
         {
-            UnderlayDwfDefinition copy = new UnderlayDwfDefinition(newName, this.File);
+            UnderlayDwfDefinition copy = new UnderlayDwfDefinition(newName, File);
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -138,7 +138,7 @@ namespace netDxf.Objects
         /// <returns>A new UnderlayDwfDefinition that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

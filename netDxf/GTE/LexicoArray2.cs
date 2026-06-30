@@ -52,33 +52,33 @@ namespace netDxf.GTE
 
         public int NumRows
         {
-            get { return this.numRows; }
+            get { return numRows; }
         }
 
         public int NumCols
         {
-            get { return this.numCols; }
+            get { return numCols; }
         }
 
         public double this[int r, int c]
         {
-            get { return GTE.UseRowMajor ? this.matrix[c + this.numCols * r] : this.matrix[r + this.numRows * c]; }
+            get { return GTE.UseRowMajor ? matrix[c + numCols * r] : matrix[r + numRows * c]; }
             set
             {
                 if (GTE.UseRowMajor)
                 {
-                    this.matrix[c + this.numCols * r] = value;
+                    matrix[c + numCols * r] = value;
                 }
                 else
                 {
-                    this.matrix[r + this.numRows * c] = value;
+                    matrix[r + numRows * c] = value;
                 }
             }
         }
 
         public void CopyTo(double[] array, int index)
         {
-            this.matrix.CopyTo(array, 0);
+            matrix.CopyTo(array, 0);
         }
     };
 }

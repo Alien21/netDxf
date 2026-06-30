@@ -41,7 +41,7 @@ namespace netDxf.Tables
         public event LinetypeChangedEventHandler LinetypeChanged;
         protected virtual Linetype OnLinetypeChangedEvent(Linetype oldLinetype, Linetype newLinetype)
         {
-            LinetypeChangedEventHandler ae = this.LinetypeChanged;
+            LinetypeChangedEventHandler ae = LinetypeChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<Linetype> eventArgs = new TableObjectChangedEventArgs<Linetype>(oldLinetype, newLinetype);
@@ -103,14 +103,14 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(name), "The layer name should be at least one character long.");
             }
 
-            this.description = string.Empty;
-            this.IsReserved = name.Equals(DefaultName, StringComparison.OrdinalIgnoreCase);
-            this.color = AciColor.Default;
-            this.linetype = Linetype.Continuous;
-            this.isVisible = true;
-            this.plot = true;
-            this.lineweight = Lineweight.Default;
-            this.transparency = new Transparency(0);
+            description = string.Empty;
+            IsReserved = name.Equals(DefaultName, StringComparison.OrdinalIgnoreCase);
+            color = AciColor.Default;
+            linetype = Linetype.Continuous;
+            isVisible = true;
+            plot = true;
+            lineweight = Lineweight.Default;
+            transparency = new Transparency(0);
         }
 
         #endregion
@@ -126,8 +126,8 @@ namespace netDxf.Tables
         /// </remarks>
         public string Description
         {
-            get { return this.description; }
-            set { this.description = string.IsNullOrEmpty(value) ? string.Empty : value; }
+            get { return description; }
+            set { description = string.IsNullOrEmpty(value) ? string.Empty : value; }
         }
 
         /// <summary>
@@ -135,14 +135,14 @@ namespace netDxf.Tables
         /// </summary>
         public Linetype Linetype
         {
-            get { return this.linetype; }
+            get { return linetype; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.linetype = this.OnLinetypeChangedEvent(this.linetype, value);
+                linetype = OnLinetypeChangedEvent(linetype, value);
             }
         }
 
@@ -151,7 +151,7 @@ namespace netDxf.Tables
         /// </summary>
         public AciColor Color
         {
-            get { return this.color; }
+            get { return color; }
             set
             {
                 if (value == null)
@@ -163,7 +163,7 @@ namespace netDxf.Tables
                 {
                     throw new ArgumentException("The layer color cannot be ByLayer or ByBlock", nameof(value));
                 }
-                this.color = value;
+                color = value;
             }
         }
 
@@ -172,8 +172,8 @@ namespace netDxf.Tables
         /// </summary>
         public bool IsVisible
         {
-            get { return this.isVisible; }
-            set { this.isVisible = value; }
+            get { return isVisible; }
+            set { isVisible = value; }
         }
 
         /// <summary>
@@ -181,8 +181,8 @@ namespace netDxf.Tables
         /// </summary>
         public bool IsFrozen
         {
-            get { return this.isFrozen; }
-            set { this.isFrozen = value; }
+            get { return isFrozen; }
+            set { isFrozen = value; }
         }
 
         /// <summary>
@@ -190,8 +190,8 @@ namespace netDxf.Tables
         /// </summary>
         public bool IsLocked
         {
-            get { return this.isLocked; }
-            set { this.isLocked = value; }
+            get { return isLocked; }
+            set { isLocked = value; }
         }
 
         /// <summary>
@@ -200,8 +200,8 @@ namespace netDxf.Tables
         /// <remarks>If set to false, do not plot this layer.</remarks>
         public bool Plot
         {
-            get { return this.plot; }
-            set { this.plot = value; }
+            get { return plot; }
+            set { plot = value; }
         }
 
         /// <summary>
@@ -209,14 +209,14 @@ namespace netDxf.Tables
         /// </summary>
         public Lineweight Lineweight
         {
-            get { return this.lineweight; }
+            get { return lineweight; }
             set
             {
                 if (value == Lineweight.ByLayer || value == Lineweight.ByBlock)
                 {
                     throw new ArgumentException("The lineweight of a layer cannot be set to ByLayer or ByBlock.", nameof(value));
                 }
-                this.lineweight = value;
+                lineweight = value;
             }
         }
 
@@ -225,10 +225,10 @@ namespace netDxf.Tables
         /// </summary>
         public Transparency Transparency
         {
-            get { return this.transparency; }
+            get { return transparency; }
             set
             {
-                this.transparency = value ?? throw new ArgumentNullException(nameof(value));
+                transparency = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -257,7 +257,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -284,17 +284,17 @@ namespace netDxf.Tables
         {
             Layer copy = new Layer(newName)
             {
-                Color = (AciColor) this.Color.Clone(),
-                IsVisible = this.isVisible,
-                IsFrozen = this.isFrozen,
-                IsLocked = this.isLocked,
-                Plot = this.plot,
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone()
+                Color = (AciColor) Color.Clone(),
+                IsVisible = isVisible,
+                IsFrozen = isFrozen,
+                IsLocked = isLocked,
+                Plot = plot,
+                Linetype = (Linetype) Linetype.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone()
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -308,7 +308,7 @@ namespace netDxf.Tables
         /// <returns>A new Layer that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

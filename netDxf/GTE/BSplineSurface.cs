@@ -50,58 +50,58 @@ namespace netDxf.GTE
         public BSplineSurface(BasisFunctionInput input0, BasisFunctionInput input1, Vector3[] controls)
             : base(0.0, 1.0, 0.0, 1.0, true)
         {
-            this.basisFunctions = new[] {new BasisFunction(input0), new BasisFunction(input1)};
-            this.numControls = new[] {input0.NumControls, input1.NumControls};
+            basisFunctions = new[] {new BasisFunction(input0), new BasisFunction(input1)};
+            numControls = new[] {input0.NumControls, input1.NumControls};
 
             // The mBasisFunction stores the domain but so does ParametricCurve.
-            this.uMin = this.basisFunctions[0].MinDomain;
-            this.uMax = this.basisFunctions[0].MaxDomain;
-            this.vMin = this.basisFunctions[1].MinDomain;
-            this.vMax = this.basisFunctions[1].MaxDomain;
+            uMin = basisFunctions[0].MinDomain;
+            uMax = basisFunctions[0].MaxDomain;
+            vMin = basisFunctions[1].MinDomain;
+            vMax = basisFunctions[1].MaxDomain;
 
             // The replication of control points for periodic splines is
             // avoided by wrapping the i-loop index in Evaluate.
-            this.controls = new Vector3[this.numControls[0] * this.numControls[1]];
+            this.controls = new Vector3[numControls[0] * numControls[1]];
             if (controls != null)
             {
                 controls.CopyTo(this.controls, 0);
             }
 
-            this.isConstructed = true;
+            isConstructed = true;
         }
 
         // Member access.  The index 'dim' must be in {0,1}.
         public BasisFunction BasisFunction(int dim)
         {
-            return this.basisFunctions[dim];
+            return basisFunctions[dim];
         }
 
         public int NumControls(int dim)
         {
-            return this.numControls[dim];
+            return numControls[dim];
         }
 
         public Vector3[] Controls()
         {
-            return this.controls;
+            return controls;
         }
 
         public void SetControl(int i0, int i1, Vector3 control)
         {
-            if (0 <= i0 && i0 < this.NumControls(0) && 0 <= i1 && i1 < this.NumControls(1))
+            if (0 <= i0 && i0 < NumControls(0) && 0 <= i1 && i1 < NumControls(1))
             {
-                this.controls[i0 + this.numControls[0] * i1] = control;
+                controls[i0 + numControls[0] * i1] = control;
             }
         }
 
         public Vector3 GetControl(int i0, int i1)
         {
-            if (0 <= i0 && i0 < this.NumControls(0) && 0 <= i1 && i1 < this.NumControls(1))
+            if (0 <= i0 && i0 < NumControls(0) && 0 <= i1 && i1 < NumControls(1))
             {
-                return this.controls[i0 + this.numControls[0] * i1];
+                return controls[i0 + numControls[0] * i1];
             }
 
-            return this.controls[0];
+            return controls[0];
         }
 
         // Evaluation of the surface. The function supports derivative
@@ -118,28 +118,28 @@ namespace netDxf.GTE
             int supOrder = SUP_ORDER;
             jet = new Vector3[supOrder];
 
-            if (!this.isConstructed || order >= supOrder)
+            if (!isConstructed || order >= supOrder)
             {
                 // Return a zero-valued jet for invalid state.
                 return;
             }
 
-            this.basisFunctions[0].Evaluate(u, order, out int iumin, out int iumax);
-            this.basisFunctions[1].Evaluate(v, order, out int ivmin, out int ivmax);
+            basisFunctions[0].Evaluate(u, order, out int iumin, out int iumax);
+            basisFunctions[1].Evaluate(v, order, out int ivmin, out int ivmax);
 
             // Compute position.
-            jet[0] = this.Compute(0, 0, iumin, iumax, ivmin, ivmax);
+            jet[0] = Compute(0, 0, iumin, iumax, ivmin, ivmax);
             if (order >= 1)
             {
                 // Compute first-order derivatives.
-                jet[1] = this.Compute(1, 0, iumin, iumax, ivmin, ivmax);
-                jet[2] = this.Compute(0, 1, iumin, iumax, ivmin, ivmax);
+                jet[1] = Compute(1, 0, iumin, iumax, ivmin, ivmax);
+                jet[2] = Compute(0, 1, iumin, iumax, ivmin, ivmax);
                 if (order >= 2)
                 {
                     // Compute second-order derivatives.
-                    jet[3] = this.Compute(2, 0, iumin, iumax, ivmin, ivmax);
-                    jet[4] = this.Compute(1, 1, iumin, iumax, ivmin, ivmax);
-                    jet[5] = this.Compute(0, 2, iumin, iumax, ivmin, ivmax);
+                    jet[3] = Compute(2, 0, iumin, iumax, ivmin, ivmax);
+                    jet[4] = Compute(1, 1, iumin, iumax, ivmin, ivmax);
+                    jet[5] = Compute(0, 2, iumin, iumax, ivmin, ivmax);
                 }
             }
         }
@@ -151,18 +151,18 @@ namespace netDxf.GTE
             // handle both aperiodic and periodic splines.  For aperiodic
             // splines, j* = i* always.
 
-            int numControls0 = this.numControls[0];
-            int numControls1 = this.numControls[1];
+            int numControls0 = numControls[0];
+            int numControls1 = numControls[1];
             Vector3 result = Vector3.Zero;
             for (int iv = ivmin; iv <= ivmax; iv++)
             {
-                double tmpv = this.basisFunctions[1].GetValue(vOrder, iv);
+                double tmpv = basisFunctions[1].GetValue(vOrder, iv);
                 int jv = iv >= numControls1 ? iv - numControls1 : iv;
                 for (int iu = iumin; iu <= iumax; iu++)
                 {
-                    double tmpu = this.basisFunctions[0].GetValue(uOrder, iu);
+                    double tmpu = basisFunctions[0].GetValue(uOrder, iu);
                     int ju = iu >= numControls0 ? iu - numControls0 : iu;
-                    result += tmpu * tmpv * this.controls[ju + numControls0 * jv];
+                    result += tmpu * tmpv * controls[ju + numControls0 * jv];
                 }
             }
 

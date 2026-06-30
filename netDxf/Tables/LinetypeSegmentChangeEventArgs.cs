@@ -56,7 +56,7 @@ namespace netDxf.Tables
         /// </summary>
         public LinetypeSegment Item
         {
-            get { return this.item; }
+            get { return item; }
         }
 
         #endregion

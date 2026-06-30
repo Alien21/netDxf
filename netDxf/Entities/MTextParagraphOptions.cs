@@ -55,16 +55,16 @@ namespace netDxf.Entities
         /// </summary>
         public MTextParagraphOptions()
         {
-            this.heightFactor = 1.0;
-            this.alignment = MTextParagraphAlignment.Left;
-            this.verticalAlignment = MTextParagraphVerticalAlignment.Center;
-            this.spaceBefore = 0.0;
-            this.spaceAfter = 0.0;
-            this.firstLineIndent = 0.0;
-            this.leftIndent = 0.0;
-            this.rightIndent = 0.0;
-            this.lineSpacing = 1.0;
-            this.lineSpacingStyle = MTextLineSpacingStyle.Default;
+            heightFactor = 1.0;
+            alignment = MTextParagraphAlignment.Left;
+            verticalAlignment = MTextParagraphVerticalAlignment.Center;
+            spaceBefore = 0.0;
+            spaceAfter = 0.0;
+            firstLineIndent = 0.0;
+            leftIndent = 0.0;
+            rightIndent = 0.0;
+            lineSpacing = 1.0;
+            lineSpacingStyle = MTextLineSpacingStyle.Default;
         }
 
         #endregion
@@ -77,12 +77,12 @@ namespace netDxf.Entities
         /// <remarks>Set as 1.0 to apply the default height factor.</remarks>
         public double HeightFactor
         {
-            get { return this.heightFactor; }
+            get { return heightFactor; }
             set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The character percentage height must be greater than zero.");
-                this.heightFactor = value;
+                heightFactor = value;
             }
         }
 
@@ -91,8 +91,8 @@ namespace netDxf.Entities
         /// </summary>
         public MTextParagraphAlignment Alignment
         {
-            get { return this.alignment; }
-            set { this.alignment = value; }
+            get { return alignment; }
+            set { alignment = value; }
         }
 
         /// <summary>
@@ -104,8 +104,8 @@ namespace netDxf.Entities
         /// </remarks>
         public MTextParagraphVerticalAlignment VerticalAlignment
         {
-            get { return this.verticalAlignment; }
-            set { this.verticalAlignment = value; }
+            get { return verticalAlignment; }
+            set { verticalAlignment = value; }
         }
 
         /// <summary>
@@ -118,18 +118,18 @@ namespace netDxf.Entities
         /// </remarks>
         public double SpacingBefore
         {
-            get { return this.spaceBefore; }
+            get { return spaceBefore; }
             set
             {
                 if (MathHelper.IsZero(value))
                 {
-                    this.spaceBefore = 0.0;
+                    spaceBefore = 0.0;
                 }
                 else
                 {
                     if (value < 0.25 || value > 4.0)
                         throw new ArgumentOutOfRangeException(nameof(value), value, "The paragraph spacing valid values range from 0.25 to 4.0");
-                    this.spaceBefore = value;
+                    spaceBefore = value;
                 }                
             }
         }
@@ -144,18 +144,18 @@ namespace netDxf.Entities
         /// </remarks>
         public double SpacingAfter
         {
-            get { return this.spaceAfter; }
+            get { return spaceAfter; }
             set
             {
                 if (MathHelper.IsZero(value))
                 {
-                    this.spaceAfter = 0.0;
+                    spaceAfter = 0.0;
                 }
                 else
                 {
                     if (value < 0.25 || value > 4.0)
                         throw new ArgumentOutOfRangeException(nameof(value), value, "The paragraph spacing valid values range from 0.25 to 4.0");
-                    this.spaceAfter = value;
+                    spaceAfter = value;
                 }
             }
         }
@@ -170,13 +170,13 @@ namespace netDxf.Entities
         /// </remarks>
         public double FirstLineIndent
         {
-            get { return this.firstLineIndent; }
+            get { return firstLineIndent; }
             set
             {
                 if (value < -10000.0 || value > 10000.0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The paragraph indent valid values range from -10000.0 to 10000.0");
 
-                this.firstLineIndent = value;
+                firstLineIndent = value;
             }
         }
 
@@ -188,12 +188,12 @@ namespace netDxf.Entities
         /// </remarks>
         public double LeftIndent
         {
-            get { return this.leftIndent; }
+            get { return leftIndent; }
             set
             {
                 if (value < 0.0 || value > 10000.0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The paragraph indent valid values range from 0.0 to 10000.0");
-                this.leftIndent = value;
+                leftIndent = value;
             }
         }
 
@@ -205,12 +205,12 @@ namespace netDxf.Entities
         /// </remarks>
         public double RightIndent
         {
-            get { return this.rightIndent; }
+            get { return rightIndent; }
             set
             {
                 if (value < 0.0 || value > 10000.0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The paragraph indent valid values range from 0.0 to 10000.0");
-                this.rightIndent = value;
+                rightIndent = value;
             }
         }
 
@@ -222,12 +222,12 @@ namespace netDxf.Entities
         /// </remarks>
         public double LineSpacingFactor
         {
-            get { return this.lineSpacing; }
+            get { return lineSpacing; }
             set
             {
                 if (value < 0.25 || value > 4.0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The MText LineSpacingFactor valid values range from 0.25 to 4.0");
-                this.lineSpacing = value;
+                lineSpacing = value;
             }
         }
 
@@ -236,8 +236,8 @@ namespace netDxf.Entities
         /// </summary>
         public MTextLineSpacingStyle LineSpacingStyle
         {
-            get { return this.lineSpacingStyle; }
-            set { this.lineSpacingStyle = value; }
+            get { return lineSpacingStyle; }
+            set { lineSpacingStyle = value; }
         }
 
         #endregion

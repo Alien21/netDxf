@@ -59,17 +59,17 @@ namespace netDxf.Entities
         /// </summary>
         public MTextFormattingOptions()
         {
-            this.bold = false;
-            this.italic = false;
-            this.overline = false;
-            this.underline = false;
-            this.color = null;
-            this.fontName = null;
-            this.heightFactor = 1.0;
-            this.obliqueAngle = 0.0;
-            this.characterSpaceFactor = 1.0;
-            this.widthFactor = 1.0;
-            this.superSubScriptHeightFactor = 0.7;
+            bold = false;
+            italic = false;
+            overline = false;
+            underline = false;
+            color = null;
+            fontName = null;
+            heightFactor = 1.0;
+            obliqueAngle = 0.0;
+            characterSpaceFactor = 1.0;
+            widthFactor = 1.0;
+            superSubScriptHeightFactor = 0.7;
         }
 
         #endregion
@@ -82,8 +82,8 @@ namespace netDxf.Entities
         /// <remarks>The font style must support bold characters.</remarks>
         public bool Bold
         {
-            get { return this.bold; }
-            set { this.bold = value; }
+            get { return bold; }
+            set { bold = value; }
         }
 
         /// <summary>
@@ -92,8 +92,8 @@ namespace netDxf.Entities
         /// <remarks>The font style must support italic characters.</remarks>
         public bool Italic
         {
-            get { return this.italic; }
-            set { this.italic = value; }
+            get { return italic; }
+            set { italic = value; }
         }
 
         /// <summary>
@@ -101,8 +101,8 @@ namespace netDxf.Entities
         /// </summary>
         public bool Overline
         {
-            get { return this.overline; }
-            set { this.overline = value; }
+            get { return overline; }
+            set { overline = value; }
         }
 
         /// <summary>
@@ -110,8 +110,8 @@ namespace netDxf.Entities
         /// </summary>
         public bool Underline
         {
-            get { return this.underline; }
-            set { this.underline = value; }
+            get { return underline; }
+            set { underline = value; }
         }
 
         /// <summary>
@@ -119,8 +119,8 @@ namespace netDxf.Entities
         /// </summary>
         public bool StrikeThrough
         {
-            get { return this.strikeThrough; }
-            set { this.strikeThrough = value; }
+            get { return strikeThrough; }
+            set { strikeThrough = value; }
         }
 
         /// <summary>
@@ -133,11 +133,11 @@ namespace netDxf.Entities
         /// </remarks>
         public bool Superscript
         {
-            get { return this.superscript; }
+            get { return superscript; }
             set
             {
-                if (value) this.subscript = false;
-                this.superscript = value;
+                if (value) subscript = false;
+                superscript = value;
             }
         }
 
@@ -151,11 +151,11 @@ namespace netDxf.Entities
         /// </remarks>
         public bool Subscript
         {
-            get { return this.subscript; }
+            get { return subscript; }
             set
             {
-                if (value) this.superscript = false;
-                this.subscript = value;
+                if (value) superscript = false;
+                subscript = value;
             }
         }
 
@@ -165,12 +165,12 @@ namespace netDxf.Entities
         /// <remarks>By default it is set as 0.7 the current text height.</remarks>
         public double SuperSubScriptHeightFactor
         {
-            get { return this.superSubScriptHeightFactor; }
+            get { return superSubScriptHeightFactor; }
             set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The character percentage height must be greater than zero.");
-                this.superSubScriptHeightFactor = value;
+                superSubScriptHeightFactor = value;
             }
         }
 
@@ -182,8 +182,8 @@ namespace netDxf.Entities
         /// </remarks>
         public AciColor Color
         {
-            get { return this.color; }
-            set { this.color = value; }
+            get { return color; }
+            set { color = value; }
         }
 
         /// <summary>
@@ -196,8 +196,8 @@ namespace netDxf.Entities
         /// </remarks>
         public string FontName
         {
-            get { return this.fontName; }
-            set { this.fontName = value; }
+            get { return fontName; }
+            set { fontName = value; }
         }
 
         /// <summary>
@@ -206,12 +206,12 @@ namespace netDxf.Entities
         /// <remarks>Set as 1.0 to apply the default height factor.</remarks>
         public double HeightFactor
         {
-            get { return this.heightFactor; }
+            get { return heightFactor; }
             set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The character percentage height must be greater than zero.");
-                this.heightFactor = value;
+                heightFactor = value;
             }
         }
 
@@ -221,12 +221,12 @@ namespace netDxf.Entities
         /// <remarks>Set as 0.0 to apply the default obliquing angle.</remarks>
         public double ObliqueAngle
         {
-            get { return this.obliqueAngle; }
+            get { return obliqueAngle; }
             set
             {
                 if (value < -85.0 || value > 85.0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The oblique angle valid values range from -85 to 85.");
-                this.obliqueAngle = value;
+                obliqueAngle = value;
             }
         }
 
@@ -239,12 +239,12 @@ namespace netDxf.Entities
         /// </remarks>
         public double CharacterSpaceFactor
         {
-            get { return this.characterSpaceFactor; }
+            get { return characterSpaceFactor; }
             set
             {
                 if (value < 0.75 || value > 4)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The character space valid values range from a minimum of .75 to 4");
-                this.characterSpaceFactor = value;
+                characterSpaceFactor = value;
             }
         }
 
@@ -254,12 +254,12 @@ namespace netDxf.Entities
         /// <remarks>Set as 1.0 to apply the default width factor.</remarks>
         public double WidthFactor
         {
-            get { return this.widthFactor; }
+            get { return widthFactor; }
             set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The width factor should be greater than zero.");
-                this.widthFactor = value;
+                widthFactor = value;
             }
         }
 

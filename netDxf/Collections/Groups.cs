@@ -73,27 +73,27 @@ namespace netDxf.Collections
             // if no name has been given to the group a generic name will be created
             if (group.IsUnnamed && string.IsNullOrEmpty(group.Name))
             {
-                group.SetName("*A" + this.Owner.GroupNamesIndex++, false);
+                group.SetName("*A" + Owner.GroupNamesIndex++, false);
             }
 
-            if (this.List.TryGetValue(group.Name, out Group add))
+            if (List.TryGetValue(group.Name, out Group add))
             {
                 return add;
             }
 
             if (assignHandle || string.IsNullOrEmpty(group.Handle))
             {
-                this.Owner.NumHandles = group.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = group.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(group.Name, group);
-            this.References.Add(group.Name, new DxfObjectReferences());
+            List.Add(group.Name, group);
+            References.Add(group.Name, new DxfObjectReferences());
             foreach (EntityObject entity in group.Entities)
             {
                 if (entity.Owner != null)
                 {
                     // the group and its entities must belong to the same document
-                    if (!ReferenceEquals(entity.Owner.Owner.Owner.Owner, this.Owner))
+                    if (!ReferenceEquals(entity.Owner.Owner.Owner.Owner, Owner))
                     {
                         throw new ArgumentException("The group and their entities must belong to the same document. Clone them instead.");
                     }
@@ -101,18 +101,18 @@ namespace netDxf.Collections
                 else
                 {
                     // only entities not owned by anyone need to be added
-                    this.Owner.Entities.Add(entity);
+                    Owner.Entities.Add(entity);
                 }
-                this.References[group.Name].Add(entity);
+                References[group.Name].Add(entity);
             }
 
             group.Owner = this;
 
-            group.NameChanged += this.Item_NameChanged;
-            group.EntityAdded += this.Group_EntityAdded;
-            group.EntityRemoved += this.Group_EntityRemoved;
+            group.NameChanged += Item_NameChanged;
+            group.EntityAdded += Group_EntityAdded;
+            group.EntityRemoved += Group_EntityRemoved;
 
-            this.Owner.AddedObjects.Add(group.Handle, group);
+            Owner.AddedObjects.Add(group.Handle, group);
 
             return group;
         }
@@ -125,7 +125,7 @@ namespace netDxf.Collections
         /// <remarks>Removing a group only deletes it from the collection, the entities that once belonged to the group are not deleted.</remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -156,16 +156,16 @@ namespace netDxf.Collections
                 entity.RemoveReactor(item);
             }
 
-            this.Owner.AddedObjects.Remove(item.Handle);
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            Owner.AddedObjects.Remove(item.Handle);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
-            item.EntityAdded -= this.Group_EntityAdded;
-            item.EntityRemoved -= this.Group_EntityRemoved;
+            item.NameChanged -= Item_NameChanged;
+            item.EntityAdded -= Group_EntityAdded;
+            item.EntityRemoved -= Group_EntityRemoved;
 
             return true;
         }
@@ -176,18 +176,18 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another dimension style with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (Group) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (Group) sender);
 
-            List<DxfObjectReference> refs = this.GetReferences(sender.Name);
-            this.References.Remove(sender.Name);
-            this.References.Add(e.NewValue, new DxfObjectReferences());
-            this.References[e.NewValue].Add(refs);
+            List<DxfObjectReference> refs = GetReferences(sender.Name);
+            References.Remove(sender.Name);
+            References.Add(e.NewValue, new DxfObjectReferences());
+            References[e.NewValue].Add(refs);
         }
 
         void Group_EntityAdded(Group sender, GroupEntityChangeEventArgs e)
@@ -195,7 +195,7 @@ namespace netDxf.Collections
             if (e.Item.Owner != null)
             {
                 // the group and its entities must belong to the same document
-                if (!ReferenceEquals(e.Item.Owner.Owner.Owner.Owner, this.Owner))
+                if (!ReferenceEquals(e.Item.Owner.Owner.Owner.Owner, Owner))
                 {
                     throw new ArgumentException("The group and the entity must belong to the same document. Clone it instead.");
                 }
@@ -203,15 +203,15 @@ namespace netDxf.Collections
             else
             {
                 // only entities not owned by anyone will be added
-                this.Owner.Entities.Add(e.Item);
+                Owner.Entities.Add(e.Item);
             }
 
-            this.References[sender.Name].Add(e.Item);
+            References[sender.Name].Add(e.Item);
         }
 
         void Group_EntityRemoved(Group sender, GroupEntityChangeEventArgs e)
         {
-            this.References[sender.Name].Remove(e.Item);
+            References[sender.Name].Remove(e.Item);
         }
 
         #endregion

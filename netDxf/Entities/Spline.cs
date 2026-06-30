@@ -69,7 +69,7 @@ namespace netDxf.Entities
         public Spline(IEnumerable<Vector3> fitPoints)
             : this(BezierCurveCubic.CreateFromFitPoints(fitPoints))
         {
-            this.creationMethod = SplineCreationMethod.FitPoints;
+            creationMethod = SplineCreationMethod.FitPoints;
             this.fitPoints = fitPoints.ToArray();
         }
 
@@ -107,13 +107,13 @@ namespace netDxf.Entities
                 }
             }
 
-            this.controlPoints = ctrList.ToArray();
-            this.weights = wList.ToArray();
+            controlPoints = ctrList.ToArray();
+            weights = wList.ToArray();
             this.degree = degree;
-            this.isClosedPeriodic = false;
-            this.fitPoints = new Vector3[0];
-            this.creationMethod = SplineCreationMethod.ControlPoints;
-            this.knots = ÇreateBezierKnotVector(this.controlPoints.Length, this.degree);
+            isClosedPeriodic = false;
+            fitPoints = new Vector3[0];
+            creationMethod = SplineCreationMethod.ControlPoints;
+            knots = ÇreateBezierKnotVector(controlPoints.Length, this.degree);
         }
 
         /// <summary>
@@ -204,10 +204,10 @@ namespace netDxf.Entities
                 }
             }
 
-            this.isClosedPeriodic = closedPeriodic;
-            this.creationMethod = SplineCreationMethod.ControlPoints;
-            this.fitPoints = new Vector3[0];
-            this.knots = CreateKnotVector(this.controlPoints.Length, this.degree, this.isClosedPeriodic);
+            isClosedPeriodic = closedPeriodic;
+            creationMethod = SplineCreationMethod.ControlPoints;
+            fitPoints = new Vector3[0];
+            knots = CreateKnotVector(this.controlPoints.Length, this.degree, isClosedPeriodic);
         }
 
         /// <summary>
@@ -323,8 +323,8 @@ namespace netDxf.Entities
                 this.fitPoints = fitPoints.ToArray();
             }
 
-            this.creationMethod = method;
-            this.isClosedPeriodic = closedPeriodic;
+            creationMethod = method;
+            isClosedPeriodic = closedPeriodic;
         }
 
         #endregion
@@ -336,7 +336,7 @@ namespace netDxf.Entities
         /// </summary>
         public IReadOnlyList<Vector3> FitPoints
         {
-            get { return this.fitPoints; }
+            get { return fitPoints; }
         }
 
         /// <summary>
@@ -345,8 +345,8 @@ namespace netDxf.Entities
         /// <remarks>Only applicable to splines created with fit points.</remarks>
         public Vector3? StartTangent
         {
-            get { return this.startTangent; }
-            set { this.startTangent = value; }
+            get { return startTangent; }
+            set { startTangent = value; }
         }
 
         /// <summary>
@@ -355,8 +355,8 @@ namespace netDxf.Entities
         /// <remarks>Only applicable to splines created with fit points.</remarks>
         public Vector3? EndTangent
         {
-            get { return this.endTangent; }
-            set { this.endTangent = value; }
+            get { return endTangent; }
+            set { endTangent = value; }
         }
 
         /// <summary>
@@ -368,8 +368,8 @@ namespace netDxf.Entities
         /// </remarks>
         public SplineKnotParameterization KnotParameterization
         {
-            get { return this.knotParameterization; }
-            set { this.knotParameterization = value; }
+            get { return knotParameterization; }
+            set { knotParameterization = value; }
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace netDxf.Entities
         /// </summary>
         public SplineCreationMethod CreationMethod
         {
-            get { return this.creationMethod; }
+            get { return creationMethod; }
         }
 
         /// <summary>
@@ -385,7 +385,7 @@ namespace netDxf.Entities
         /// </summary>
         public double KnotTolerance
         {
-            get { return this.knotTolerance; }
+            get { return knotTolerance; }
             set
             {
                 if (value <= 0)
@@ -393,7 +393,7 @@ namespace netDxf.Entities
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The knot tolerance must be greater than zero.");
                 }
 
-                this.knotTolerance = value;
+                knotTolerance = value;
             }
         }
 
@@ -402,7 +402,7 @@ namespace netDxf.Entities
         /// </summary>
         public double CtrlPointTolerance
         {
-            get { return this.ctrlPointTolerance; }
+            get { return ctrlPointTolerance; }
             set
             {
                 if (value <= 0)
@@ -410,7 +410,7 @@ namespace netDxf.Entities
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The control point tolerance must be greater than zero.");
                 }
 
-                this.ctrlPointTolerance = value;
+                ctrlPointTolerance = value;
             }
         }
 
@@ -419,7 +419,7 @@ namespace netDxf.Entities
         /// </summary>
         public double FitTolerance
         {
-            get { return this.fitTolerance; }
+            get { return fitTolerance; }
             set
             {
                 if (value <= 0)
@@ -427,7 +427,7 @@ namespace netDxf.Entities
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The fit tolerance must be greater than zero.");
                 }
 
-                this.fitTolerance = value;
+                fitTolerance = value;
             }
         }
 
@@ -439,7 +439,7 @@ namespace netDxf.Entities
         /// </remarks>
         public short Degree
         {
-            get { return this.degree; }
+            get { return degree; }
         }
 
         /// <summary>
@@ -452,7 +452,7 @@ namespace netDxf.Entities
         {
             get
             {
-                return this.controlPoints[0].Equals(this.controlPoints[this.controlPoints.Length - 1]);
+                return controlPoints[0].Equals(controlPoints[controlPoints.Length - 1]);
             }
         }
 
@@ -465,11 +465,11 @@ namespace netDxf.Entities
         /// </remarks>
         public bool IsClosedPeriodic
         {
-            get { return this.isClosedPeriodic; }
+            get { return isClosedPeriodic; }
             set
             {
-                this.knots = CreateKnotVector(this.controlPoints.Length, this.degree, value);
-                this.isClosedPeriodic = value;
+                knots = CreateKnotVector(controlPoints.Length, degree, value);
+                isClosedPeriodic = value;
             }
         }
 
@@ -478,7 +478,7 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3[] ControlPoints
         {
-            get { return this.controlPoints; }
+            get { return controlPoints; }
         }
 
         /// <summary>
@@ -486,7 +486,7 @@ namespace netDxf.Entities
         /// </summary>
         public double[] Weights
         {
-            get { return this.weights; }
+            get { return weights; }
         }
 
         /// <summary>
@@ -495,7 +495,7 @@ namespace netDxf.Entities
         /// <remarks>By default a uniform knot vector is created.</remarks>
         public double[] Knots
         {
-            get { return this.knots; }
+            get { return knots; }
         }
 
         #endregion
@@ -507,12 +507,12 @@ namespace netDxf.Entities
         /// </summary>
         public void Reverse()
         {
-            Array.Reverse(this.fitPoints);
-            Array.Reverse(this.controlPoints);
-            Array.Reverse(this.weights);
-            Vector3? tmp = this.startTangent;
-            this.startTangent = -this.endTangent;
-            this.endTangent = -tmp;
+            Array.Reverse(fitPoints);
+            Array.Reverse(controlPoints);
+            Array.Reverse(weights);
+            Vector3? tmp = startTangent;
+            startTangent = -endTangent;
+            endTangent = -tmp;
         }
 
         /// <summary>
@@ -521,9 +521,9 @@ namespace netDxf.Entities
         /// <param name="weight">Control point weight.</param>
         public void SetUniformWeights(double weight)
         {
-            for (int i = 0; i < this.weights.Length; i++)
+            for (int i = 0; i < weights.Length; i++)
             {
-                this.weights[i] = weight;
+                weights[i] = weight;
             }
         }
 
@@ -534,7 +534,7 @@ namespace netDxf.Entities
         /// <returns>A list vertexes that represents the spline.</returns>
         public List<Vector3> PolygonalVertexes(int precision)
         {
-            return NurbsEvaluator(this.controlPoints.ToArray(), this.weights.ToArray(), this.knots, this.degree, this.IsClosed, this.isClosedPeriodic, precision);
+            return NurbsEvaluator(controlPoints.ToArray(), weights.ToArray(), knots, degree, IsClosed, isClosedPeriodic, precision);
         }
 
         /// <summary>
@@ -544,17 +544,17 @@ namespace netDxf.Entities
         /// <returns>A new instance of <see cref="Polyline3D">Polyline3D</see> that represents the spline.</returns>
         public Polyline3D ToPolyline3D(int precision)
         {
-            IEnumerable<Vector3> vertexes = this.PolygonalVertexes(precision);
-            bool closed = this.IsClosed || this.IsClosedPeriodic;
+            IEnumerable<Vector3> vertexes = PolygonalVertexes(precision);
+            bool closed = IsClosed || IsClosedPeriodic;
             Polyline3D poly = new Polyline3D (vertexes)
             {
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
                 IsClosed = closed
             };
 
@@ -571,18 +571,18 @@ namespace netDxf.Entities
         /// </remarks>
         public Polyline2D ToPolyline2D(int precision)
         {
-            List<Vector3> vertexes3D = this.PolygonalVertexes(precision);
-            List<Vector2> vertexes2D = MathHelper.Transform(vertexes3D, this.Normal, out double _);
-            bool closed = this.IsClosed || this.IsClosedPeriodic;
+            List<Vector3> vertexes3D = PolygonalVertexes(precision);
+            List<Vector2> vertexes2D = MathHelper.Transform(vertexes3D, Normal, out double _);
+            bool closed = IsClosed || IsClosedPeriodic;
             Polyline2D polyline2D = new Polyline2D(vertexes2D)
             {
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
                 IsClosed = closed
             };
 
@@ -866,22 +866,22 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            for (int i = 0; i < this.controlPoints.Length; i++)
+            for (int i = 0; i < controlPoints.Length; i++)
             {
-                this.controlPoints[i] = transformation * this.controlPoints[i] + translation;
+                controlPoints[i] = transformation * controlPoints[i] + translation;
             }
 
-            for (int i = 0; i < this.fitPoints.Length; i++)
+            for (int i = 0; i < fitPoints.Length; i++)
             {
-                this.fitPoints[i] = transformation * this.fitPoints[i] + translation;
+                fitPoints[i] = transformation * fitPoints[i] + translation;
             }
 
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
-            this.Normal = newNormal;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -891,45 +891,45 @@ namespace netDxf.Entities
         public override object Clone()
         {
             Spline entity;
-            if (this.creationMethod == SplineCreationMethod.FitPoints)
+            if (creationMethod == SplineCreationMethod.FitPoints)
             {
-                entity = new Spline(new List<Vector3>(this.fitPoints))
+                entity = new Spline(new List<Vector3>(fitPoints))
                 {
                     //EntityObject properties
-                    Layer = (Layer) this.Layer.Clone(),
-                    Linetype = (Linetype) this.Linetype.Clone(),
-                    Color = (AciColor) this.Color.Clone(),
-                    Lineweight = this.Lineweight,
-                    Transparency = (Transparency) this.Transparency.Clone(),
-                    LinetypeScale = this.LinetypeScale,
-                    Normal = this.Normal,
-                    IsVisible = this.IsVisible,
+                    Layer = (Layer) Layer.Clone(),
+                    Linetype = (Linetype) Linetype.Clone(),
+                    Color = (AciColor) Color.Clone(),
+                    Lineweight = Lineweight,
+                    Transparency = (Transparency) Transparency.Clone(),
+                    LinetypeScale = LinetypeScale,
+                    Normal = Normal,
+                    IsVisible = IsVisible,
                     //Spline properties
-                    KnotParameterization = this.KnotParameterization,
-                    StartTangent = this.startTangent,
-                    EndTangent = this.endTangent
+                    KnotParameterization = KnotParameterization,
+                    StartTangent = startTangent,
+                    EndTangent = endTangent
                 };
             }
             else
             {
-                entity = new Spline(this.controlPoints, this.weights, this.knots, this.degree, this.fitPoints, this.creationMethod, this.isClosedPeriodic)
+                entity = new Spline(controlPoints, weights, knots, degree, fitPoints, creationMethod, isClosedPeriodic)
                 {
                     //EntityObject properties
-                    Layer = (Layer) this.Layer.Clone(),
-                    Linetype = (Linetype) this.Linetype.Clone(),
-                    Color = (AciColor) this.Color.Clone(),
-                    Lineweight = this.Lineweight,
-                    Transparency = (Transparency) this.Transparency.Clone(),
-                    LinetypeScale = this.LinetypeScale,
-                    Normal = this.Normal,
+                    Layer = (Layer) Layer.Clone(),
+                    Linetype = (Linetype) Linetype.Clone(),
+                    Color = (AciColor) Color.Clone(),
+                    Lineweight = Lineweight,
+                    Transparency = (Transparency) Transparency.Clone(),
+                    LinetypeScale = LinetypeScale,
+                    Normal = Normal,
                     //Spline properties
-                    KnotParameterization = this.KnotParameterization,
-                    StartTangent = this.startTangent,
-                    EndTangent = this.endTangent
+                    KnotParameterization = KnotParameterization,
+                    StartTangent = startTangent,
+                    EndTangent = endTangent
                 };
             }
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

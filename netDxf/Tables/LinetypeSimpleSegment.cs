@@ -66,7 +66,7 @@ namespace netDxf.Tables
         /// <returns>A new <c>LinetypeSimpleSegment</c> that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return new LinetypeSimpleSegment(this.Length);
+            return new LinetypeSimpleSegment(Length);
         }
 
         #endregion

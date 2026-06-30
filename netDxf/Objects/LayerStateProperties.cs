@@ -59,11 +59,11 @@ namespace netDxf.Objects
                 throw new ArgumentNullException(nameof(name));
             }
             this.name = name;
-            this.flags = LayerPropertiesFlags.Plot;
-            this.linetype = Linetype.DefaultName;
-            this.color = AciColor.Default;
-            this.lineweight = Lineweight.Default;
-            this.transparency = new Transparency(0);
+            flags = LayerPropertiesFlags.Plot;
+            linetype = Linetype.DefaultName;
+            color = AciColor.Default;
+            lineweight = Lineweight.Default;
+            transparency = new Transparency(0);
             //this.plotStyle = "Color_7";
         }
 
@@ -73,15 +73,15 @@ namespace netDxf.Objects
         /// <param name="layer">Layer from which copy the properties.</param>
         public LayerStateProperties(Layer layer)
         {
-            this.name = layer.Name;
-            if (!layer.IsVisible) this.flags |= LayerPropertiesFlags.Hidden;
-            if (layer.IsFrozen) this.flags |= LayerPropertiesFlags.Frozen;
-            if (layer.IsLocked) this.flags |= LayerPropertiesFlags.Locked;
-            if (layer.Plot) this.flags |= LayerPropertiesFlags.Plot;
-            this.linetype = layer.Linetype.Name;
-            this.color = (AciColor) layer.Color.Clone();
-            this.lineweight = layer.Lineweight;
-            this.transparency = (Transparency) layer.Transparency.Clone();
+            name = layer.Name;
+            if (!layer.IsVisible) flags |= LayerPropertiesFlags.Hidden;
+            if (layer.IsFrozen) flags |= LayerPropertiesFlags.Frozen;
+            if (layer.IsLocked) flags |= LayerPropertiesFlags.Locked;
+            if (layer.Plot) flags |= LayerPropertiesFlags.Plot;
+            linetype = layer.Linetype.Name;
+            color = (AciColor) layer.Color.Clone();
+            lineweight = layer.Lineweight;
+            transparency = (Transparency) layer.Transparency.Clone();
             //this.plotStyle = "Color_" + layer.Color.Index;
         }
 
@@ -94,7 +94,7 @@ namespace netDxf.Objects
         /// </summary>
         public string Name
         {
-            get { return this.name; }
+            get { return name; }
         }
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace netDxf.Objects
         /// </summary>
         public LayerPropertiesFlags Flags
         {
-            get { return this.flags; }
-            set { this.flags = value; }
+            get { return flags; }
+            set { flags = value; }
         }
 
         /// <summary>
@@ -111,14 +111,14 @@ namespace netDxf.Objects
         /// </summary>
         public string LinetypeName
         {
-            get { return this.linetype; }
+            get { return linetype; }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.linetype = value;
+                linetype = value;
             }
         }
 
@@ -127,8 +127,8 @@ namespace netDxf.Objects
         /// </summary>
         public AciColor Color
         {
-            get { return this.color; }
-            set { this.color = value; }
+            get { return color; }
+            set { color = value; }
         }
 
         /// <summary>
@@ -136,8 +136,8 @@ namespace netDxf.Objects
         /// </summary>
         public Lineweight Lineweight
         {
-            get { return this.lineweight; }
-            set { this.lineweight = value; }
+            get { return lineweight; }
+            set { lineweight = value; }
         }
 
         /// <summary>
@@ -145,8 +145,8 @@ namespace netDxf.Objects
         /// </summary>
         public Transparency Transparency
         {
-            get { return this.transparency; }
-            set { this.transparency = value; }
+            get { return transparency; }
+            set { transparency = value; }
         }
 
         ///// <summary>
@@ -169,44 +169,44 @@ namespace netDxf.Objects
         /// <param name="options">Layer properties to copy.</param>
         public void CopyFrom(Layer layer, LayerPropertiesRestoreFlags options)
         {
-            if (!string.Equals(this.name, layer.Name, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(name, layer.Name, StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException("Only a layer with the same name can be copied.", nameof(layer));
             }
 
-            this.flags = LayerPropertiesFlags.None;
+            flags = LayerPropertiesFlags.None;
 
             if (options.HasFlag(LayerPropertiesRestoreFlags.Hidden))
             {
-                if (!layer.IsVisible) this.flags |= LayerPropertiesFlags.Hidden;
+                if (!layer.IsVisible) flags |= LayerPropertiesFlags.Hidden;
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Frozen))
             {
-                if (layer.IsFrozen) this.flags |= LayerPropertiesFlags.Frozen;
+                if (layer.IsFrozen) flags |= LayerPropertiesFlags.Frozen;
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Locked))
             {
-                if (layer.IsLocked) this.flags |= LayerPropertiesFlags.Locked;
+                if (layer.IsLocked) flags |= LayerPropertiesFlags.Locked;
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Plot))
             {
-                if (layer.Plot) this.flags |= LayerPropertiesFlags.Plot;
+                if (layer.Plot) flags |= LayerPropertiesFlags.Plot;
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Linetype))
             {
-                this.linetype = layer.Linetype.Name;
+                linetype = layer.Linetype.Name;
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Color))
             {
-                this.color = (AciColor) layer.Color.Clone();
+                color = (AciColor) layer.Color.Clone();
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Lineweight))
             {
-                this.lineweight = layer.Lineweight;
+                lineweight = layer.Lineweight;
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Transparency))
             {
-                this.transparency = (Transparency) layer.Transparency.Clone();
+                transparency = (Transparency) layer.Transparency.Clone();
             }
         }
 
@@ -217,26 +217,26 @@ namespace netDxf.Objects
         /// <param name="options">Layer properties to copy.</param>
         public void CopyTo(Layer layer, LayerPropertiesRestoreFlags options)
         {
-            if (!string.Equals(this.name, layer.Name, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(name, layer.Name, StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException("Only a layer with the same name can be copied.", nameof(layer));
             }
 
             if(options.HasFlag(LayerPropertiesRestoreFlags.Hidden))
             {
-                layer.IsVisible = !this.flags.HasFlag(LayerPropertiesFlags.Hidden);
+                layer.IsVisible = !flags.HasFlag(LayerPropertiesFlags.Hidden);
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Frozen))
             {
-                layer.IsFrozen = this.flags.HasFlag(LayerPropertiesFlags.Frozen);
+                layer.IsFrozen = flags.HasFlag(LayerPropertiesFlags.Frozen);
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Locked))
             {
-                layer.IsLocked = this.flags.HasFlag(LayerPropertiesFlags.Locked);
+                layer.IsLocked = flags.HasFlag(LayerPropertiesFlags.Locked);
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Plot))
             {
-                layer.Plot = this.flags.HasFlag(LayerPropertiesFlags.Plot);
+                layer.Plot = flags.HasFlag(LayerPropertiesFlags.Plot);
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Linetype))
             {
@@ -244,22 +244,22 @@ namespace netDxf.Objects
                 if (layer.Owner != null)
                 {
                     DxfDocument doc = layer.Owner.Owner;
-                    line = doc.Linetypes[this.LinetypeName];
+                    line = doc.Linetypes[LinetypeName];
                 }
-                layer.Linetype = line ?? new Linetype(this.LinetypeName);
+                layer.Linetype = line ?? new Linetype(LinetypeName);
                 
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Color))
             {
-                layer.Color = (AciColor) this.Color.Clone();
+                layer.Color = (AciColor) Color.Clone();
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Lineweight))
             {
-                layer.Lineweight = this.Lineweight;
+                layer.Lineweight = Lineweight;
             }
             if (options.HasFlag(LayerPropertiesRestoreFlags.Transparency))
             {
-                layer.Transparency = (Transparency) this.Transparency.Clone();
+                layer.Transparency = (Transparency) Transparency.Clone();
             }
         }
 
@@ -270,47 +270,47 @@ namespace netDxf.Objects
         /// <returns>If the stored properties are the same as the specified layer it returns true, false otherwise.</returns>
         public bool CompareWith(Layer layer)
         {
-            if (!string.Equals(layer.Name, this.name, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.Equals(layer.Name, name, StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }
 
-            if (layer.IsVisible != !this.flags.HasFlag(LayerPropertiesFlags.Hidden))
+            if (layer.IsVisible != !flags.HasFlag(LayerPropertiesFlags.Hidden))
             {
                 return false;
             }
 
-            if (layer.IsFrozen != this.flags.HasFlag(LayerPropertiesFlags.Frozen))
+            if (layer.IsFrozen != flags.HasFlag(LayerPropertiesFlags.Frozen))
             {
                 return false;
             }
 
-            if (layer.IsLocked != this.flags.HasFlag(LayerPropertiesFlags.Locked))
+            if (layer.IsLocked != flags.HasFlag(LayerPropertiesFlags.Locked))
             {
                 return false;
             }
 
-            if (layer.Plot != this.flags.HasFlag(LayerPropertiesFlags.Plot))
+            if (layer.Plot != flags.HasFlag(LayerPropertiesFlags.Plot))
             {
                 return false;
             }
 
-            if (!string.Equals(layer.Linetype.Name, this.LinetypeName, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.Equals(layer.Linetype.Name, LinetypeName, StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }
 
-            if (!layer.Color.Equals(this.color))
+            if (!layer.Color.Equals(color))
             {
                 return false;
             }
 
-            if (layer.Lineweight != this.lineweight)
+            if (layer.Lineweight != lineweight)
             {
                 return false;
             }
 
-            if (!layer.Transparency.Equals(this.transparency))
+            if (!layer.Transparency.Equals(transparency))
             {
                 return false;
             }
@@ -324,13 +324,13 @@ namespace netDxf.Objects
 
         public object Clone()
         {
-            return new LayerStateProperties(this.name)
+            return new LayerStateProperties(name)
             {
-                Flags = this.flags,
-                LinetypeName = this.linetype,
-                Color = (AciColor) this.color.Clone(),
-                Lineweight = this.lineweight,
-                Transparency = (Transparency) this.transparency.Clone(),
+                Flags = flags,
+                LinetypeName = linetype,
+                Color = (AciColor) color.Clone(),
+                Lineweight = lineweight,
+                Transparency = (Transparency) transparency.Clone(),
                 //PlotStyleName = this.plotStyle
             };
         }

@@ -86,8 +86,8 @@ namespace netDxf.Entities
             this.secondVertex = secondVertex;
             this.thirdVertex = thirdVertex;
             this.fourthVertex = fourthVertex;
-            this.elevation = 0.0;
-            this.thickness = 0.0;
+            elevation = 0.0;
+            thickness = 0.0;
         }
 
         #endregion
@@ -99,8 +99,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 FirstVertex
         {
-            get { return this.firstVertex; }
-            set { this.firstVertex = value; }
+            get { return firstVertex; }
+            set { firstVertex = value; }
         }
 
         /// <summary>
@@ -108,8 +108,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 SecondVertex
         {
-            get { return this.secondVertex; }
-            set { this.secondVertex = value; }
+            get { return secondVertex; }
+            set { secondVertex = value; }
         }
 
         /// <summary>
@@ -117,8 +117,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 ThirdVertex
         {
-            get { return this.thirdVertex; }
-            set { this.thirdVertex = value; }
+            get { return thirdVertex; }
+            set { thirdVertex = value; }
         }
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 FourthVertex
         {
-            get { return this.fourthVertex; }
-            set { this.fourthVertex = value; }
+            get { return fourthVertex; }
+            set { fourthVertex = value; }
         }
 
         /// <summary>
@@ -136,8 +136,8 @@ namespace netDxf.Entities
         /// <remarks>This is the distance from the origin to the plane of the trace.</remarks>
         public double Elevation
         {
-            get { return this.elevation; }
-            set { this.elevation = value; }
+            get { return elevation; }
+            set { elevation = value; }
         }
 
         /// <summary>
@@ -145,8 +145,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Thickness
         {
-            get { return this.thickness; }
-            set { this.thickness = value; }
+            get { return thickness; }
+            set { thickness = value; }
         }
 
         #endregion
@@ -161,39 +161,39 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal).Transpose();
 
             Vector3 v;
 
-            v = transOW * new Vector3(this.FirstVertex.X, this.FirstVertex.Y, this.Elevation);
+            v = transOW * new Vector3(FirstVertex.X, FirstVertex.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
-            this.FirstVertex = new Vector2(v.X, v.Y);
+            FirstVertex = new Vector2(v.X, v.Y);
 
-            v = transOW * new Vector3(this.SecondVertex.X, this.SecondVertex.Y, this.Elevation);
+            v = transOW * new Vector3(SecondVertex.X, SecondVertex.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
-            this.SecondVertex = new Vector2(v.X, v.Y);
+            SecondVertex = new Vector2(v.X, v.Y);
 
-            v = transOW * new Vector3(this.ThirdVertex.X, this.ThirdVertex.Y, this.Elevation);
+            v = transOW * new Vector3(ThirdVertex.X, ThirdVertex.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
-            this.ThirdVertex = new Vector2(v.X, v.Y);
+            ThirdVertex = new Vector2(v.X, v.Y);
 
-            v = transOW * new Vector3(this.FourthVertex.X, this.FourthVertex.Y, this.Elevation);
+            v = transOW * new Vector3(FourthVertex.X, FourthVertex.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
-            this.FourthVertex = new Vector2(v.X, v.Y);
+            FourthVertex = new Vector2(v.X, v.Y);
 
-            this.Normal = newNormal;
-            this.Elevation = v.Z;
+            Normal = newNormal;
+            Elevation = v.Z;
         }
 
         /// <summary>
@@ -205,23 +205,23 @@ namespace netDxf.Entities
             Trace entity = new Trace
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Solid properties
-                FirstVertex = this.firstVertex,
-                SecondVertex = this.secondVertex,
-                ThirdVertex = this.thirdVertex,
-                FourthVertex = this.fourthVertex,
-                Thickness = this.thickness
+                FirstVertex = firstVertex,
+                SecondVertex = secondVertex,
+                ThirdVertex = thirdVertex,
+                FourthVertex = fourthVertex,
+                Thickness = thickness
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

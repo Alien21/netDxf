@@ -55,7 +55,7 @@ namespace netDxf.GTE
         {
             this.numRows = numRows;
             this.numCols = numCols;
-            this.elements = new GVector(numRows * numCols);
+            elements = new GVector(numRows * numCols);
         }
 
         // For 0 <= r < numRows and 0 <= c < numCols, element (r,c) is 1 and
@@ -67,9 +67,9 @@ namespace netDxf.GTE
         {
             this.numRows = numRows;
             this.numCols = numCols;
-            this.elements = new GVector(numRows * numCols);
+            elements = new GVector(numRows * numCols);
 
-            this.MakeUnit(r, c);
+            MakeUnit(r, c);
         }
 
         public GMatrix(int numRows, int numCols, double[] elements)
@@ -104,37 +104,37 @@ namespace netDxf.GTE
 
         public void GetSize(out int rows, out int cols)
         {
-            rows = this.numRows;
-            cols = this.numCols;
+            rows = numRows;
+            cols = numCols;
         }
 
         public int NumRows
         {
-            get { return this.numRows; }
+            get { return numRows; }
         }
 
         public int NumCols
         {
-            get { return this.numCols; }
+            get { return numCols; }
         }
 
         public int NumElements
         {
-            get { return this.elements.Size; }
+            get { return elements.Size; }
         }
 
         public GVector Elements
         {
-            get { return this.elements; }
+            get { return elements; }
         }
 
         public double this[int r, int c]
         {
             get
             {
-                if (0 <= r && r < this.NumRows && 0 <= c && c < this.NumCols)
+                if (0 <= r && r < NumRows && 0 <= c && c < NumCols)
                 {
-                    return GTE.UseRowMajor ? this.elements[c + this.numCols * r] : this.elements[r + this.numRows * c];
+                    return GTE.UseRowMajor ? elements[c + numCols * r] : elements[r + numRows * c];
                 }
 
                 Debug.Assert(false, "Invalid index.");
@@ -142,15 +142,15 @@ namespace netDxf.GTE
             }
             set
             {
-                if (0 <= r && r < this.NumRows && 0 <= c && c < this.NumCols)
+                if (0 <= r && r < NumRows && 0 <= c && c < NumCols)
                 {
                     if (GTE.UseRowMajor)
                     {
-                        this.elements[c + this.numCols * r] = value;
+                        elements[c + numCols * r] = value;
                     }
                     else
                     {
-                        this.elements[r + this.numRows * c] = value;
+                        elements[r + numRows * c] = value;
                     }
                 }
                 else
@@ -164,11 +164,11 @@ namespace netDxf.GTE
         // the correct number of elements for the matrix size.
         public void SetRow(int r, GVector vec)
         {
-            if (0 <= r && r < this.numRows)
+            if (0 <= r && r < numRows)
             {
-                if (vec.Size == this.NumCols)
+                if (vec.Size == NumCols)
                 {
-                    for (int c = 0; c < this.numCols; ++c)
+                    for (int c = 0; c < numCols; ++c)
                     {
                         this[r, c] = vec[c];
                     }
@@ -184,11 +184,11 @@ namespace netDxf.GTE
 
         public void SetCol(int c, GVector vec)
         {
-            if (0 <= c && c < this.numCols)
+            if (0 <= c && c < numCols)
             {
-                if (vec.Size == this.NumRows)
+                if (vec.Size == NumRows)
                 {
-                    for (int r = 0; r < this.numRows; ++r)
+                    for (int r = 0; r < numRows; ++r)
                     {
                         this[r, c] = vec[r];
                     }
@@ -204,10 +204,10 @@ namespace netDxf.GTE
 
         public GVector GetRow(int r)
         {
-            if (0 <= r && r < this.numRows)
+            if (0 <= r && r < numRows)
             {
-                GVector vec = new GVector(this.numCols);
-                for (int c = 0; c < this.numCols; ++c)
+                GVector vec = new GVector(numCols);
+                for (int c = 0; c < numCols; ++c)
                 {
                     vec[c] = this[r, c];
                 }
@@ -221,10 +221,10 @@ namespace netDxf.GTE
 
         public GVector GetCol(int c)
         {
-            if (0 <= c && c < this.numCols)
+            if (0 <= c && c < numCols)
             {
-                GVector vec = new GVector(this.numRows);
-                for (int r = 0; r < this.numRows; ++r)
+                GVector vec = new GVector(numRows);
+                for (int r = 0; r < numRows; ++r)
                 {
                     vec[r] = this[r, c];
                 }
@@ -243,8 +243,8 @@ namespace netDxf.GTE
         // storage convention.
         public double this[int i]
         {
-            get { return this.elements[i]; }
-            set { this.elements[i] = value; }
+            get { return elements[i]; }
+            set { elements[i] = value; }
         }
 
         // Comparisons for sorted containers and geometric ordering.
@@ -291,15 +291,15 @@ namespace netDxf.GTE
         // All components are 0.
         public void MakeZero()
         {
-            this.elements.MakeZero();
+            elements.MakeZero();
         }
 
         // Component (r,c) is 1, all others zero.
         public void MakeUnit(int r, int c)
         {
-            if (0 <= r && r < this.numRows && 0 <= c && c < this.numCols)
+            if (0 <= r && r < numRows && 0 <= c && c < numCols)
             {
-                this.MakeZero();
+                MakeZero();
                 this[r, c] = 1.0;
                 return;
             }
@@ -310,8 +310,8 @@ namespace netDxf.GTE
         // Diagonal entries 1, others 0, even when non square.
         public void MakeIdentity()
         {
-            this.MakeZero();
-            int numDiagonal = this.numRows <= this.numCols ? this.numRows : this.numCols;
+            MakeZero();
+            int numDiagonal = numRows <= numCols ? numRows : numCols;
             for (int i = 0; i < numDiagonal; ++i)
             {
                 this[i, i] = 1.0;
@@ -717,12 +717,12 @@ namespace netDxf.GTE
                 return false;
             }
 
-            return obj.GetType() == this.GetType() && this.Equals((GMatrix) obj);
+            return obj.GetType() == GetType() && Equals((GMatrix) obj);
         }
 
         public override int GetHashCode()
         {
-            return this.elements.GetHashCode();
+            return elements.GetHashCode();
         }
     }
 }

@@ -65,8 +65,8 @@ namespace netDxf
             this.m21 = m21;
             this.m22 = m22;
 
-            this.dirty = true;
-            this.isIdentity = false;
+            dirty = true;
+            isIdentity = false;
         }
 
         #endregion
@@ -106,11 +106,11 @@ namespace netDxf
         /// </summary>
         public double M11
         {
-            get { return this.m11; }
+            get { return m11; }
             set
             {
-                this.m11 = value;
-                this.dirty = true;
+                m11 = value;
+                dirty = true;
             }
         }
 
@@ -119,11 +119,11 @@ namespace netDxf
         /// </summary>
         public double M12
         {
-            get { return this.m12; }
+            get { return m12; }
             set
             {
-                this.m12 = value;
-                this.dirty = true;
+                m12 = value;
+                dirty = true;
             }
         }
 
@@ -132,11 +132,11 @@ namespace netDxf
         /// </summary>
         public double M21
         {
-            get { return this.m21; }
+            get { return m21; }
             set
             {
-                this.m21 = value;
-                this.dirty = true;
+                m21 = value;
+                dirty = true;
             }
         }
 
@@ -145,11 +145,11 @@ namespace netDxf
         /// </summary>
         public double M22
         {
-            get { return this.m22; }
+            get { return m22; }
             set
             {
-                this.m22 = value;
-                this.dirty = true;
+                m22 = value;
+                dirty = true;
             }
         }
 
@@ -167,9 +167,9 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                return this.m11;
+                                return m11;
                             case 1:
-                                return this.m12;
+                                return m12;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
                         }
@@ -177,9 +177,9 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                return this.m21;
+                                return m21;
                             case 1:
-                                return this.m22;
+                                return m22;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
                         }
@@ -196,10 +196,10 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                this.m11 = value;
+                                m11 = value;
                                 break;
                             case 1:
-                                this.m12 = value;
+                                m12 = value;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
@@ -210,10 +210,10 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                this.m21 = value;
+                                m21 = value;
                                 break;
                             case 1:
-                                this.m22 = value;
+                                m22 = value;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
@@ -223,7 +223,7 @@ namespace netDxf
                     default:
                         throw new ArgumentOutOfRangeException(nameof(row));
                 }
-                this.dirty = true;
+                dirty = true;
             }
         }
 
@@ -237,36 +237,36 @@ namespace netDxf
         {
             get
             {
-                if (this.dirty)
+                if (dirty)
                 {
-                    this.dirty = false;
+                    dirty = false;
 
-                    if (!MathHelper.IsOne(this.M11))
+                    if (!MathHelper.IsOne(M11))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
-                    if (!MathHelper.IsZero(this.M12))
+                    if (!MathHelper.IsZero(M12))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
-                    }
-
-                    if (!MathHelper.IsZero(this.M21))
-                    {
-                        this.isIdentity = false;
-                        return this.isIdentity;
-                    }
-                    if (!MathHelper.IsOne(this.M22))
-                    {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
 
-                    this.isIdentity = true;
-                    return this.isIdentity;
+                    if (!MathHelper.IsZero(M21))
+                    {
+                        isIdentity = false;
+                        return isIdentity;
+                    }
+                    if (!MathHelper.IsOne(M22))
+                    {
+                        isIdentity = false;
+                        return isIdentity;
+                    }
+
+                    isIdentity = true;
+                    return isIdentity;
                 }
-                return this.isIdentity;
+                return isIdentity;
             }
         }
 
@@ -448,7 +448,7 @@ namespace netDxf
         /// <returns>Determinant.</returns>
         public double Determinant()
         {
-            return this.IsIdentity ? 1.0 : this.m11 * this.m22 - this.m12 * this.m21;
+            return IsIdentity ? 1.0 : m11 * m22 - m12 * m21;
         }
 
         /// <summary>
@@ -457,12 +457,12 @@ namespace netDxf
         /// <returns>Inverse Matrix2.</returns>
         public Matrix2 Inverse()
         {
-            if (this.IsIdentity)
+            if (IsIdentity)
             {
                 return Identity;
             }
 
-            double det = this.Determinant();
+            double det = Determinant();
             if (MathHelper.IsZero(det))
             {
                 throw new ArithmeticException("The matrix is not invertible.");
@@ -470,8 +470,8 @@ namespace netDxf
 
             det = 1 / det;
 
-            return new Matrix2(det * this.m22, -det * this.m12,
-                               -det * this.m21, det * this.m11);
+            return new Matrix2(det * m22, -det * m12,
+                               -det * m21, det * m11);
         }
 
         /// <summary>
@@ -480,8 +480,8 @@ namespace netDxf
         /// <returns>Transpose matrix.</returns>
         public Matrix2 Transpose()
         {
-            return this.IsIdentity ? Identity : new Matrix2(this.m11, this.m21,
-                                                            this.m12, this.m22);
+            return IsIdentity ? Identity : new Matrix2(m11, m21,
+                                                            m12, m22);
         }
 
         #endregion
@@ -567,7 +567,7 @@ namespace netDxf
         /// <returns>True if the matrix components are almost equal or false in any other case.</returns>
         public bool Equals(Matrix2 other)
         {
-            return this.Equals(other, MathHelper.Epsilon);
+            return Equals(other, MathHelper.Epsilon);
         }
 
         /// <summary>
@@ -579,10 +579,10 @@ namespace netDxf
         public bool Equals(Matrix2 obj, double threshold)
         {
             return
-                MathHelper.IsEqual(obj.M11, this.M11, threshold) &&
-                MathHelper.IsEqual(obj.M12, this.M12, threshold) &&
-                MathHelper.IsEqual(obj.M21, this.M21, threshold) &&
-                MathHelper.IsEqual(obj.M22, this.M22, threshold);
+                MathHelper.IsEqual(obj.M11, M11, threshold) &&
+                MathHelper.IsEqual(obj.M12, M12, threshold) &&
+                MathHelper.IsEqual(obj.M21, M21, threshold) &&
+                MathHelper.IsEqual(obj.M22, M22, threshold);
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace netDxf
         {
             if (obj is Matrix2 matrix)
             {
-                return this.Equals(matrix);
+                return Equals(matrix);
             }
 
             return false;
@@ -606,7 +606,7 @@ namespace netDxf
         /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
         public override int GetHashCode()
         {
-            return this.M11.GetHashCode() ^ this.M12.GetHashCode() ^ this.M21.GetHashCode() ^ this.M22.GetHashCode();
+            return M11.GetHashCode() ^ M12.GetHashCode() ^ M21.GetHashCode() ^ M22.GetHashCode();
         }
 
         #endregion
@@ -621,8 +621,8 @@ namespace netDxf
         {
             string separator = Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator;
             StringBuilder s = new StringBuilder();
-            s.Append(string.Format("|{0}{2} {1}|" + Environment.NewLine, this.m11, this.m12, separator));
-            s.Append(string.Format("|{0}{2} {1}|", this.m21, this.m22, separator));
+            s.Append(string.Format("|{0}{2} {1}|" + Environment.NewLine, m11, m12, separator));
+            s.Append(string.Format("|{0}{2} {1}|", m21, m22, separator));
             return s.ToString();
         }
 
@@ -635,8 +635,8 @@ namespace netDxf
         {
             string separator = Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator;
             StringBuilder s = new StringBuilder();
-            s.Append(string.Format("|{0}{2} {1}|" + Environment.NewLine, this.m11.ToString(provider), this.m12.ToString(provider), separator));
-            s.Append(string.Format("|{0}{2} {1}|", this.m21.ToString(provider), this.m22.ToString(provider), separator));
+            s.Append(string.Format("|{0}{2} {1}|" + Environment.NewLine, m11.ToString(provider), m12.ToString(provider), separator));
+            s.Append(string.Format("|{0}{2} {1}|", m21.ToString(provider), m22.ToString(provider), separator));
             return s.ToString();
         }
 

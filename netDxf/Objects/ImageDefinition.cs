@@ -142,7 +142,7 @@ namespace netDxf.Objects
             }
             this.verticalResolution = verticalResolution;
 
-            this.resolutionUnits = units;
+            resolutionUnits = units;
 
         }
 
@@ -243,7 +243,7 @@ namespace netDxf.Objects
         /// </remarks>
         public string File
         {
-            get { return this.file; }
+            get { return file; }
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -256,7 +256,7 @@ namespace netDxf.Objects
                     throw new ArgumentException("File path contains invalid characters.", nameof(value));
                 }
 
-                this.file = value;
+                file = value;
             }
         }
 
@@ -265,7 +265,7 @@ namespace netDxf.Objects
         /// </summary>
         public int Width
         {
-            get { return this.width; }
+            get { return width; }
             set
             {
                 if (value <= 0)
@@ -273,7 +273,7 @@ namespace netDxf.Objects
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The ImageDefinition width must be greater than zero.");
                 }
 
-                this.width = value;
+                width = value;
             }
         }
 
@@ -282,7 +282,7 @@ namespace netDxf.Objects
         /// </summary>
         public int Height
         {
-            get { return this.height; }
+            get { return height; }
             set
             {
                 if (value <= 0)
@@ -290,7 +290,7 @@ namespace netDxf.Objects
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The ImageDefinition height must be greater than zero.");
                 }
 
-                this.height = value;
+                height = value;
             }
         }
 
@@ -299,7 +299,7 @@ namespace netDxf.Objects
         /// </summary>
         public double HorizontalResolution
         {
-            get { return this.horizontalResolution; }
+            get { return horizontalResolution; }
             set
             {
                 if (value <= 0)
@@ -307,7 +307,7 @@ namespace netDxf.Objects
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The ImageDefinition horizontal resolution must be greater than zero.");
                 }
 
-                this.horizontalResolution = value;
+                horizontalResolution = value;
             }
         }
 
@@ -316,7 +316,7 @@ namespace netDxf.Objects
         /// </summary>
         public double VerticalResolution
         {
-            get { return this.verticalResolution; }
+            get { return verticalResolution; }
             set
             {
                 if (value <= 0)
@@ -324,7 +324,7 @@ namespace netDxf.Objects
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The ImageDefinition vertical resolution must be greater than zero.");
                 }
 
-                this.verticalResolution = value;
+                verticalResolution = value;
             }
         }
 
@@ -333,26 +333,26 @@ namespace netDxf.Objects
         /// </summary>
         public ImageResolutionUnits ResolutionUnits
         {
-            get { return this.resolutionUnits; }
+            get { return resolutionUnits; }
             set
             {
-                if (this.resolutionUnits != value)
+                if (resolutionUnits != value)
                 {
                     switch (value)
                     {
                         case ImageResolutionUnits.Centimeters:
-                            this.horizontalResolution /= 2.54;
-                            this.verticalResolution /= 2.54;
+                            horizontalResolution /= 2.54;
+                            verticalResolution /= 2.54;
                             break;
                         case ImageResolutionUnits.Inches:
-                            this.horizontalResolution *= 2.54;
-                            this.verticalResolution *= 2.54;
+                            horizontalResolution *= 2.54;
+                            verticalResolution *= 2.54;
                             break;
                         case ImageResolutionUnits.Unitless:
                             break;
                     }
                 }
-                this.resolutionUnits = value;
+                resolutionUnits = value;
             }
         }
 
@@ -382,7 +382,7 @@ namespace netDxf.Objects
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -397,12 +397,12 @@ namespace netDxf.Objects
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            if (this.Owner == null)
+            if (Owner == null)
             {
                 return null;
             }
 
-            return this.Owner.GetReferences(this.Name);
+            return Owner.GetReferences(Name);
         }
 
         /// <summary>
@@ -412,9 +412,9 @@ namespace netDxf.Objects
         /// <returns>A new ImageDefinition that is a copy of this instance.</returns>
         public override TableObject Clone(string newName)
         {
-            ImageDefinition copy = new ImageDefinition(newName, this.file, this.width, this.horizontalResolution, this.height, this.verticalResolution, this.resolutionUnits);
+            ImageDefinition copy = new ImageDefinition(newName, file, width, horizontalResolution, height, verticalResolution, resolutionUnits);
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -428,7 +428,7 @@ namespace netDxf.Objects
         /// <returns>A new ImageDefinition that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

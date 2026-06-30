@@ -130,19 +130,19 @@ namespace netDxf.Entities
                     },
                     normal, CoordinateSystem.World, CoordinateSystem.Object);
 
-            this.startFirstLine = new Vector2(ocsPoints[0].X, ocsPoints[0].Y);
-            this.endFirstLine = new Vector2(ocsPoints[1].X, ocsPoints[1].Y);
-            this.startSecondLine = new Vector2(ocsPoints[2].X, ocsPoints[2].Y);
-            this.endSecondLine = new Vector2(ocsPoints[3].X, ocsPoints[3].Y);
+            startFirstLine = new Vector2(ocsPoints[0].X, ocsPoints[0].Y);
+            endFirstLine = new Vector2(ocsPoints[1].X, ocsPoints[1].Y);
+            startSecondLine = new Vector2(ocsPoints[2].X, ocsPoints[2].Y);
+            endSecondLine = new Vector2(ocsPoints[3].X, ocsPoints[3].Y);
             if (offset < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(offset), "The offset value must be equal or greater than zero.");
             }
             this.offset = offset;
-            this.Style = style ?? throw new ArgumentNullException(nameof(style));
-            this.Normal = normal;
-            this.Elevation = ocsPoints[0].Z;
-            this.Update();
+            Style = style ?? throw new ArgumentNullException(nameof(style));
+            Normal = normal;
+            Elevation = ocsPoints[0].Z;
+            Update();
         }
 
         /// <summary>
@@ -188,8 +188,8 @@ namespace netDxf.Entities
             }
             this.offset = offset;
 
-            this.Style = style ?? throw new ArgumentNullException(nameof(style));
-            this.Update();
+            Style = style ?? throw new ArgumentNullException(nameof(style));
+            Update();
         }
 
         #endregion
@@ -204,8 +204,8 @@ namespace netDxf.Entities
             get
             {
                 return MathHelper.FindIntersection(
-                    this.startFirstLine, this.endFirstLine - this.startFirstLine,
-                    this.startSecondLine, this.endSecondLine - this.startSecondLine);
+                    startFirstLine, endFirstLine - startFirstLine,
+                    startSecondLine, endSecondLine - startSecondLine);
             }
         }
 
@@ -214,8 +214,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 StartFirstLine
         {
-            get { return this.startFirstLine; }
-            set { this.startFirstLine = value; }
+            get { return startFirstLine; }
+            set { startFirstLine = value; }
         }
 
         /// <summary>
@@ -223,8 +223,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 EndFirstLine
         {
-            get { return this.endFirstLine; }
-            set { this.endFirstLine = value; }
+            get { return endFirstLine; }
+            set { endFirstLine = value; }
         }
 
         /// <summary>
@@ -232,8 +232,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 StartSecondLine
         {
-            get { return this.startSecondLine; }
-            set { this.startSecondLine = value; }
+            get { return startSecondLine; }
+            set { startSecondLine = value; }
         }
 
         /// <summary>
@@ -241,8 +241,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 EndSecondLine
         {
-            get { return this.endSecondLine; }
-            set { this.endSecondLine = value; }
+            get { return endSecondLine; }
+            set { endSecondLine = value; }
         }
 
         /// <summary>
@@ -250,8 +250,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 ArcDefinitionPoint
         {
-            get { return this.arcDefinitionPoint; }
-            internal set { this.arcDefinitionPoint = value; }
+            get { return arcDefinitionPoint; }
+            internal set { arcDefinitionPoint = value; }
         }
 
         /// <summary>
@@ -262,14 +262,14 @@ namespace netDxf.Entities
         /// </remarks>
         public double Offset
         {
-            get { return this.offset; }
+            get { return offset; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "The offset value must be equal or greater than zero.");
                 }
-                this.offset = value;
+                offset = value;
             }
         }
 
@@ -280,8 +280,8 @@ namespace netDxf.Entities
         {
             get
             {
-                Vector2 dirRef1 = this.endFirstLine - this.startFirstLine;
-                Vector2 dirRef2 = this.endSecondLine - this.startSecondLine;
+                Vector2 dirRef1 = endFirstLine - startFirstLine;
+                Vector2 dirRef2 = endSecondLine - startSecondLine;
                 return Vector2.AngleBetween(dirRef1, dirRef2) * MathHelper.RadToDeg;
             }
         }
@@ -300,7 +300,7 @@ namespace netDxf.Entities
         /// </remarks>
         public void SetDimensionLinePosition(Vector2 point)
         {
-            this.SetDimensionLinePosition(point, true);
+            SetDimensionLinePosition(point, true);
         }
 
         #endregion
@@ -309,31 +309,31 @@ namespace netDxf.Entities
 
         private void SetDimensionLinePosition(Vector2 point, bool updateRefs)
         {
-            Vector2 dir1 = this.endFirstLine - this.startFirstLine;
-            Vector2 dir2 = this.endSecondLine - this.startSecondLine;
+            Vector2 dir1 = endFirstLine - startFirstLine;
+            Vector2 dir2 = endSecondLine - startSecondLine;
             if (Vector2.AreParallel(dir1, dir2))
             {
                 throw new ArgumentException("The two lines that define the dimension are parallel.");
             }
 
-            Vector2 center = this.CenterPoint;
+            Vector2 center = CenterPoint;
 
             if (updateRefs)
             {
-                double cross = Vector2.CrossProduct(this.EndFirstLine - this.StartFirstLine, this.EndSecondLine - this.StartSecondLine);
+                double cross = Vector2.CrossProduct(EndFirstLine - StartFirstLine, EndSecondLine - StartSecondLine);
                 if (cross < 0)
                 {
-                    (this.startFirstLine, this.startSecondLine) = (this.startSecondLine, this.startFirstLine);
-                    (this.endFirstLine, this.endSecondLine) = (this.endSecondLine, this.endFirstLine);
+                    (startFirstLine, startSecondLine) = (startSecondLine, startFirstLine);
+                    (endFirstLine, endSecondLine) = (endSecondLine, endFirstLine);
 
                     //MathHelper.Swap(ref this.startFirstLine, ref this.startSecondLine);
                     //MathHelper.Swap(ref this.endFirstLine, ref this.endSecondLine);
                 }
 
-                Vector2 ref1Start = this.StartFirstLine;
-                Vector2 ref1End = this.EndFirstLine;
-                Vector2 ref2Start = this.StartSecondLine;
-                Vector2 ref2End = this.EndSecondLine;
+                Vector2 ref1Start = StartFirstLine;
+                Vector2 ref1End = EndFirstLine;
+                Vector2 ref2Start = StartSecondLine;
+                Vector2 ref2End = EndSecondLine;
                 Vector2 dirRef1 = ref1End - ref1Start;
                 Vector2 dirRef2 = ref2End - ref2Start;
 
@@ -343,54 +343,54 @@ namespace netDxf.Entities
 
                 if (crossStart >= 0 && crossEnd >= 0)
                 {
-                    this.StartFirstLine = ref2Start;
-                    this.EndFirstLine = ref2End;
-                    this.StartSecondLine = ref1End;
-                    this.EndSecondLine = ref1Start;
+                    StartFirstLine = ref2Start;
+                    EndFirstLine = ref2End;
+                    StartSecondLine = ref1End;
+                    EndSecondLine = ref1Start;
                 }
                 else if (crossStart < 0 && crossEnd >= 0)
                 {
-                    this.StartFirstLine = ref1End;
-                    this.EndFirstLine = ref1Start;
-                    this.StartSecondLine = ref2End;
-                    this.EndSecondLine = ref2Start;
+                    StartFirstLine = ref1End;
+                    EndFirstLine = ref1Start;
+                    StartSecondLine = ref2End;
+                    EndSecondLine = ref2Start;
                 }
                 else if (crossStart < 0 && crossEnd < 0)
                 {
-                    this.StartFirstLine = ref2End;
-                    this.EndFirstLine = ref2Start;
-                    this.StartSecondLine = ref1Start;
-                    this.EndSecondLine = ref1End;
+                    StartFirstLine = ref2End;
+                    EndFirstLine = ref2Start;
+                    StartSecondLine = ref1Start;
+                    EndSecondLine = ref1End;
                 }
             }
 
             double newOffset = Vector2.Distance(center, point);
-            this.offset = MathHelper.IsZero(newOffset) ? MathHelper.Epsilon : newOffset;
+            offset = MathHelper.IsZero(newOffset) ? MathHelper.Epsilon : newOffset;
             
-            this.defPoint = this.endSecondLine;
+            defPoint = endSecondLine;
 
-            double measure = this.Measurement * MathHelper.DegToRad;
-            double startAngle = Vector2.Angle(center, this.endFirstLine);
+            double measure = Measurement * MathHelper.DegToRad;
+            double startAngle = Vector2.Angle(center, endFirstLine);
             double midRot = startAngle + 0.5 * measure;
-            Vector2 midDim = Vector2.Polar(center, this.offset, midRot);
-            this.arcDefinitionPoint = midDim;
+            Vector2 midDim = Vector2.Polar(center, offset, midRot);
+            arcDefinitionPoint = midDim;
 
-            if (!this.TextPositionManuallySet)
+            if (!TextPositionManuallySet)
             {
                 DimensionStyleOverride styleOverride;
-                double textGap = this.Style.TextOffset;
-                if (this.StyleOverrides.TryGetValue(DimensionStyleOverrideType.TextOffset, out styleOverride))
+                double textGap = Style.TextOffset;
+                if (StyleOverrides.TryGetValue(DimensionStyleOverrideType.TextOffset, out styleOverride))
                 {
                     textGap = (double) styleOverride.Value;
                 }
-                double scale = this.Style.DimScaleOverall;
-                if (this.StyleOverrides.TryGetValue(DimensionStyleOverrideType.DimScaleOverall, out styleOverride))
+                double scale = Style.DimScaleOverall;
+                if (StyleOverrides.TryGetValue(DimensionStyleOverrideType.DimScaleOverall, out styleOverride))
                 {
                     scale = (double) styleOverride.Value;
                 }
 
                 double gap = textGap * scale;
-                this.textRefPoint = midDim + gap * Vector2.Normalize(midDim - center);
+                textRefPoint = midDim + gap * Vector2.Normalize(midDim - center);
             }
         }
 
@@ -410,29 +410,29 @@ namespace netDxf.Entities
         /// </remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newNormal = transformation * this.Normal;
-            if (Vector3.Equals(Vector3.Zero, newNormal)) newNormal = this.Normal;
+            Vector3 newNormal = transformation * Normal;
+            if (Vector3.Equals(Vector3.Zero, newNormal)) newNormal = Normal;
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal).Transpose();
 
-            Vector3 v = transOW * new Vector3(this.StartFirstLine.X, this.StartFirstLine.Y, this.Elevation);
+            Vector3 v = transOW * new Vector3(StartFirstLine.X, StartFirstLine.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
             Vector2 newStart1 = new Vector2(v.X, v.Y);
             double newElevation = v.Z;
 
-            v = transOW * new Vector3(this.EndFirstLine.X, this.EndFirstLine.Y, this.Elevation);
+            v = transOW * new Vector3(EndFirstLine.X, EndFirstLine.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
             Vector2 newEnd1 = new Vector2(v.X, v.Y);
 
-            v = transOW * new Vector3(this.StartSecondLine.X, this.StartSecondLine.Y, this.Elevation);
+            v = transOW * new Vector3(StartSecondLine.X, StartSecondLine.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
             Vector2 newStart2 = new Vector2(v.X, v.Y);
 
-            v = transOW * new Vector3(this.EndSecondLine.X, this.EndSecondLine.Y, this.Elevation);
+            v = transOW * new Vector3(EndSecondLine.X, EndSecondLine.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
             Vector2 newEnd2 = new Vector2(v.X, v.Y);
@@ -445,33 +445,33 @@ namespace netDxf.Entities
                 return;
             }
 
-            v = transOW * new Vector3(this.ArcDefinitionPoint.X, this.ArcDefinitionPoint.Y, this.Elevation);
+            v = transOW * new Vector3(ArcDefinitionPoint.X, ArcDefinitionPoint.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
             Vector2 newArcDefPoint = new Vector2(v.X, v.Y);
 
-            if (this.TextPositionManuallySet)
+            if (TextPositionManuallySet)
             {
-                v = transOW * new Vector3(this.textRefPoint.X, this.textRefPoint.Y, this.Elevation);
+                v = transOW * new Vector3(textRefPoint.X, textRefPoint.Y, Elevation);
                 v = transformation * v + translation;
                 v = transWO * v;
-                this.textRefPoint = new Vector2(v.X, v.Y);
+                textRefPoint = new Vector2(v.X, v.Y);
             }
 
-            v = transOW * new Vector3(this.defPoint.X, this.defPoint.Y, this.Elevation);
+            v = transOW * new Vector3(defPoint.X, defPoint.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
-            this.defPoint = new Vector2(v.X, v.Y);
+            defPoint = new Vector2(v.X, v.Y);
 
-            this.StartFirstLine = newStart1;
-            this.EndFirstLine = newEnd1;
-            this.StartSecondLine = newStart2;
-            this.EndSecondLine = newEnd2;
-            this.ArcDefinitionPoint = newArcDefPoint;
-            this.Elevation = newElevation;
-            this.Normal = newNormal;
+            StartFirstLine = newStart1;
+            EndFirstLine = newEnd1;
+            StartSecondLine = newStart2;
+            EndSecondLine = newEnd2;
+            ArcDefinitionPoint = newArcDefPoint;
+            Elevation = newElevation;
+            Normal = newNormal;
 
-            this.SetDimensionLinePosition(newArcDefPoint);
+            SetDimensionLinePosition(newArcDefPoint);
         }
 
         /// <summary>
@@ -479,8 +479,8 @@ namespace netDxf.Entities
         /// </summary>
         protected override void CalculateReferencePoints()
         {
-            Vector2 dir1 = this.endFirstLine - this.startFirstLine;
-            Vector2 dir2 = this.endSecondLine - this.startSecondLine;
+            Vector2 dir1 = endFirstLine - startFirstLine;
+            Vector2 dir2 = endSecondLine - startSecondLine;
             if (Vector2.AreParallel(dir1, dir2))
             {
                 throw new ArgumentException("The two lines that define the dimension are parallel.");
@@ -488,44 +488,44 @@ namespace netDxf.Entities
 
             DimensionStyleOverride styleOverride;
 
-            double measure = this.Measurement * MathHelper.DegToRad;
-            Vector2 center = this.CenterPoint;
+            double measure = Measurement * MathHelper.DegToRad;
+            Vector2 center = CenterPoint;
 
-            double startAngle = Vector2.Angle(center, this.endFirstLine);
+            double startAngle = Vector2.Angle(center, endFirstLine);
             double midRot = startAngle + 0.5 * measure;
-            Vector2 midDim = Vector2.Polar(center, this.offset, midRot);
+            Vector2 midDim = Vector2.Polar(center, offset, midRot);
 
-            this.defPoint = this.endSecondLine;
-            this.arcDefinitionPoint = midDim;
+            defPoint = endSecondLine;
+            arcDefinitionPoint = midDim;
 
-            if (this.TextPositionManuallySet)
+            if (TextPositionManuallySet)
             {
-                DimensionStyleFitTextMove moveText = this.Style.FitTextMove;
-                if (this.StyleOverrides.TryGetValue(DimensionStyleOverrideType.FitTextMove, out styleOverride))
+                DimensionStyleFitTextMove moveText = Style.FitTextMove;
+                if (StyleOverrides.TryGetValue(DimensionStyleOverrideType.FitTextMove, out styleOverride))
                 {
                     moveText = (DimensionStyleFitTextMove)styleOverride.Value;
                 }
 
                 if (moveText == DimensionStyleFitTextMove.BesideDimLine)
                 {
-                    this.SetDimensionLinePosition(this.textRefPoint, false);
+                    SetDimensionLinePosition(textRefPoint, false);
                 }
             }
             else
             {
-                double textGap = this.Style.TextOffset;
-                if (this.StyleOverrides.TryGetValue(DimensionStyleOverrideType.TextOffset, out styleOverride))
+                double textGap = Style.TextOffset;
+                if (StyleOverrides.TryGetValue(DimensionStyleOverrideType.TextOffset, out styleOverride))
                 {
                     textGap = (double)styleOverride.Value;
                 }
-                double scale = this.Style.DimScaleOverall;
-                if (this.StyleOverrides.TryGetValue(DimensionStyleOverrideType.DimScaleOverall, out styleOverride))
+                double scale = Style.DimScaleOverall;
+                if (StyleOverrides.TryGetValue(DimensionStyleOverrideType.DimScaleOverall, out styleOverride))
                 {
                     scale = (double)styleOverride.Value;
                 }
 
                 double gap = textGap * scale;
-                this.textRefPoint = midDim + gap * Vector2.Normalize(midDim - center);
+                textRefPoint = midDim + gap * Vector2.Normalize(midDim - center);
             }
         }
 
@@ -548,41 +548,41 @@ namespace netDxf.Entities
             Angular2LineDimension entity = new Angular2LineDimension
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Dimension properties
-                Style = (DimensionStyle) this.Style.Clone(),
-                DefinitionPoint = this.DefinitionPoint,
-                TextReferencePoint = this.TextReferencePoint,
-                TextPositionManuallySet = this.TextPositionManuallySet,
-                TextRotation = this.TextRotation,
-                AttachmentPoint = this.AttachmentPoint,
-                LineSpacingStyle = this.LineSpacingStyle,
-                LineSpacingFactor = this.LineSpacingFactor,
-                UserText = this.UserText,
-                Elevation = this.Elevation,
+                Style = (DimensionStyle) Style.Clone(),
+                DefinitionPoint = DefinitionPoint,
+                TextReferencePoint = TextReferencePoint,
+                TextPositionManuallySet = TextPositionManuallySet,
+                TextRotation = TextRotation,
+                AttachmentPoint = AttachmentPoint,
+                LineSpacingStyle = LineSpacingStyle,
+                LineSpacingFactor = LineSpacingFactor,
+                UserText = UserText,
+                Elevation = Elevation,
                 //Angular2LineDimension properties
-                StartFirstLine = this.startFirstLine,
-                EndFirstLine = this.endFirstLine,
-                StartSecondLine = this.startSecondLine,
-                EndSecondLine = this.endSecondLine,
-                Offset = this.offset,
-                arcDefinitionPoint = this.arcDefinitionPoint
+                StartFirstLine = startFirstLine,
+                EndFirstLine = endFirstLine,
+                StartSecondLine = startSecondLine,
+                EndSecondLine = endSecondLine,
+                Offset = offset,
+                arcDefinitionPoint = arcDefinitionPoint
             };
 
-            foreach (DimensionStyleOverride styleOverride in this.StyleOverrides.Values)
+            foreach (DimensionStyleOverride styleOverride in StyleOverrides.Values)
             {
                 object copy = styleOverride.Value is ICloneable value ? value.Clone() : styleOverride.Value;
                 entity.StyleOverrides.Add(new DimensionStyleOverride(styleOverride.Type, copy));
             }
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

@@ -68,24 +68,24 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(imageDefinition));
             }
 
-            if (this.List.TryGetValue(imageDefinition.Name, out ImageDefinition add))
+            if (List.TryGetValue(imageDefinition.Name, out ImageDefinition add))
             {
                 return add;
             }
 
             if (assignHandle || string.IsNullOrEmpty(imageDefinition.Handle))
             {
-                this.Owner.NumHandles = imageDefinition.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = imageDefinition.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(imageDefinition.Name, imageDefinition);
-            this.References.Add(imageDefinition.Name, new DxfObjectReferences());
+            List.Add(imageDefinition.Name, imageDefinition);
+            References.Add(imageDefinition.Name, new DxfObjectReferences());
 
             imageDefinition.Owner = this;
 
-            imageDefinition.NameChanged += this.Item_NameChanged;
+            imageDefinition.NameChanged += Item_NameChanged;
 
-            this.Owner.AddedObjects.Add(imageDefinition.Handle, imageDefinition);
+            Owner.AddedObjects.Add(imageDefinition.Handle, imageDefinition);
 
             return imageDefinition;
         }
@@ -98,7 +98,7 @@ namespace netDxf.Collections
         /// <remarks>Any image definition referenced by objects cannot be removed.</remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -124,19 +124,19 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (this.HasReferences(item))
+            if (HasReferences(item))
             {
                 return false;
             }
 
-            this.Owner.AddedObjects.Remove(item.Handle);
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            Owner.AddedObjects.Remove(item.Handle);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
+            item.NameChanged -= Item_NameChanged;
 
             return true;
         }
@@ -147,18 +147,18 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another image definition with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (ImageDefinition) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (ImageDefinition) sender);
 
-            List<DxfObjectReference> refs = this.GetReferences(sender.Name);
-            this.References.Remove(sender.Name);
-            this.References.Add(e.NewValue, new DxfObjectReferences());
-            this.References[e.NewValue].Add(refs);
+            List<DxfObjectReference> refs = GetReferences(sender.Name);
+            References.Remove(sender.Name);
+            References.Add(e.NewValue, new DxfObjectReferences());
+            References[e.NewValue].Add(refs);
         }
 
         #endregion

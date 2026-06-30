@@ -84,12 +84,12 @@ namespace netDxf.Entities
         /// </remarks>
         public int StartVertexIndex
         {
-            get { return this.startVertexIndex; }
+            get { return startVertexIndex; }
             set
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The vertex index must be must be equals or greater than zero.");
-                this.startVertexIndex = value;
+                startVertexIndex = value;
             }
         }
 
@@ -98,12 +98,12 @@ namespace netDxf.Entities
         /// </summary>
         public int EndVertexIndex
         {
-            get { return this.endVertexIndex; }
+            get { return endVertexIndex; }
             set
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The vertex index must be must be equals or greater than zero.");
-                this.endVertexIndex = value;
+                endVertexIndex = value;
             }
         }
 
@@ -116,8 +116,8 @@ namespace netDxf.Entities
         /// </remarks>
         public double Crease
         {
-            get { return this.crease; }
-            set { this.crease = value < 0 ? -1 : value; }
+            get { return crease; }
+            set { crease = value < 0 ? -1 : value; }
         }
 
         #endregion
@@ -130,7 +130,7 @@ namespace netDxf.Entities
         /// <returns>A string text.</returns>
         public override string ToString()
         {
-            return string.Format("{0}: ({1}{4} {2}) crease={3}", "SplineVertex", this.startVertexIndex, this.endVertexIndex, this.crease, Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
+            return string.Format("{0}: ({1}{4} {2}) crease={3}", "SplineVertex", startVertexIndex, endVertexIndex, crease, Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace netDxf.Entities
         /// <returns>A string text.</returns>
         public string ToString(IFormatProvider provider)
         {
-            return string.Format("{0}: ({1}{4} {2}) crease={3}", "SplineVertex", this.startVertexIndex.ToString(provider), this.endVertexIndex.ToString(provider), this.crease.ToString(provider), Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
+            return string.Format("{0}: ({1}{4} {2}) crease={3}", "SplineVertex", startVertexIndex.ToString(provider), endVertexIndex.ToString(provider), crease.ToString(provider), Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace netDxf.Entities
         /// <returns>A new MeshEdge that is a copy of this instance.</returns>
         public object Clone()
         {
-            return new MeshEdge(this.startVertexIndex, this.endVertexIndex, this.crease);
+            return new MeshEdge(startVertexIndex, endVertexIndex, crease);
         }
 
         #endregion

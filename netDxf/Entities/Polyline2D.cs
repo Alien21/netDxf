@@ -87,10 +87,10 @@ namespace netDxf.Entities
                 this.vertexes.Add(new Polyline2DVertex(vertex));
             }
 
-            this.elevation = 0.0;
-            this.thickness = 0.0;
-            this.flags = isClosed ? PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM : PolylineTypeFlags.OpenPolyline;
-            this.smoothType = PolylineSmoothType.NoSmooth;
+            elevation = 0.0;
+            thickness = 0.0;
+            flags = isClosed ? PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM : PolylineTypeFlags.OpenPolyline;
+            smoothType = PolylineSmoothType.NoSmooth;
         }
 
         /// <summary>
@@ -116,10 +116,10 @@ namespace netDxf.Entities
             }
 
             this.vertexes = new List<Polyline2DVertex>(vertexes);
-            this.elevation = 0.0;
-            this.thickness = 0.0;
-            this.flags = isClosed ? PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM : PolylineTypeFlags.OpenPolyline;
-            this.smoothType = PolylineSmoothType.NoSmooth;
+            elevation = 0.0;
+            thickness = 0.0;
+            flags = isClosed ? PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM : PolylineTypeFlags.OpenPolyline;
+            smoothType = PolylineSmoothType.NoSmooth;
         }
 
         #endregion
@@ -150,7 +150,7 @@ namespace netDxf.Entities
         /// </summary>
         public List<Polyline2DVertex> Vertexes
         {
-            get { return this.vertexes; }
+            get { return vertexes; }
         }
 
         /// <summary>
@@ -158,16 +158,16 @@ namespace netDxf.Entities
         /// </summary>
         public bool IsClosed
         {
-            get { return this.flags.HasFlag(PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM); }
+            get { return flags.HasFlag(PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM); }
             set
             {
                 if (value)
                 {
-                    this.flags |= PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM;
+                    flags |= PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM;
                 }
                 else
                 {
-                    this.flags &= ~PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM;
+                    flags &= ~PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM;
                 }
             }
         }
@@ -177,8 +177,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Thickness
         {
-            get { return this.thickness; }
-            set { this.thickness = value; }
+            get { return thickness; }
+            set { thickness = value; }
         }
 
         /// <summary>
@@ -187,8 +187,8 @@ namespace netDxf.Entities
         /// <remarks>This is the distance from the origin to the plane of the light weight polyline.</remarks>
         public double Elevation
         {
-            get { return this.elevation; }
-            set { this.elevation = value; }
+            get { return elevation; }
+            set { elevation = value; }
         }
 
         /// <summary>
@@ -196,16 +196,16 @@ namespace netDxf.Entities
         /// </summary>
         public bool LinetypeGeneration
         {
-            get { return this.flags.HasFlag(PolylineTypeFlags.ContinuousLinetypePattern); }
+            get { return flags.HasFlag(PolylineTypeFlags.ContinuousLinetypePattern); }
             set
             {
                 if (value)
                 {
-                    this.flags |= PolylineTypeFlags.ContinuousLinetypePattern;
+                    flags |= PolylineTypeFlags.ContinuousLinetypePattern;
                 }
                 else
                 {
-                    this.flags &= ~PolylineTypeFlags.ContinuousLinetypePattern;
+                    flags &= ~PolylineTypeFlags.ContinuousLinetypePattern;
                 }
             }
         }
@@ -218,20 +218,20 @@ namespace netDxf.Entities
         /// </remarks>
         public PolylineSmoothType SmoothType
         {
-            get { return this.smoothType; }
+            get { return smoothType; }
             set
             {
                 if (value == PolylineSmoothType.NoSmooth)
                 {
-                    this.CodeName = DxfObjectCode.LwPolyline;
-                    this.flags &= ~PolylineTypeFlags.SplineFit;
+                    CodeName = DxfObjectCode.LwPolyline;
+                    flags &= ~PolylineTypeFlags.SplineFit;
                 }
                 else
                 {
-                    this.CodeName = DxfObjectCode.Polyline;
-                    this.flags |= PolylineTypeFlags.SplineFit;
+                    CodeName = DxfObjectCode.Polyline;
+                    flags |= PolylineTypeFlags.SplineFit;
                 }
-                this.smoothType = value;
+                smoothType = value;
             }
         }
 
@@ -244,8 +244,8 @@ namespace netDxf.Entities
         /// </summary>
         internal PolylineTypeFlags Flags
         {
-            get { return this.flags; }
-            set { this.flags = value; }
+            get { return flags; }
+            set { flags = value; }
         }
 
         #endregion
@@ -257,21 +257,21 @@ namespace netDxf.Entities
         /// </summary>
         public void Reverse()
         {
-            if (this.vertexes.Count < 2)
+            if (vertexes.Count < 2)
             {
                 return;
             }
 
-            this.vertexes.Reverse();
+            vertexes.Reverse();
 
-            double firstBulge = this.vertexes[0].Bulge;
+            double firstBulge = vertexes[0].Bulge;
        
-            for (int i = 0; i < this.vertexes.Count - 1; i++)
+            for (int i = 0; i < vertexes.Count - 1; i++)
             {
-                this.vertexes[i].Bulge = -this.vertexes[i + 1].Bulge;
+                vertexes[i].Bulge = -vertexes[i + 1].Bulge;
             }
 
-            this.vertexes[this.vertexes.Count - 1].Bulge = -firstBulge;
+            vertexes[vertexes.Count - 1].Bulge = -firstBulge;
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace netDxf.Entities
         /// </remarks>
         public void SetConstantWidth(double width)
         {
-            foreach (Polyline2DVertex v in this.vertexes)
+            foreach (Polyline2DVertex v in vertexes)
             {
                 v.StartWidth = width;
                 v.EndWidth = width;
@@ -298,48 +298,48 @@ namespace netDxf.Entities
         {
             List<EntityObject> entities = new List<EntityObject>();
 
-            if (this.smoothType == PolylineSmoothType.NoSmooth)
+            if (smoothType == PolylineSmoothType.NoSmooth)
             {
                 int index = 0;
-                foreach (Polyline2DVertex vertex in this.Vertexes)
+                foreach (Polyline2DVertex vertex in Vertexes)
                 {
                     double bulge = vertex.Bulge;
                     Vector2 p1;
                     Vector2 p2;
 
-                    if (index == this.Vertexes.Count - 1)
+                    if (index == Vertexes.Count - 1)
                     {
-                        if (!this.IsClosed)
+                        if (!IsClosed)
                         {
                             break;
                         }
                         p1 = new Vector2(vertex.Position.X, vertex.Position.Y);
-                        p2 = new Vector2(this.vertexes[0].Position.X, this.vertexes[0].Position.Y);
+                        p2 = new Vector2(vertexes[0].Position.X, vertexes[0].Position.Y);
                     }
                     else
                     {
                         p1 = new Vector2(vertex.Position.X, vertex.Position.Y);
-                        p2 = new Vector2(this.vertexes[index + 1].Position.X, this.vertexes[index + 1].Position.Y);
+                        p2 = new Vector2(vertexes[index + 1].Position.X, vertexes[index + 1].Position.Y);
                     }
 
                     if (MathHelper.IsZero(bulge))
                     {
                         // the polyline edge is a line
-                        Vector3 start = MathHelper.Transform(new Vector3(p1.X, p1.Y, this.elevation), this.Normal, CoordinateSystem.Object, CoordinateSystem.World);
-                        Vector3 end = MathHelper.Transform(new Vector3(p2.X, p2.Y, this.elevation), this.Normal, CoordinateSystem.Object, CoordinateSystem.World);
+                        Vector3 start = MathHelper.Transform(new Vector3(p1.X, p1.Y, elevation), Normal, CoordinateSystem.Object, CoordinateSystem.World);
+                        Vector3 end = MathHelper.Transform(new Vector3(p2.X, p2.Y, elevation), Normal, CoordinateSystem.Object, CoordinateSystem.World);
 
                         entities.Add(new Line
                         {
-                            Layer = (Layer) this.Layer.Clone(),
-                            Linetype = (Linetype) this.Linetype.Clone(),
-                            Color = (AciColor) this.Color.Clone(),
-                            Lineweight = this.Lineweight,
-                            Transparency = (Transparency) this.Transparency.Clone(),
-                            LinetypeScale = this.LinetypeScale,
-                            Normal = this.Normal,
+                            Layer = (Layer) Layer.Clone(),
+                            Linetype = (Linetype) Linetype.Clone(),
+                            Color = (AciColor) Color.Clone(),
+                            Lineweight = Lineweight,
+                            Transparency = (Transparency) Transparency.Clone(),
+                            LinetypeScale = LinetypeScale,
+                            Normal = Normal,
                             StartPoint = start,
                             EndPoint = end,
-                            Thickness = this.Thickness
+                            Thickness = Thickness
                         });
                     }
                     else
@@ -358,48 +358,48 @@ namespace netDxf.Entities
                             List<Vector3> points = MathHelper.Transform(
                                 new []
                                 {
-                                    new Vector3(p1.X, p1.Y, this.elevation),
-                                    new Vector3(p2.X, p2.Y, this.elevation)
+                                    new Vector3(p1.X, p1.Y, elevation),
+                                    new Vector3(p2.X, p2.Y, elevation)
                                 },
-                                this.Normal,
+                                Normal,
                                 CoordinateSystem.Object, CoordinateSystem.World);
 
                             entities.Add(new Line
                             {
-                                Layer = (Layer)this.Layer.Clone(),
-                                Linetype = (Linetype)this.Linetype.Clone(),
-                                Color = (AciColor)this.Color.Clone(),
-                                Lineweight = this.Lineweight,
-                                Transparency = (Transparency)this.Transparency.Clone(),
-                                LinetypeScale = this.LinetypeScale,
-                                Normal = this.Normal,
+                                Layer = (Layer)Layer.Clone(),
+                                Linetype = (Linetype)Linetype.Clone(),
+                                Color = (AciColor)Color.Clone(),
+                                Lineweight = Lineweight,
+                                Transparency = (Transparency)Transparency.Clone(),
+                                LinetypeScale = LinetypeScale,
+                                Normal = Normal,
                                 StartPoint = points[0],
                                 EndPoint = points[1],
-                                Thickness = this.Thickness,
+                                Thickness = Thickness,
                             });
                         }
                         else
                         {
                             Vector3 point = MathHelper.Transform(
-                                new Vector3(center.X, center.Y, this.elevation),
-                                this.Normal,
+                                new Vector3(center.X, center.Y, elevation),
+                                Normal,
                                 CoordinateSystem.Object,
                                 CoordinateSystem.World);
 
                             entities.Add(new Arc
                             {
-                                Layer = (Layer) this.Layer.Clone(),
-                                Linetype = (Linetype) this.Linetype.Clone(),
-                                Color = (AciColor) this.Color.Clone(),
-                                Lineweight = this.Lineweight,
-                                Transparency = (Transparency) this.Transparency.Clone(),
-                                LinetypeScale = this.LinetypeScale,
-                                Normal = this.Normal,
+                                Layer = (Layer) Layer.Clone(),
+                                Linetype = (Linetype) Linetype.Clone(),
+                                Color = (AciColor) Color.Clone(),
+                                Lineweight = Lineweight,
+                                Transparency = (Transparency) Transparency.Clone(),
+                                LinetypeScale = LinetypeScale,
+                                Normal = Normal,
                                 Center = point,
                                 Radius = radius,
                                 StartAngle = startAngle,
                                 EndAngle = endAngle,
-                                Thickness = this.Thickness,
+                                Thickness = Thickness,
                             });
                         }
                     }
@@ -408,18 +408,18 @@ namespace netDxf.Entities
                 return entities;
             }
 
-            Vector3[] wcsVertexes = new Vector3[this.vertexes.Count];
-            Matrix3 trans = MathHelper.ArbitraryAxis(this.Normal);
-            for (int i = 0; i < this.vertexes.Count; i++)
+            Vector3[] wcsVertexes = new Vector3[vertexes.Count];
+            Matrix3 trans = MathHelper.ArbitraryAxis(Normal);
+            for (int i = 0; i < vertexes.Count; i++)
             {
-                Vector3 wcsVertex = trans * new Vector3(this.vertexes[i].Position.X, this.vertexes[i].Position.Y, this.elevation);
+                Vector3 wcsVertex = trans * new Vector3(vertexes[i].Position.X, vertexes[i].Position.Y, elevation);
                 wcsVertexes[i] = wcsVertex;
             }
 
-            int degree = this.smoothType == PolylineSmoothType.Quadratic ? 2 : 3;
-            int splineSegs = this.Owner == null ? DefaultSplineSegs : this.Owner.Record.Owner.Owner.DrawingVariables.SplineSegs;
-            int precision = this.IsClosed ? splineSegs * this.Vertexes.Count : splineSegs * (this.Vertexes.Count - 1);
-            List<Vector3> splinePoints = Spline.NurbsEvaluator(wcsVertexes, null, null, degree, false, this.IsClosed, precision);
+            int degree = smoothType == PolylineSmoothType.Quadratic ? 2 : 3;
+            int splineSegs = Owner == null ? DefaultSplineSegs : Owner.Record.Owner.Owner.DrawingVariables.SplineSegs;
+            int precision = IsClosed ? splineSegs * Vertexes.Count : splineSegs * (Vertexes.Count - 1);
+            List<Vector3> splinePoints = Spline.NurbsEvaluator(wcsVertexes, null, null, degree, false, IsClosed, precision);
 
             for (int i = 1; i < splinePoints.Count; i++)
             {
@@ -427,33 +427,33 @@ namespace netDxf.Entities
                 Vector3 end = splinePoints[i];
                 entities.Add(new Line
                 {
-                    Layer = (Layer) this.Layer.Clone(),
-                    Linetype = (Linetype) this.Linetype.Clone(),
-                    Color = (AciColor) this.Color.Clone(),
-                    Lineweight = this.Lineweight,
-                    Transparency = (Transparency) this.Transparency.Clone(),
-                    LinetypeScale = this.LinetypeScale,
-                    Normal = this.Normal,
+                    Layer = (Layer) Layer.Clone(),
+                    Linetype = (Linetype) Linetype.Clone(),
+                    Color = (AciColor) Color.Clone(),
+                    Lineweight = Lineweight,
+                    Transparency = (Transparency) Transparency.Clone(),
+                    LinetypeScale = LinetypeScale,
+                    Normal = Normal,
                     StartPoint = start,
                     EndPoint = end,
-                    Thickness = this.Thickness
+                    Thickness = Thickness
                 });
             }
 
-            if (this.IsClosed)
+            if (IsClosed)
             {
                 entities.Add(new Line
                 {
-                    Layer = (Layer) this.Layer.Clone(),
-                    Linetype = (Linetype) this.Linetype.Clone(),
-                    Color = (AciColor) this.Color.Clone(),
-                    Lineweight = this.Lineweight,
-                    Transparency = (Transparency) this.Transparency.Clone(),
-                    LinetypeScale = this.LinetypeScale,
-                    Normal = this.Normal,
+                    Layer = (Layer) Layer.Clone(),
+                    Linetype = (Linetype) Linetype.Clone(),
+                    Color = (AciColor) Color.Clone(),
+                    Lineweight = Lineweight,
+                    Transparency = (Transparency) Transparency.Clone(),
+                    LinetypeScale = LinetypeScale,
+                    Normal = Normal,
                     StartPoint = splinePoints[splinePoints.Count - 1],
                     EndPoint = splinePoints[0],
-                    Thickness = this.Thickness
+                    Thickness = Thickness
                 });
             }
 
@@ -473,7 +473,7 @@ namespace netDxf.Entities
         /// </remarks>
         public List<Vector2> PolygonalVertexes(int precision)
         {
-            return this.PolygonalVertexes(precision, MathHelper.Epsilon, MathHelper.Epsilon);
+            return PolygonalVertexes(precision, MathHelper.Epsilon, MathHelper.Epsilon);
         }
 
         /// <summary>
@@ -498,11 +498,11 @@ namespace netDxf.Entities
 
             List<Vector2> ocsVertexes = new List<Vector2>();
             int degree;
-            if (this.smoothType == PolylineSmoothType.Quadratic)
+            if (smoothType == PolylineSmoothType.Quadratic)
             {
                 degree = 2;
             }
-            else if (this.smoothType == PolylineSmoothType.Cubic)
+            else if (smoothType == PolylineSmoothType.Cubic)
             {
                 degree = 3;
             }
@@ -510,26 +510,26 @@ namespace netDxf.Entities
             {
                 int index = 0;
 
-                foreach (Polyline2DVertex vertex in this.Vertexes)
+                foreach (Polyline2DVertex vertex in Vertexes)
                 {
                     double bulge = vertex.Bulge;
                     Vector2 p1;
                     Vector2 p2;
 
-                    if (index == this.Vertexes.Count - 1)
+                    if (index == Vertexes.Count - 1)
                     {
                         p1 = new Vector2(vertex.Position.X, vertex.Position.Y);
-                        if (!this.IsClosed)
+                        if (!IsClosed)
                         {
                             ocsVertexes.Add(p1);
                             continue;
                         }
-                        p2 = new Vector2(this.vertexes[0].Position.X, this.vertexes[0].Position.Y);
+                        p2 = new Vector2(vertexes[0].Position.X, vertexes[0].Position.Y);
                     }
                     else
                     {
                         p1 = new Vector2(vertex.Position.X, vertex.Position.Y);
-                        p2 = new Vector2(this.vertexes[index + 1].Position.X, this.vertexes[index + 1].Position.Y);
+                        p2 = new Vector2(vertexes[index + 1].Position.X, vertexes[index + 1].Position.Y);
                     }
 
                     if (!p1.Equals(p2, weldThreshold))
@@ -583,15 +583,15 @@ namespace netDxf.Entities
                 precision = 2;
             }
 
-            Vector3[] ctrlPoints = new Vector3[this.vertexes.Count];
-            for (int i = 0; i < this.vertexes.Count; i++)
+            Vector3[] ctrlPoints = new Vector3[vertexes.Count];
+            for (int i = 0; i < vertexes.Count; i++)
             {
-                Vector2 position = this.vertexes[i].Position;
+                Vector2 position = vertexes[i].Position;
                 ctrlPoints[i] = new Vector3(position.X, position.Y, 0.0);
             }
 
             // closed polylines will be considered as closed and periodic
-            List<Vector3> points = Spline.NurbsEvaluator(ctrlPoints, null, null, degree, false, this.IsClosed, precision);
+            List<Vector3> points = Spline.NurbsEvaluator(ctrlPoints, null, null, degree, false, IsClosed, precision);
             foreach (Vector3 point in points)
             {
                 ocsVertexes.Add(new Vector2(point.X, point.Y));
@@ -616,26 +616,26 @@ namespace netDxf.Entities
         /// </remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            double newElevation = this.Elevation;
-            Vector3 newNormal = transformation * this.Normal;
+            double newElevation = Elevation;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal).Transpose();
 
-            foreach (Polyline2DVertex vertex in this.Vertexes)
+            foreach (Polyline2DVertex vertex in Vertexes)
             {
-                Vector3 v = transOW * new Vector3(vertex.Position.X, vertex.Position.Y, this.Elevation);
+                Vector3 v = transOW * new Vector3(vertex.Position.X, vertex.Position.Y, Elevation);
                 v = transformation * v + translation;
                 v = transWO * v;
                 vertex.Position = new Vector2(v.X, v.Y);
                 newElevation = v.Z;
             }
-            this.Elevation = newElevation;
-            this.Normal = newNormal;
+            Elevation = newElevation;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -647,26 +647,26 @@ namespace netDxf.Entities
             Polyline2D entity = new Polyline2D
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //LwPolyline properties
-                Elevation = this.elevation,
-                Thickness = this.thickness,
-                Flags = this.flags
+                Elevation = elevation,
+                Thickness = thickness,
+                Flags = flags
             };
 
-            foreach (Polyline2DVertex vertex in this.vertexes)
+            foreach (Polyline2DVertex vertex in vertexes)
             {
                 entity.Vertexes.Add((Polyline2DVertex) vertex.Clone());
             }
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

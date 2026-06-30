@@ -69,9 +69,9 @@ namespace netDxf.Entities
         public Line(Vector3 startPoint, Vector3 endPoint)
             : base(EntityType.Line, DxfObjectCode.Line)
         {
-            this.start = startPoint;
-            this.end = endPoint;
-            this.thickness = 0.0;
+            start = startPoint;
+            end = endPoint;
+            thickness = 0.0;
         }
 
         #endregion
@@ -83,8 +83,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 StartPoint
         {
-            get { return this.start; }
-            set { this.start = value; }
+            get { return start; }
+            set { start = value; }
         }
 
         /// <summary>
@@ -92,8 +92,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 EndPoint
         {
-            get { return this.end; }
-            set { this.end = value; }
+            get { return end; }
+            set { end = value; }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Direction
         {
-            get { return this.end - this.start; }
+            get { return end - start; }
         }
 
         /// <summary>
@@ -109,8 +109,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Thickness
         {
-            get { return this.thickness; }
-            set { this.thickness = value; }
+            get { return thickness; }
+            set { thickness = value; }
         }
 
         #endregion
@@ -122,9 +122,9 @@ namespace netDxf.Entities
         /// </summary>
         public void Reverse()
         {
-            Vector3 tmp = this.start;
-            this.start = this.end;
-            this.end = tmp;
+            Vector3 tmp = start;
+            start = end;
+            end = tmp;
         }
 
         #endregion
@@ -139,15 +139,15 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            this.StartPoint = transformation * this.StartPoint + translation;
-            this.EndPoint = transformation * this.EndPoint + translation;
-            this.Normal = newNormal;
+            StartPoint = transformation * StartPoint + translation;
+            EndPoint = transformation * EndPoint + translation;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -159,21 +159,21 @@ namespace netDxf.Entities
             Line entity = new Line
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Line properties
-                StartPoint = this.start,
-                EndPoint = this.end,
-                Thickness = this.thickness
+                StartPoint = start,
+                EndPoint = end,
+                Thickness = thickness
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

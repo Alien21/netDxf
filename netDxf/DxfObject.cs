@@ -39,7 +39,7 @@ namespace netDxf
         public event XDataAddAppRegEventHandler XDataAddAppReg;
         protected virtual void OnXDataAddAppRegEvent(ApplicationRegistry item)
         {
-            XDataAddAppRegEventHandler ae = this.XDataAddAppReg;
+            XDataAddAppRegEventHandler ae = XDataAddAppReg;
             if (ae != null)
             {
                 ae(this, new ObservableCollectionEventArgs<ApplicationRegistry>(item));
@@ -50,7 +50,7 @@ namespace netDxf
         public event XDataRemoveAppRegEventHandler XDataRemoveAppReg;
         protected virtual void OnXDataRemoveAppRegEvent(ApplicationRegistry item)
         {
-            XDataRemoveAppRegEventHandler ae = this.XDataRemoveAppReg;
+            XDataRemoveAppRegEventHandler ae = XDataRemoveAppReg;
             if (ae != null)
             {
                 ae(this, new ObservableCollectionEventArgs<ApplicationRegistry>(item));
@@ -77,11 +77,11 @@ namespace netDxf
         protected DxfObject(string codename)
         {
             this.codename = codename;
-            this.handle = null;
-            this.owner = null;
-            this.xData = new XDataDictionary();
-            this.xData.AddAppReg += this.XData_AddAppReg;
-            this.xData.RemoveAppReg += this.XData_RemoveAppReg;
+            handle = null;
+            owner = null;
+            xData = new XDataDictionary();
+            xData.AddAppReg += XData_AddAppReg;
+            xData.RemoveAppReg += XData_RemoveAppReg;
         }
 
         #endregion
@@ -93,8 +93,8 @@ namespace netDxf
         /// </summary>
         public string CodeName
         {
-            get { return this.codename; }
-            protected set { this.codename = value; }
+            get { return codename; }
+            protected set { codename = value; }
         }
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace netDxf
         /// </remarks>
         public string Handle
         {
-            get { return this.handle; }
-            internal set { this.handle = value; }
+            get { return handle; }
+            internal set { handle = value; }
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace netDxf
         /// </summary>
         public DxfObject Owner
         {
-            get { return this.owner; }
-            internal set { this.owner = value; }
+            get { return owner; }
+            internal set { owner = value; }
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace netDxf
         /// </summary>
         public XDataDictionary XData
         {
-            get { return this.xData; }
+            get { return xData; }
         }
 
         #endregion
@@ -142,7 +142,7 @@ namespace netDxf
         /// </remarks>
         internal virtual long AssignHandle(long entityNumber)
         {
-            this.handle = entityNumber.ToString("X");
+            handle = entityNumber.ToString("X");
             return entityNumber + 1;
         }
 
@@ -156,7 +156,7 @@ namespace netDxf
         /// <returns>A string text.</returns>
         public override string ToString()
         {
-            return this.codename;
+            return codename;
         }
 
         #endregion
@@ -165,12 +165,12 @@ namespace netDxf
 
         private void XData_AddAppReg(XDataDictionary sender, ObservableCollectionEventArgs<ApplicationRegistry> e)
         {
-            this.OnXDataAddAppRegEvent(e.Item);
+            OnXDataAddAppRegEvent(e.Item);
         }
 
         private void XData_RemoveAppReg(XDataDictionary sender, ObservableCollectionEventArgs<ApplicationRegistry> e)
         {
-            this.OnXDataRemoveAppRegEvent(e.Item);
+            OnXDataRemoveAppRegEvent(e.Item);
         }
 
         #endregion

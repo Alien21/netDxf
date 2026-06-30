@@ -56,7 +56,7 @@ namespace netDxf.Collections
         internal LayerStateManager(DxfDocument document, string handle)
             : base(document, DxfObjectCode.LayerStates, handle)
         {
-            this.options = LayerPropertiesRestoreFlags.All;
+            options = LayerPropertiesRestoreFlags.All;
         }
 
         #endregion
@@ -68,8 +68,8 @@ namespace netDxf.Collections
         /// </summary>
         public LayerPropertiesRestoreFlags Options
         {
-            get { return this.options; }
-            set { this.options = value; }
+            get { return options; }
+            set { options = value; }
         }
 
         #endregion
@@ -82,7 +82,7 @@ namespace netDxf.Collections
         /// <param name="layerStateName">Layer state name.</param>
         public void AddNew(string layerStateName)
         {
-            this.AddNew(layerStateName, String.Empty);
+            AddNew(layerStateName, String.Empty);
         }
 
         /// <summary>
@@ -92,8 +92,8 @@ namespace netDxf.Collections
         /// <param name="layerStateDescription">Layer state description.</param>
         public void AddNew(string layerStateName, string layerStateDescription)
         {
-            LayerState layerState = new LayerState(layerStateName, this.Owner.Layers) {Description = layerStateDescription};
-            this.Add(layerState);
+            LayerState layerState = new LayerState(layerStateName, Owner.Layers) {Description = layerStateDescription};
+            Add(layerState);
         }
 
         /// <summary>
@@ -102,24 +102,24 @@ namespace netDxf.Collections
         /// <param name="layerStateName">Layer state name to restore.</param>
         public void Restore(string layerStateName)
         {
-            LayerState ls = this.List[layerStateName];
+            LayerState ls = List[layerStateName];
             if (ls == null)
             {
                 throw new ArgumentException("Invalid layer state name.", nameof(layerStateName));
             }
 
-            this.Owner.DrawingVariables.CLayer = ls.CurrentLayer;
+            Owner.DrawingVariables.CLayer = ls.CurrentLayer;
 
             foreach (LayerStateProperties layerProperties in ls.Properties.Values)
             {
-                if (!this.Owner.Layers.Contains(layerProperties.Name))
+                if (!Owner.Layers.Contains(layerProperties.Name))
                 {
-                    Layer layer = this.Owner.Layers.Add(new Layer(layerProperties.Name));
-                    layerProperties.CopyTo(layer, this.options);
+                    Layer layer = Owner.Layers.Add(new Layer(layerProperties.Name));
+                    layerProperties.CopyTo(layer, options);
                 }
                 else
                 {
-                    layerProperties.CopyTo(this.Owner.Layers[layerProperties.Name], this.options);
+                    layerProperties.CopyTo(Owner.Layers[layerProperties.Name], options);
                 }
             }
         }
@@ -130,15 +130,15 @@ namespace netDxf.Collections
         /// <param name="layerStateName">Layer state name to update.</param>
         public void Update(string layerStateName)
         {
-            LayerState ls = this.List[layerStateName];
+            LayerState ls = List[layerStateName];
             if (ls == null)
             {
                 throw new ArgumentException("Invalid layer state name.", nameof(layerStateName));
             }
 
-            ls.CurrentLayer = this.Owner.DrawingVariables.CLayer;
+            ls.CurrentLayer = Owner.DrawingVariables.CLayer;
 
-            foreach (Layer layer in this.Owner.Layers.Items)
+            foreach (Layer layer in Owner.Layers.Items)
             {
                 if (!ls.Properties.ContainsKey(layer.Name))
                 {
@@ -146,7 +146,7 @@ namespace netDxf.Collections
                 }
                 else
                 {
-                    ls.Properties[layer.Name].CopyFrom(layer, this.options);
+                    ls.Properties[layer.Name].CopyFrom(layer, options);
                 }
             }
         }
@@ -164,20 +164,20 @@ namespace netDxf.Collections
                 throw new Exception("Unknown error when loading the LAS file: " + file);
             }
 
-            if (this.List.ContainsKey(ls.Name))
+            if (List.ContainsKey(ls.Name))
             {
                 if (overwrite)
                 {
-                    this.Remove(this.List[ls.Name]);
-                    this.Add(ls);
+                    Remove(List[ls.Name]);
+                    Add(ls);
                 }
             }
             else
             {
-                this.Add(ls);
+                Add(ls);
             }
 
-            this.Restore(ls.Name);
+            Restore(ls.Name);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace netDxf.Collections
         /// <param name="layerStateName">Layer state name to export.</param>
         public void Export(string file, string layerStateName)
         {
-            LayerState ls = this.List[layerStateName];
+            LayerState ls = List[layerStateName];
             if (ls == null)
             {
                 throw new ArgumentException("Invalid layer state name.", nameof(layerStateName));
@@ -201,11 +201,11 @@ namespace netDxf.Collections
         /// </summary>
         public void RemoveAll()
         {
-            string[] names = new string[this.Names.Count];
-            this.Names.CopyTo(names, 0);
+            string[] names = new string[Names.Count];
+            Names.CopyTo(names, 0);
             foreach (string name in names)
             {
-                this.Remove(name);
+                Remove(name);
             }
         }
 
@@ -229,35 +229,35 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(layerState));
             }
 
-            if (this.List.TryGetValue(layerState.Name, out LayerState add))
+            if (List.TryGetValue(layerState.Name, out LayerState add))
             {
                 return add;
             }
 
             if (assignHandle || string.IsNullOrEmpty(layerState.Handle))
             {
-                this.Owner.NumHandles = layerState.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = layerState.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(layerState.Name, layerState);
-            this.References.Add(layerState.Name, new DxfObjectReferences());
+            List.Add(layerState.Name, layerState);
+            References.Add(layerState.Name, new DxfObjectReferences());
 
             layerState.Owner = this;
 
-            layerState.NameChanged += this.Item_NameChanged;
+            layerState.NameChanged += Item_NameChanged;
 
-            this.Owner.AddedObjects.Add(layerState.Handle, layerState);
+            Owner.AddedObjects.Add(layerState.Handle, layerState);
 
             foreach (LayerStateProperties prop in layerState.Properties.Values)
             {
                 // if the layer state contains a layer name not found in the layer list of the document a new one will be created
-                if (!this.Owner.Layers.Contains(prop.Name))
+                if (!Owner.Layers.Contains(prop.Name))
                 {
-                    this.Owner.Layers.Add(new Layer(prop.Name));
+                    Owner.Layers.Add(new Layer(prop.Name));
                 }
 
                 // if a layer state contains a linetype name not found in the linetype list of the document it will be override by the default "Continuous" linetype
-                if (!this.Owner.Linetypes.Contains(prop.LinetypeName))
+                if (!Owner.Linetypes.Contains(prop.LinetypeName))
                 {
                     prop.LinetypeName = Linetype.DefaultName;
                 }
@@ -274,7 +274,7 @@ namespace netDxf.Collections
         /// <remarks>Reserved LayerState or any other referenced by objects cannot be removed.</remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -300,19 +300,19 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (this.HasReferences(item))
+            if (HasReferences(item))
             {
                 return false;
             }
 
-            this.Owner.AddedObjects.Remove(item.Handle);
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            Owner.AddedObjects.Remove(item.Handle);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
+            item.NameChanged -= Item_NameChanged;
 
             return true;
         }
@@ -323,18 +323,18 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another layer with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (LayerState) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (LayerState) sender);
 
-            List<DxfObjectReference> refs = this.GetReferences(sender.Name);
-            this.References.Remove(sender.Name);
-            this.References.Add(e.NewValue, new DxfObjectReferences());
-            this.References[e.NewValue].Add(refs);
+            List<DxfObjectReference> refs = GetReferences(sender.Name);
+            References.Remove(sender.Name);
+            References.Add(e.NewValue, new DxfObjectReferences());
+            References[e.NewValue].Add(refs);
         }
 
         #endregion

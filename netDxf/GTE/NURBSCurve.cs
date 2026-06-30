@@ -50,10 +50,10 @@ namespace netDxf.GTE
         public NURBSCurve(BasisFunctionInput input, Vector3[] controls, double[] weights)
             : base(0.0, 1.0)
         {
-            this.basisFunction = new BasisFunction(input);
+            basisFunction = new BasisFunction(input);
 
             // The mBasisFunction stores the domain but so does ParametricCurve.
-            this.SetTimeInterval(this.basisFunction.MinDomain, this.basisFunction.MaxDomain);
+            SetTimeInterval(basisFunction.MinDomain, basisFunction.MaxDomain);
 
             // The replication of control points for periodic splines is
             // avoided by wrapping the i-loop index in Evaluate.
@@ -69,66 +69,66 @@ namespace netDxf.GTE
                 weights.CopyTo(this.weights, 0);
             }
 
-            this.isConstructed = true;
+            isConstructed = true;
         }
 
         // Member access.
         public BasisFunction BasisFunction
         {
-            get { return this.basisFunction; }
+            get { return basisFunction; }
         }
 
         public int NumControls
         {
-            get { return this.controls.Length; }
+            get { return controls.Length; }
         }
 
         public Vector3[] Controls
         {
-            get { return this.controls; }
+            get { return controls; }
         }
 
         public double[] Weights
         {
-            get { return this.weights; }
+            get { return weights; }
         }
 
         public void SetControl(int i, Vector3 control)
         {
-            if (0 <= i && i < this.NumControls)
+            if (0 <= i && i < NumControls)
             {
-                this.controls[i] = control;
+                controls[i] = control;
             }
         }
 
         public Vector3 GetControl(int i)
         {
-            if (0 <= i && i < this.NumControls)
+            if (0 <= i && i < NumControls)
             {
-                return this.controls[i];
+                return controls[i];
             }
 
             // Invalid index, return something.
-            return this.controls[0];
+            return controls[0];
         }
 
         public void SetWeight(int i, double weight)
         {
-            if (0 <= i && i < this.NumControls)
+            if (0 <= i && i < NumControls)
             {
-                this.weights[i] = weight;
+                weights[i] = weight;
             }
         }
 
         public double GetWeight(int i)
         {
-            if (0 <= i && i < this.NumControls)
+            if (0 <= i && i < NumControls)
             {
-                return this.weights[i];
+                return weights[i];
             }
 
             // Invalid index, return something.
-            return this.weights[0];
+            return weights[0];
         }
 
         // Evaluation of the curve.  The function supports derivative
@@ -143,35 +143,35 @@ namespace netDxf.GTE
             const int supOrder = SUP_ORDER;
             jet = new Vector3[supOrder];
 
-            if (!this.isConstructed || order >= supOrder)
+            if (!isConstructed || order >= supOrder)
             {
                 // Return a zero-valued jet for invalid state.
                 return;
             }
 
-            this.basisFunction.Evaluate(t, order, out int imin, out int imax);
+            basisFunction.Evaluate(t, order, out int imin, out int imax);
 
             // Compute position.
-            this.Compute(0, imin, imax, out Vector3 X, out double w);
+            Compute(0, imin, imax, out Vector3 X, out double w);
             double invW = 1.0 / w;
             jet[0] = invW * X;
 
             if (order >= 1)
             {
                 // Compute first derivative.
-                this.Compute(1, imin, imax, out Vector3 xDer1, out double wDer1);
+                Compute(1, imin, imax, out Vector3 xDer1, out double wDer1);
                 jet[1] = invW * (xDer1 - wDer1 * jet[0]);
 
                 if (order >= 2)
                 {
                     // Compute second derivative.
-                    this.Compute(2, imin, imax, out Vector3 xDer2, out double wDer2);
+                    Compute(2, imin, imax, out Vector3 xDer2, out double wDer2);
                     jet[2] = invW * (xDer2 - 2.0 * wDer1 * jet[1] - wDer2 * jet[0]);
 
                     if (order == 3)
                     {
                         // Compute third derivative.
-                        this.Compute(3, imin, imax, out Vector3 xDer3, out double wDer3);
+                        Compute(3, imin, imax, out Vector3 xDer3, out double wDer3);
                         jet[3] = invW * (xDer3 - 3.0 * wDer1 * jet[2] - 3.0 * wDer2 * jet[1] - wDer3 * jet[0]);
                     }
                 }
@@ -185,14 +185,14 @@ namespace netDxf.GTE
             // handle both aperiodic and periodic splines.  For aperiodic
             // splines, j = i always.
 
-            int numControls = this.NumControls;
+            int numControls = NumControls;
             x = Vector3.Zero;
             w = 0.0;
             for (int i = imin; i <= imax; ++i)
             {
                 int j = (i >= numControls ? i - numControls : i);
-                double tmp = this.basisFunction.GetValue(order, i) * this.weights[j];
-                x += tmp * this.controls[j];
+                double tmp = basisFunction.GetValue(order, i) * weights[j];
+                x += tmp * controls[j];
                 w += tmp;
             }
         }

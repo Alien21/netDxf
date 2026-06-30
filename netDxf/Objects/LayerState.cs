@@ -70,12 +70,12 @@ namespace netDxf.Objects
         public LayerState(string name, IEnumerable<Layer> layers)
             : base(name, DxfObjectCode.LayerStates, true)
         {
-            this.description = string.Empty;
-            this.currentLayer = Layer.DefaultName;
-            this.paperSpace = false;
+            description = string.Empty;
+            currentLayer = Layer.DefaultName;
+            paperSpace = false;
 
-            this.properties = new ObservableDictionary<string, LayerStateProperties>();
-            this.properties.BeforeAddItem += this.Properties_BeforeAddItem;
+            properties = new ObservableDictionary<string, LayerStateProperties>();
+            properties.BeforeAddItem += Properties_BeforeAddItem;
 
             if (layers == null)
             {
@@ -85,7 +85,7 @@ namespace netDxf.Objects
             foreach (Layer layer in layers)
             {
                 LayerStateProperties prop = new LayerStateProperties(layer);
-                this.properties.Add(prop.Name, prop);
+                properties.Add(prop.Name, prop);
             }
         }
 
@@ -98,8 +98,8 @@ namespace netDxf.Objects
         /// </summary>
         public string Description
         {
-            get { return this.description; }
-            set { this.description = string.IsNullOrEmpty(value) ? string.Empty : value; }
+            get { return description; }
+            set { description = string.IsNullOrEmpty(value) ? string.Empty : value; }
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace netDxf.Objects
         /// </summary>
         public string CurrentLayer
         {
-            get { return this.currentLayer; }
+            get { return currentLayer; }
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -115,14 +115,14 @@ namespace netDxf.Objects
                     throw new ArgumentNullException(nameof(value));
                 }
 
-                if (this.Owner != null)
+                if (Owner != null)
                 {
-                    if(!this.Owner.Owner.Layers.Contains(value))
+                    if(!Owner.Owner.Layers.Contains(value))
                     {
                         throw new ArgumentException("The value cannot be set as the current layer. It does not exist in the document owner of this layer state.", nameof(value));
                     }
                 }
-                this.currentLayer = value;
+                currentLayer = value;
             }
         }
 
@@ -131,8 +131,8 @@ namespace netDxf.Objects
         /// </summary>
         public bool PaperSpace
         {
-            get { return this.paperSpace; }
-            set { this.paperSpace = value; }
+            get { return paperSpace; }
+            set { paperSpace = value; }
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace netDxf.Objects
         /// </summary>
         public ObservableDictionary<string, LayerStateProperties> Properties
         {
-            get { return this.properties; }
+            get { return properties; }
         }
 
         /// <summary>
@@ -427,7 +427,7 @@ namespace netDxf.Objects
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -442,12 +442,12 @@ namespace netDxf.Objects
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            if (this.Owner == null)
+            if (Owner == null)
             {
                 return null;
             }
 
-            return this.Owner.GetReferences(this.Name);
+            return Owner.GetReferences(Name);
         } // TODO: Check this
 
         /// <summary>
@@ -459,11 +459,11 @@ namespace netDxf.Objects
         {
             LayerState ls = new LayerState(newName)
             {
-                Description = this.description,
-                CurrentLayer = this.currentLayer
+                Description = description,
+                CurrentLayer = currentLayer
             };
 
-            foreach (LayerStateProperties item in this.properties.Values)
+            foreach (LayerStateProperties item in properties.Values)
             {
                 LayerStateProperties lp = (LayerStateProperties) item.Clone();
                 ls.Properties.Add(lp.Name, lp);
@@ -478,7 +478,7 @@ namespace netDxf.Objects
         /// <returns>A new LayerState that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion
@@ -491,9 +491,9 @@ namespace netDxf.Objects
             {
                 e.Cancel = true;
             }
-            else if (this.Owner != null)
+            else if (Owner != null)
             {
-                DxfDocument doc = this.Owner.Owner;
+                DxfDocument doc = Owner.Owner;
                 if (!doc.Layers.Contains(e.Item.Key))
                 {
                     e.Cancel = true;

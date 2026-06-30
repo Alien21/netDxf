@@ -42,7 +42,7 @@ namespace netDxf.Objects
         public event EntityAddedEventHandler EntityAdded;
         protected virtual void OnEntityAddedEvent(EntityObject item)
         {
-            EntityAddedEventHandler ae = this.EntityAdded;
+            EntityAddedEventHandler ae = EntityAdded;
             if (ae != null)
                 ae(this, new GroupEntityChangeEventArgs(item));
         }
@@ -51,7 +51,7 @@ namespace netDxf.Objects
         public event EntityRemovedEventHandler EntityRemoved;
         protected virtual void OnEntityRemovedEvent(EntityObject item)
         {
-            EntityRemovedEventHandler ae = this.EntityRemoved;
+            EntityRemovedEventHandler ae = EntityRemoved;
             if (ae != null)
                 ae(this, new GroupEntityChangeEventArgs(item));
         }
@@ -115,14 +115,14 @@ namespace netDxf.Objects
         public Group(string name, IEnumerable<EntityObject> entities)
             : base(name, DxfObjectCode.Group, !string.IsNullOrEmpty(name))
         {
-            this.isUnnamed = string.IsNullOrEmpty(name);
-            this.description = string.Empty;
-            this.isSelectable = true;
+            isUnnamed = string.IsNullOrEmpty(name);
+            description = string.Empty;
+            isSelectable = true;
             this.entities = new EntityCollection();
-            this.entities.BeforeAddItem += this.Entities_BeforeAddItem;
-            this.entities.AddItem += this.Entities_AddItem;
-            this.entities.BeforeRemoveItem += this.Entities_BeforeRemoveItem;
-            this.entities.RemoveItem += this.Entities_RemoveItem;
+            this.entities.BeforeAddItem += Entities_BeforeAddItem;
+            this.entities.AddItem += Entities_AddItem;
+            this.entities.BeforeRemoveItem += Entities_BeforeRemoveItem;
+            this.entities.RemoveItem += Entities_RemoveItem;
             if (entities != null)
             {
                 this.entities.AddRange(entities);
@@ -132,14 +132,14 @@ namespace netDxf.Objects
         internal Group(string name, bool checkName)
             : base(name, DxfObjectCode.Group, checkName)
         {
-            this.isUnnamed = string.IsNullOrEmpty(name) || name.StartsWith("*");
-            this.description = string.Empty;
-            this.isSelectable = true;
-            this.entities = new EntityCollection();
-            this.entities.BeforeAddItem += this.Entities_BeforeAddItem;
-            this.entities.AddItem += this.Entities_AddItem;
-            this.entities.BeforeRemoveItem += this.Entities_BeforeRemoveItem;
-            this.entities.RemoveItem += this.Entities_RemoveItem;
+            isUnnamed = string.IsNullOrEmpty(name) || name.StartsWith("*");
+            description = string.Empty;
+            isSelectable = true;
+            entities = new EntityCollection();
+            entities.BeforeAddItem += Entities_BeforeAddItem;
+            entities.AddItem += Entities_AddItem;
+            entities.BeforeRemoveItem += Entities_BeforeRemoveItem;
+            entities.RemoveItem += Entities_RemoveItem;
         }
 
         #endregion
@@ -156,7 +156,7 @@ namespace netDxf.Objects
             set
             {
                 base.Name = value;
-                this.isUnnamed = false;
+                isUnnamed = false;
             }
         }
 
@@ -165,8 +165,8 @@ namespace netDxf.Objects
         /// </summary>
         public string Description
         {
-            get { return this.description; }
-            set { this.description = value; }
+            get { return description; }
+            set { description = value; }
         }
 
         /// <summary>
@@ -174,8 +174,8 @@ namespace netDxf.Objects
         /// </summary>
         public bool IsUnnamed
         {
-            get { return this.isUnnamed; }
-            internal set { this.isUnnamed = value; }
+            get { return isUnnamed; }
+            internal set { isUnnamed = value; }
         }
 
         /// <summary>
@@ -183,8 +183,8 @@ namespace netDxf.Objects
         /// </summary>
         public bool IsSelectable
         {
-            get { return this.isSelectable; }
-            set { this.isSelectable = value; }
+            get { return isSelectable; }
+            set { isSelectable = value; }
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace netDxf.Objects
         /// </remarks>
         public EntityCollection Entities
         {
-            get { return this.entities; }
+            get { return entities; }
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace netDxf.Objects
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -239,12 +239,12 @@ namespace netDxf.Objects
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            if (this.Owner == null)
+            if (Owner == null)
             {
                 return null;
             }
 
-            return this.Owner.GetReferences(this.Name);
+            return Owner.GetReferences(Name);
         }
 
         /// <summary>
@@ -255,19 +255,19 @@ namespace netDxf.Objects
         /// <remarks>The entities that belong to the group will also be cloned.</remarks>
         public override TableObject Clone(string newName)
         {
-            EntityObject[] refs = new EntityObject[this.entities.Count];
-            for (int i = 0; i < this.entities.Count; i++)
+            EntityObject[] refs = new EntityObject[entities.Count];
+            for (int i = 0; i < entities.Count; i++)
             {
-                refs[i] = (EntityObject) this.entities[i].Clone();
+                refs[i] = (EntityObject) entities[i].Clone();
             }
 
             Group copy = new Group(newName, refs)
             {
-                Description = this.description,
-                IsSelectable = this.isSelectable
+                Description = description,
+                IsSelectable = isSelectable
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -281,7 +281,7 @@ namespace netDxf.Objects
         /// <returns>A new Group that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.IsUnnamed ? string.Empty : this.Name);
+            return Clone(IsUnnamed ? string.Empty : Name);
         }
 
         #endregion
@@ -295,7 +295,7 @@ namespace netDxf.Objects
             {
                 e.Cancel = true;
             }
-            else if (this.entities.Contains(e.Item))
+            else if (entities.Contains(e.Item))
             {
                 e.Cancel = true;
             }
@@ -308,7 +308,7 @@ namespace netDxf.Objects
         private void Entities_AddItem(EntityCollection sender, EntityCollectionEventArgs e)
         {
             e.Item.AddReactor(this);
-            this.OnEntityAddedEvent(e.Item);
+            OnEntityAddedEvent(e.Item);
         }
 
         private void Entities_BeforeRemoveItem(EntityCollection sender, EntityCollectionEventArgs e)
@@ -318,7 +318,7 @@ namespace netDxf.Objects
         private void Entities_RemoveItem(EntityCollection sender, EntityCollectionEventArgs e)
         {
             e.Item.RemoveReactor(this);
-            this.OnEntityRemovedEvent(e.Item);
+            OnEntityRemovedEvent(e.Item);
         }
 
         #endregion

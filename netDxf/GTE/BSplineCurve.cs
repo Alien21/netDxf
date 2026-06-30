@@ -49,10 +49,10 @@ namespace netDxf.GTE
         public BSplineCurve(BasisFunctionInput input, Vector3[] controls)
             : base(0.0, 1.0)
         {
-            this.basisFunction = new BasisFunction(input);
+            basisFunction = new BasisFunction(input);
 
             // The mBasisFunction stores the domain but so does ParametricCurve.
-            this.SetTimeInterval(this.basisFunction.MinDomain, this.basisFunction.MaxDomain);
+            SetTimeInterval(basisFunction.MinDomain, basisFunction.MaxDomain);
 
             // The replication of control points for periodic splines is
             // avoided by wrapping the i-loop index in Evaluate.
@@ -62,23 +62,23 @@ namespace netDxf.GTE
                 controls.CopyTo(this.controls, 0);
             }
 
-            this.isConstructed = true;
+            isConstructed = true;
         }
 
         // Member access.
         public BasisFunction BasisFunction
         {
-            get { return this.basisFunction; }
+            get { return basisFunction; }
         }
 
         public int NumControls
         {
-            get { return this.controls.Length; }
+            get { return controls.Length; }
         }
 
         public Vector3[] Controls
         {
-            get { return this.controls; }
+            get { return controls; }
         }
 
         // Evaluation of the curve.  The function supports derivative
@@ -93,27 +93,27 @@ namespace netDxf.GTE
             int supOrder = SUP_ORDER;
             jet = new Vector3[supOrder];
 
-            if (!this.isConstructed || order >= supOrder)
+            if (!isConstructed || order >= supOrder)
             {
                 // Return a zero-valued jet for invalid state.
                 return;
             }
 
-            this.basisFunction.Evaluate(t, order, out int imin, out int imax);
+            basisFunction.Evaluate(t, order, out int imin, out int imax);
 
             // Compute position.
-            jet[0] = this.Compute(0, imin, imax);
+            jet[0] = Compute(0, imin, imax);
             if (order >= 1)
             {
                 // Compute first derivative.
-                jet[1] = this.Compute(1, imin, imax);
+                jet[1] = Compute(1, imin, imax);
                 if (order >= 2)
                 {
                     // Compute second derivative.
-                    jet[2] = this.Compute(2, imin, imax);
+                    jet[2] = Compute(2, imin, imax);
                     if (order == 3)
                     {
-                        jet[3] = this.Compute(3, imin, imax);
+                        jet[3] = Compute(3, imin, imax);
                     }
                 }
             }
@@ -126,13 +126,13 @@ namespace netDxf.GTE
             // both aperiodic and periodic splines.  For aperiodic splines, j = i
             // always.
 
-            int numControls = this.NumControls;
+            int numControls = NumControls;
             Vector3 result = Vector3.Zero;
             for (int i = imin; i <= imax; i++)
             {
-                double tmp = this.basisFunction.GetValue(order, i);
+                double tmp = basisFunction.GetValue(order, i);
                 int j = i >= numControls ? i - numControls : i;
-                result += tmp * this.controls[j];
+                result += tmp * controls[j];
             }
             return result;
         }

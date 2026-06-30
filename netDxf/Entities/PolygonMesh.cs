@@ -86,10 +86,10 @@ namespace netDxf.Entities
                 throw new ArgumentException("The number of vertexes must be equal to UxV.", nameof(vertexes));
             }
 
-            this.densityU = 0;
-            this.densityV = 0;
-            this.smoothType = PolylineSmoothType.NoSmooth;
-            this.flags = PolylineTypeFlags.PolygonMesh;
+            densityU = 0;
+            densityV = 0;
+            smoothType = PolylineSmoothType.NoSmooth;
+            flags = PolylineTypeFlags.PolygonMesh;
         }
 
         #endregion
@@ -101,7 +101,7 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3[] Vertexes
         {
-            get { return this.vertexes; }
+            get { return vertexes; }
         }
 
         /// <summary>
@@ -112,9 +112,9 @@ namespace netDxf.Entities
         /// <param name="vertex">A Vector3.</param>
         public void SetVertex(int i0, int i1, Vector3 vertex)
         {
-            if (0 <= i0 && i0 < this.u && 0 <= i1 && i1 < this.v)
+            if (0 <= i0 && i0 < u && 0 <= i1 && i1 < v)
             {
-                this.vertexes[i0 + this.u * i1] = vertex;
+                vertexes[i0 + u * i1] = vertex;
             }
         }
 
@@ -125,12 +125,12 @@ namespace netDxf.Entities
         /// <param name="i1">Index of the vertex in the V direction.</param>
         public Vector3 GetVertex(int i0, int i1)
         {
-            if (0 <= i0 && i0 < this.u && 0 <= i1 && i1 < this.v)
+            if (0 <= i0 && i0 < u && 0 <= i1 && i1 < v)
             {
-                return this.vertexes[i0 + this.u * i1];
+                return vertexes[i0 + u * i1];
             }
 
-            return this.vertexes[0];
+            return vertexes[0];
         }
         
         /// <summary>
@@ -138,7 +138,7 @@ namespace netDxf.Entities
         /// </summary>
         public short U
         {
-            get { return this.u; }
+            get { return u; }
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace netDxf.Entities
         /// </summary>
         public short V
         {
-            get { return this.v; }
+            get { return v; }
         }
 
         /// <summary>
@@ -155,14 +155,14 @@ namespace netDxf.Entities
         /// <remarks>Valid values range from 3 to 201.</remarks>
         public short DensityU
         {
-            get { return this.densityU; }
+            get { return densityU; }
             set
             {
                 if (value < 3 || value > 201)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The density value must be between 3 and 201.");
                 }
-                this.densityU = value;
+                densityU = value;
             }
         }
 
@@ -172,14 +172,14 @@ namespace netDxf.Entities
         /// <remarks>Valid values range from 3 to 201.</remarks>
         public short DensityV
         {
-            get { return this.densityV; }
+            get { return densityV; }
             set
             {
                 if (value < 3 || value > 201)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The density value must be between 3 and 201.");
                 }
-                this.densityV = value;
+                densityV = value;
             }
         }
 
@@ -188,16 +188,16 @@ namespace netDxf.Entities
         /// </summary>
         public bool IsClosedInU
         {
-            get { return this.flags.HasFlag(PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM); }
+            get { return flags.HasFlag(PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM); }
             set
             {
                 if (value)
                 {
-                    this.flags |= PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM;
+                    flags |= PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM;
                 }
                 else
                 {
-                    this.flags &= ~PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM;
+                    flags &= ~PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM;
                 }
             }
         }
@@ -207,16 +207,16 @@ namespace netDxf.Entities
         /// </summary>
         public bool IsClosedInV
         {
-            get { return this.flags.HasFlag(PolylineTypeFlags.ClosedPolygonMeshInN); }
+            get { return flags.HasFlag(PolylineTypeFlags.ClosedPolygonMeshInN); }
             set
             {
                 if (value)
                 {
-                    this.flags |= PolylineTypeFlags.ClosedPolygonMeshInN;
+                    flags |= PolylineTypeFlags.ClosedPolygonMeshInN;
                 }
                 else
                 {
-                    this.flags &= ~PolylineTypeFlags.ClosedPolygonMeshInN;
+                    flags &= ~PolylineTypeFlags.ClosedPolygonMeshInN;
                 }
             }
         }
@@ -229,18 +229,18 @@ namespace netDxf.Entities
         /// </remarks>
         public PolylineSmoothType SmoothType
         {
-            get { return this.smoothType; }
+            get { return smoothType; }
             set
             {
                 if (value == PolylineSmoothType.NoSmooth)
                 {
-                    this.flags &= ~PolylineTypeFlags.SplineFit;
+                    flags &= ~PolylineTypeFlags.SplineFit;
                 }
                 else
                 {
-                    this.flags |= PolylineTypeFlags.SplineFit;
+                    flags |= PolylineTypeFlags.SplineFit;
                 }
-                this.smoothType = value;
+                smoothType = value;
             }
         }
 
@@ -293,8 +293,8 @@ namespace netDxf.Entities
         /// </summary>
         internal PolylineTypeFlags Flags
         {
-            get { return this.flags; }
-            set { this.flags = value; }
+            get { return flags; }
+            set { flags = value; }
         }
 
         #endregion
@@ -310,8 +310,8 @@ namespace netDxf.Entities
         /// </remarks>
         public List<Vector3> MeshVertexes()
         {
-            int precisionU = this.densityU == 0 ? this.Owner == null ? DefaultSurfU + 1 : this.Owner.Record.Owner.Owner.DrawingVariables.SurfU + 1 : this.densityU;
-            int precisionV = this.densityV == 0 ? this.Owner == null ? DefaultSurfV + 1 : this.Owner.Record.Owner.Owner.DrawingVariables.SurfV + 1 : this.densityV;
+            int precisionU = densityU == 0 ? Owner == null ? DefaultSurfU + 1 : Owner.Record.Owner.Owner.DrawingVariables.SurfU + 1 : densityU;
+            int precisionV = densityV == 0 ? Owner == null ? DefaultSurfV + 1 : Owner.Record.Owner.Owner.DrawingVariables.SurfV + 1 : densityV;
 
             // the minimum vertexes generated is 3.
             if (precisionU < 3)
@@ -322,7 +322,7 @@ namespace netDxf.Entities
             {
                 precisionV = 3;
             }
-            return this.MeshVertexes(precisionU, precisionV);
+            return MeshVertexes(precisionU, precisionV);
         }
 
         /// <summary>
@@ -343,45 +343,45 @@ namespace netDxf.Entities
             }
 
             int degree;
-            if (this.smoothType == PolylineSmoothType.Quadratic)
+            if (smoothType == PolylineSmoothType.Quadratic)
             {
                 degree = 2;
             }
-            else if (this.smoothType == PolylineSmoothType.Cubic)
+            else if (smoothType == PolylineSmoothType.Cubic)
             {
                 degree = 3;
             }
             else
             {
-                return new List<Vector3>(this.vertexes);
+                return new List<Vector3>(vertexes);
             }
 
             List<Vector3> controlsUV = new List<Vector3>();
-            int numU = this.u;
-            int numV = this.v;
+            int numU = u;
+            int numV = v;
 
             // duplicate vertexes to handle periodic BSpline surfaces
-            if (this.IsClosedInU)
+            if (IsClosedInU)
             {
                 numU += degree;
-                for (int i = 0; i < this.v; i++)
+                for (int i = 0; i < v; i++)
                 {
-                    for (int j = 0; j < this.u + degree; j++)
+                    for (int j = 0; j < u + degree; j++)
                     {
-                        if (j < this.u)
+                        if (j < u)
                         {
-                            controlsUV.Add(this.vertexes[i * this.u + j]);
+                            controlsUV.Add(vertexes[i * u + j]);
                         }
                         else
                         {
                             for (int k = 0; k < degree; k++, j++)
                             {
-                                controlsUV.Add(this.vertexes[i * this.u + k]);
+                                controlsUV.Add(vertexes[i * u + k]);
                             }
                         }
                     }
                 }
-                if (this.IsClosedInV)
+                if (IsClosedInV)
                 {
                     numV += degree;
                     for (int i = 0; i < degree; i++)
@@ -393,21 +393,21 @@ namespace netDxf.Entities
                     }
                 }
             }
-            else if (this.IsClosedInV)
+            else if (IsClosedInV)
             {
-                controlsUV.AddRange(this.vertexes);
+                controlsUV.AddRange(vertexes);
                 numV += degree;
                 for (int i = 0; i < degree; i++)
                 {
-                    for (int j = 0; j < this.u; j++)
+                    for (int j = 0; j < u; j++)
                     {
-                        controlsUV.Add(this.vertexes[i * this.u + j]);
+                        controlsUV.Add(vertexes[i * u + j]);
                     }
                 }
             }
             else
             {
-                controlsUV.AddRange(this.vertexes);
+                controlsUV.AddRange(vertexes);
             }
 
             GTE.BasisFunctionInput bfU = new GTE.BasisFunctionInput(numU, degree);
@@ -416,26 +416,26 @@ namespace netDxf.Entities
             GTE.BSplineSurface surface = new GTE.BSplineSurface(bfU, bfV, controlsUV.ToArray());
 
             //change the knot vector to handle periodic BSplines
-            if (this.IsClosedInU)
+            if (IsClosedInU)
             {
-                double factor = 1.0 / this.u;
+                double factor = 1.0 / u;
                 for (int i = 0; i < surface.BasisFunction(0).NumKnots; i++)
                 {
                     surface.BasisFunction(0).Knots[i] = (i - surface.BasisFunction(0).Degree) * factor;
                 }
             }
 
-            if (this.IsClosedInV)
+            if (IsClosedInV)
             {
-                double factor = 1.0 / this.v;
+                double factor = 1.0 / v;
                 for (int i = 0; i < surface.BasisFunction(1).NumKnots; i++)
                 {
                     surface.BasisFunction(1).Knots[i] = (i - surface.BasisFunction(1).Degree) * factor;
                 }
             }
 
-            double stepU = this.IsClosedInU ? 1.0 / precisionU : 1.0 / (precisionU - 1);
-            double stepV = this.IsClosedInV ? 1.0 / precisionV : 1.0 / (precisionV - 1);
+            double stepU = IsClosedInU ? 1.0 / precisionU : 1.0 / (precisionU - 1);
+            double stepV = IsClosedInV ? 1.0 / precisionV : 1.0 / (precisionV - 1);
             double tU = 0.0;
             double tV = 0.0;
             List<Vector3> ocsVertexes = new List<Vector3>(precisionU * precisionV);
@@ -460,10 +460,10 @@ namespace netDxf.Entities
         /// <returns>A <see cref="Mesh">Mesh entity</see>.</returns>
         public Mesh ToMesh()
         {
-            int precisionU = this.densityU == 0 ? this.Owner == null ? DefaultSurfU + 1 : this.Owner.Record.Owner.Owner.DrawingVariables.SurfU + 1 : this.densityU;
-            int precisionV = this.densityV == 0 ? this.Owner == null ? DefaultSurfV + 1 : this.Owner.Record.Owner.Owner.DrawingVariables.SurfV + 1 : this.densityV;
+            int precisionU = densityU == 0 ? Owner == null ? DefaultSurfU + 1 : Owner.Record.Owner.Owner.DrawingVariables.SurfU + 1 : densityU;
+            int precisionV = densityV == 0 ? Owner == null ? DefaultSurfV + 1 : Owner.Record.Owner.Owner.DrawingVariables.SurfV + 1 : densityV;
 
-            return this.ToMesh(precisionU, precisionV);
+            return ToMesh(precisionU, precisionV);
         }
 
         /// <summary>
@@ -477,14 +477,14 @@ namespace netDxf.Entities
         /// </remarks>
         public Mesh ToMesh(int precisionU, int precisionV)
         {
-            List<Vector3> meshVertexes = this.MeshVertexes(precisionU, precisionV);
+            List<Vector3> meshVertexes = MeshVertexes(precisionU, precisionV);
 
             int precU;
             int precV;
-            if (this.smoothType == PolylineSmoothType.NoSmooth)
+            if (smoothType == PolylineSmoothType.NoSmooth)
             {
-                precU = this.u;
-                precV = this.v;
+                precU = u;
+                precV = v;
             }
             else
             {
@@ -502,7 +502,7 @@ namespace netDxf.Entities
                     
                     if (j == precU - 1)
                     {
-                        if (this.IsClosedInU && i < precV - 1)
+                        if (IsClosedInU && i < precV - 1)
                         {
                             v1 = i * precU + j;
                             v2 = i * precU;
@@ -515,7 +515,7 @@ namespace netDxf.Entities
 
                     if (i == precV - 1)
                     {
-                        if (this.IsClosedInV && j < precU - 1)
+                        if (IsClosedInV && j < precU - 1)
                         {
                             v1 = i * precU + j;
                             v2 = v1 + 1;
@@ -543,19 +543,19 @@ namespace netDxf.Entities
         /// <returns>A list of <see cref="Face3D">faces 3D</see> that made up the polygon mesh.</returns>
         public List<Face3D> Explode()
         {
-            List<Vector3> meshVertexes = this.MeshVertexes();
+            List<Vector3> meshVertexes = MeshVertexes();
 
             int precU;
             int precV;
-            if (this.smoothType == PolylineSmoothType.NoSmooth)
+            if (smoothType == PolylineSmoothType.NoSmooth)
             {
-                precU = this.u;
-                precV = this.v;
+                precU = u;
+                precV = v;
             }
             else
             {
-                precU = this.densityU;
-                precV = this.densityV;
+                precU = densityU;
+                precV = densityV;
             }
 
             List<Face3D> faces = new List<Face3D>();
@@ -567,7 +567,7 @@ namespace netDxf.Entities
                     int v1, v2, v3, v4;
                     if (j == precU - 1)
                     {
-                        if (this.IsClosedInU && i < precV - 1)
+                        if (IsClosedInU && i < precV - 1)
                         {
                             v1 = i * precU + j;
                             v2 = i * precU;
@@ -580,7 +580,7 @@ namespace netDxf.Entities
 
                     if (i == precV - 1)
                     {
-                        if (this.IsClosedInV && j < precU - 1)
+                        if (IsClosedInV && j < precU - 1)
                         {
                             v1 = i * precU + j;
                             v2 = v1 + 1;
@@ -614,17 +614,17 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            for (int i = 0; i < this.vertexes.Length; i++)
+            for (int i = 0; i < vertexes.Length; i++)
             {
-                this.vertexes[i] = transformation * this.vertexes[i] + translation;
+                vertexes[i] = transformation * vertexes[i] + translation;
             }
 
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
-            this.Normal = newNormal;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -633,24 +633,24 @@ namespace netDxf.Entities
         /// <returns>A new PolygonMesh that is a copy of this instance.</returns>
         public override object Clone()
         {
-            PolygonMesh entity = new PolygonMesh(this.u, this.v, this.vertexes)
+            PolygonMesh entity = new PolygonMesh(u, v, vertexes)
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //PolygonMesh properties
-                DensityU = this.densityU,
-                DensityV = this.densityV,
-                Flags = this.flags
+                DensityU = densityU,
+                DensityV = densityV,
+                Flags = flags
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

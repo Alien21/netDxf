@@ -60,7 +60,7 @@ namespace netDxf
             this.y = y;
             this.z = z;
             this.w = w;
-            this.isNormalized = false;
+            isNormalized = false;
         }
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace netDxf
                 throw new ArgumentOutOfRangeException(nameof(array), array.Length, "The dimension of the array must be four.");
             }
 
-            this.x = array[0];
-            this.y = array[1];
-            this.z = array[2];
-            this.w = array[3];
-            this.isNormalized = false;
+            x = array[0];
+            y = array[1];
+            z = array[2];
+            w = array[3];
+            isNormalized = false;
         }
 
         #endregion
@@ -147,11 +147,11 @@ namespace netDxf
         /// </summary>
         public double X
         {
-            get { return this.x; }
+            get { return x; }
             set
             {
-                this.x = value;
-                this.isNormalized = false;
+                x = value;
+                isNormalized = false;
             }
         }
 
@@ -160,11 +160,11 @@ namespace netDxf
         /// </summary>
         public double Y
         {
-            get { return this.y; }
+            get { return y; }
             set
             {
-                this.y = value;
-                this.isNormalized = false;
+                y = value;
+                isNormalized = false;
             }
         }
 
@@ -173,11 +173,11 @@ namespace netDxf
         /// </summary>
         public double Z
         {
-            get { return this.z; }
+            get { return z; }
             set
             {
-                this.z = value;
-                this.isNormalized = false;
+                z = value;
+                isNormalized = false;
             }
         }
 
@@ -186,11 +186,11 @@ namespace netDxf
         /// </summary>
         public double W
         {
-            get { return this.w; }
+            get { return w; }
             set
             {
-                this.w = value;
-                this.isNormalized = false;
+                w = value;
+                isNormalized = false;
             }
         }
 
@@ -205,13 +205,13 @@ namespace netDxf
                 switch (index)
                 {
                     case 0:
-                        return this.x;
+                        return x;
                     case 1:
-                        return this.y;
+                        return y;
                     case 2:
-                        return this.z;
+                        return z;
                     case 3:
-                        return this.w;
+                        return w;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(index));
                 }
@@ -221,22 +221,22 @@ namespace netDxf
                 switch (index)
                 {
                     case 0:
-                        this.x = value;
+                        x = value;
                         break;
                     case 1:
-                        this.y = value;
+                        y = value;
                         break;
                     case 2:
-                        this.z = value;
+                        z = value;
                         break;
                     case 3:
-                        this.w = value;
+                        w = value;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(index));
                 }
 
-                this.isNormalized = false;
+                isNormalized = false;
             }
         }
 
@@ -245,7 +245,7 @@ namespace netDxf
         /// </summary>
         public bool IsNormalized
         {
-            get { return this.isNormalized; }
+            get { return isNormalized; }
         }
 
         #endregion
@@ -549,12 +549,12 @@ namespace netDxf
         /// </summary>
         public void Normalize()
         {
-            if (this.isNormalized)
+            if (isNormalized)
             {
                 return;
             }
 
-            double mod = this.Modulus();
+            double mod = Modulus();
             if (MathHelper.IsZero(mod))
             {
                 this = Zero;
@@ -562,12 +562,12 @@ namespace netDxf
             }
 
             double modInv = 1 / mod;
-            this.x *= modInv;
-            this.y *= modInv;
-            this.z *= modInv;
-            this.w *= modInv;
+            x *= modInv;
+            y *= modInv;
+            z *= modInv;
+            w *= modInv;
 
-            this.isNormalized = true;
+            isNormalized = true;
         }
 
         /// <summary>
@@ -576,7 +576,7 @@ namespace netDxf
         /// <returns>Vector modulus.</returns>
         public double Modulus()
         {
-            return this.isNormalized ? 1.0 : Math.Sqrt(DotProduct(this, this));
+            return isNormalized ? 1.0 : Math.Sqrt(DotProduct(this, this));
         }
 
         /// <summary>
@@ -585,7 +585,7 @@ namespace netDxf
         /// <returns>Array.</returns>
         public double[] ToArray()
         {
-            return new[] {this.x, this.y, this.z};
+            return new[] {x, y, z};
         }
 
         #endregion
@@ -622,7 +622,7 @@ namespace netDxf
         /// <returns>True if the four components are almost equal or false in any other case.</returns>
         public bool Equals(Vector4 other)
         {
-            return this.Equals(other, MathHelper.Epsilon);
+            return Equals(other, MathHelper.Epsilon);
         }
 
         /// <summary>
@@ -633,10 +633,10 @@ namespace netDxf
         /// <returns>True if the four components are almost equal or false in any other case.</returns>
         public bool Equals(Vector4 other, double threshold)
         {
-            return MathHelper.IsEqual(other.X, this.X, threshold) &&
-                   MathHelper.IsEqual(other.Y, this.Y, threshold) &&
-                   MathHelper.IsEqual(other.Z, this.Z, threshold) &&
-                   MathHelper.IsEqual(other.W, this.W, threshold);
+            return MathHelper.IsEqual(other.X, X, threshold) &&
+                   MathHelper.IsEqual(other.Y, Y, threshold) &&
+                   MathHelper.IsEqual(other.Z, Z, threshold) &&
+                   MathHelper.IsEqual(other.W, W, threshold);
         }
 
         /// <summary>
@@ -648,7 +648,7 @@ namespace netDxf
         {
             if (other is Vector4 vector)
             {
-                return this.Equals(vector);
+                return Equals(vector);
             }
 
             return false;
@@ -660,7 +660,7 @@ namespace netDxf
         /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
         public override int GetHashCode()
         {
-            return this.X.GetHashCode() ^ this.Y.GetHashCode() ^ this.Z.GetHashCode() ^ this.W.GetHashCode();
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode() ^ W.GetHashCode();
         }
 
         #endregion
@@ -673,7 +673,7 @@ namespace netDxf
         /// <returns>A string text.</returns>
         public override string ToString()
         {
-            return string.Format("{0}{4} {1}{4} {2}{4} {3}", this.x, this.y, this.z, this.w, Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
+            return string.Format("{0}{4} {1}{4} {2}{4} {3}", x, y, z, w, Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
         }
 
         /// <summary>
@@ -683,7 +683,7 @@ namespace netDxf
         /// <returns>A string text.</returns>
         public string ToString(IFormatProvider provider)
         {
-            return string.Format("{0}{4} {1}{4} {2}{4} {3}", this.x.ToString(provider), this.y.ToString(provider), this.z.ToString(provider), this.w.ToString(provider), Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
+            return string.Format("{0}{4} {1}{4} {2}{4} {3}", x.ToString(provider), y.ToString(provider), z.ToString(provider), w.ToString(provider), Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
         }
 
         #endregion

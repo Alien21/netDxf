@@ -58,7 +58,7 @@ namespace netDxf.Entities
         public event AttributeAddedEventHandler AttributeAdded;
         protected virtual void OnAttributeAddedEvent(Attribute item)
         {
-            AttributeAddedEventHandler ae = this.AttributeAdded;
+            AttributeAddedEventHandler ae = AttributeAdded;
             if (ae != null)
             {
                 ae(this, new AttributeChangeEventArgs(item));
@@ -69,7 +69,7 @@ namespace netDxf.Entities
         public event AttributeRemovedEventHandler AttributeRemoved;
         protected virtual void OnAttributeRemovedEvent(Attribute item)
         {
-            AttributeRemovedEventHandler ae = this.AttributeRemoved;
+            AttributeRemovedEventHandler ae = AttributeRemoved;
             if (ae != null)
             {
                 ae(this, new AttributeChangeEventArgs(item));
@@ -108,10 +108,10 @@ namespace netDxf.Entities
                 att.Owner = this;
             }
 
-            this.block = null;
-            this.position = Vector3.Zero;
-            this.scale = new Vector3(1.0);
-            this.rotation = 0.0;
+            block = null;
+            position = Vector3.Zero;
+            scale = new Vector3(1.0);
+            rotation = 0.0;
         }
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace netDxf.Entities
         {  
             this.block = block ?? throw new ArgumentNullException(nameof(block));
             this.position = position;
-            this.scale = new Vector3(1.0);
-            this.rotation = 0.0;
+            scale = new Vector3(1.0);
+            rotation = 0.0;
 
             List<Attribute> atts = new List<Attribute>(block.AttributeDefinitions.Count);
             foreach (AttributeDefinition attdef in block.AttributeDefinitions.Values)
@@ -157,7 +157,7 @@ namespace netDxf.Entities
                 atts.Add(att);
             }
 
-            this.attributes = new AttributeCollection(atts);
+            attributes = new AttributeCollection(atts);
         }
 
         #endregion
@@ -178,7 +178,7 @@ namespace netDxf.Entities
         /// </summary>
         public AttributeCollection Attributes
         {
-            get { return this.attributes; }
+            get { return attributes; }
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace netDxf.Entities
         /// </summary>
         public Block Block
         {
-            get { return this.block; }
+            get { return block; }
             internal set
             {
                 //if (value == null)
@@ -210,7 +210,7 @@ namespace netDxf.Entities
                 //}
                 //this.attributes = new AttributeCollection();
 
-                this.block = value;
+                block = value;
             }
         }
 
@@ -219,8 +219,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Position
         {
-            get { return this.position; }
-            set { this.position = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace netDxf.Entities
         /// <remarks>None of the vector scale components can be zero.</remarks>
         public Vector3 Scale
         {
-            get { return this.scale; }
+            get { return scale; }
             set
             {
                 if (MathHelper.IsZero(value.X) || MathHelper.IsZero(value.Y) || MathHelper.IsZero(value.Z))
@@ -237,7 +237,7 @@ namespace netDxf.Entities
                     throw new ArgumentOutOfRangeException(nameof(value), value, "None of the vector scale components can be zero.");
                 }
 
-                this.scale = value;
+                scale = value;
             }
         }
 
@@ -246,8 +246,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Rotation
         {
-            get { return this.rotation; }
-            set { this.rotation = MathHelper.NormalizeAngle(value); }
+            get { return rotation; }
+            set { rotation = MathHelper.NormalizeAngle(value); }
         }
 
         #endregion
@@ -267,25 +267,25 @@ namespace netDxf.Entities
             List<Attribute> atts = new List<Attribute>();
 
             // remove all attributes that have no attribute definition in the block
-            foreach (Attribute att in this.attributes)
+            foreach (Attribute att in attributes)
             {
                 string tag = att.Tag;
-                if (this.block.AttributeDefinitions.ContainsTag(tag))
+                if (block.AttributeDefinitions.ContainsTag(tag))
                 {
                     atts.Add(att);
                 }
                 else
                 {
-                    this.OnAttributeRemovedEvent(att);
+                    OnAttributeRemovedEvent(att);
                     att.Handle = null;
                     att.Owner = null;
                 }
             }
 
             // add any new attributes from the attribute definitions of the block
-            foreach (AttributeDefinition attdef in this.block.AttributeDefinitions.Values)
+            foreach (AttributeDefinition attdef in block.AttributeDefinitions.Values)
             {
-                if (this.attributes.AttributeWithTag(attdef.Tag) == null)
+                if (attributes.AttributeWithTag(attdef.Tag) == null)
                 {
                     Attribute att = new Attribute(attdef)
                     {
@@ -293,12 +293,12 @@ namespace netDxf.Entities
                     };
 
                     atts.Add(att);
-                    this.OnAttributeAddedEvent(att);
+                    OnAttributeAddedEvent(att);
                 }
             }
-            this.attributes = new AttributeCollection(atts);
+            attributes = new AttributeCollection(atts);
 
-            this.TransformAttributes();
+            TransformAttributes();
         }
 
         /// <summary>
@@ -313,19 +313,19 @@ namespace netDxf.Entities
         public Matrix3 GetTransformation()
         {
             DrawingUnits insUnits;
-            if (this.Owner == null)
+            if (Owner == null)
             {
                 insUnits = DefaultInsUnits;
             }
             else
             {
-                insUnits = this.Owner.Record.Layout == null ? this.Owner.Record.Units : this.Owner.Record.Owner.Owner.DrawingVariables.InsUnits;
+                insUnits = Owner.Record.Layout == null ? Owner.Record.Units : Owner.Record.Owner.Owner.DrawingVariables.InsUnits;
             }
 
-            double docScale = UnitHelper.ConversionFactor(this.Block.Record.Units, insUnits);
-            Matrix3 trans = MathHelper.ArbitraryAxis(this.Normal);
-            trans *= Matrix3.RotationZ(this.rotation * MathHelper.DegToRad);
-            trans *= Matrix3.Scale(this.scale * docScale);
+            double docScale = UnitHelper.ConversionFactor(Block.Record.Units, insUnits);
+            Matrix3 trans = MathHelper.ArbitraryAxis(Normal);
+            trans *= Matrix3.RotationZ(rotation * MathHelper.DegToRad);
+            trans *= Matrix3.Scale(scale * docScale);
 
             return trans;
         }
@@ -337,10 +337,10 @@ namespace netDxf.Entities
         /// <returns>The insert transformation matrix.</returns>
         public Matrix3 GetTransformation(DrawingUnits insertionUnits)
         {
-            double docScale = UnitHelper.ConversionFactor(this.Block.Record.Units, insertionUnits);
-            Matrix3 trans = MathHelper.ArbitraryAxis(this.Normal);
-            trans *= Matrix3.RotationZ(this.rotation * MathHelper.DegToRad);
-            trans *= Matrix3.Scale(this.scale * docScale);
+            double docScale = UnitHelper.ConversionFactor(Block.Record.Units, insertionUnits);
+            Matrix3 trans = MathHelper.ArbitraryAxis(Normal);
+            trans *= Matrix3.RotationZ(rotation * MathHelper.DegToRad);
+            trans *= Matrix3.Scale(scale * docScale);
 
             return trans;
         }
@@ -360,15 +360,15 @@ namespace netDxf.Entities
         public void TransformAttributes()
         {
             // if the insert does not contain attributes there is nothing to do
-            if (this.attributes.Count == 0)
+            if (attributes.Count == 0)
             {
                 return;
             }
 
-            Matrix3 transformation = this.GetTransformation();
-            Vector3 translation = this.Position - transformation * this.block.Origin;
+            Matrix3 transformation = GetTransformation();
+            Vector3 translation = Position - transformation * block.Origin;
 
-            foreach (Attribute att in this.attributes)
+            foreach (Attribute att in attributes)
             {
                 AttributeDefinition attDef = att.Definition;
                 if (attDef == null)
@@ -400,12 +400,12 @@ namespace netDxf.Entities
         public List<EntityObject> Explode()
         {
             List<EntityObject> entities = new List<EntityObject>();
-            Matrix3 transformation = this.GetTransformation();
-            Vector3 translation = this.Position - transformation * this.block.Origin;
+            Matrix3 transformation = GetTransformation();
+            Vector3 translation = Position - transformation * block.Origin;
 
-            foreach (EntityObject entity in this.block.Entities)
+            foreach (EntityObject entity in block.Entities)
             {
-                Vector3 localScale = MathHelper.Transform(this.Scale, entity.Normal, CoordinateSystem.World, CoordinateSystem.Object);
+                Vector3 localScale = MathHelper.Transform(Scale, entity.Normal, CoordinateSystem.World, CoordinateSystem.Object);
                 bool isUniformScale = MathHelper.IsEqual(localScale.X, localScale.Y);
 
                 // entities with reactors are associated with other entities they will handle the transformation
@@ -553,7 +553,7 @@ namespace netDxf.Entities
                 }
             }
 
-            foreach (Attribute attribute in this.attributes)
+            foreach (Attribute attribute in attributes)
             {
                 // the attributes will be exploded as a Text entity
                 Text text = new Text
@@ -599,15 +599,15 @@ namespace netDxf.Entities
         /// </remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newPosition = transformation * this.Position + translation;
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newPosition = transformation * Position + translation;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
-            transOW *= Matrix3.RotationZ(this.Rotation * MathHelper.DegToRad);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
+            transOW *= Matrix3.RotationZ(Rotation * MathHelper.DegToRad);
 
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal);
             transWO = transWO.Transpose();
@@ -619,7 +619,7 @@ namespace netDxf.Entities
 
             transWO = Matrix3.RotationZ(newRotation).Transpose() * transWO;
 
-            Vector3 s = transOW * this.Scale;
+            Vector3 s = transOW * Scale;
             s = transformation * s;
             s = transWO * s;
             Vector3 newScale = new Vector3(
@@ -627,12 +627,12 @@ namespace netDxf.Entities
                 MathHelper.IsZero(s.Y) ? MathHelper.Epsilon : s.Y,
                 MathHelper.IsZero(s.Z) ? MathHelper.Epsilon : s.Z);
 
-            this.Normal = newNormal;
-            this.Position = newPosition;
-            this.Scale = newScale;
-            this.Rotation = newRotation * MathHelper.RadToDeg;
+            Normal = newNormal;
+            Position = newPosition;
+            Scale = newScale;
+            Rotation = newRotation * MathHelper.RadToDeg;
 
-            foreach (Attribute att in this.attributes)
+            foreach (Attribute att in attributes)
             {
                 att.TransformBy(transformation, translation);
             }
@@ -649,7 +649,7 @@ namespace netDxf.Entities
         /// </remarks>
         internal override long AssignHandle(long entityNumber)
         {
-            foreach (Attribute attrib in this.attributes)
+            foreach (Attribute attrib in attributes)
             {
                 entityNumber = attrib.AssignHandle(entityNumber);
             }
@@ -665,29 +665,29 @@ namespace netDxf.Entities
         {
             // copy attributes
             List<Attribute> copyAttributes = new List<Attribute>();
-            foreach (Attribute att in this.attributes)
+            foreach (Attribute att in attributes)
                 copyAttributes.Add((Attribute)att.Clone());
 
             Insert entity = new Insert(copyAttributes)
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Insert properties
-                Position = this.position,
-                Block = (Block) this.block.Clone(),
-                Scale = this.scale,
-                Rotation = this.rotation,
+                Position = position,
+                Block = (Block) block.Clone(),
+                Scale = scale,
+                Rotation = rotation,
             };
 
             // copy extended data
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
                 entity.XData.Add((XData) data.Clone());
 
             return entity;

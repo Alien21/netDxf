@@ -59,8 +59,8 @@ namespace netDxf
 
             double width = Math.Sqrt(a * a + b * b) * 2;
             double height = Math.Sqrt(c * c + d * d) * 2;
-            this.min = new Vector2(center.X - width * 0.5, center.Y - height * 0.5);
-            this.max = new Vector2(center.X + width * 0.5, center.Y + height * 0.5);
+            min = new Vector2(center.X - width * 0.5, center.Y - height * 0.5);
+            max = new Vector2(center.X + width * 0.5, center.Y + height * 0.5);
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace netDxf
         /// <param name="radius">Radius of the circle.</param>
         public BoundingRectangle(Vector2 center, double radius)
         {
-            this.min = new Vector2(center.X - radius, center.Y - radius);
-            this.max = new Vector2(center.X + radius, center.Y + radius);
+            min = new Vector2(center.X - radius, center.Y - radius);
+            max = new Vector2(center.X + radius, center.Y + radius);
         }
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace netDxf
         /// <param name="height">Height of the bounding rectangle.</param>
         public BoundingRectangle(Vector2 center, double width, double height)
         {
-            this.min = new Vector2(center.X - width * 0.5, center.Y - height * 0.5);
-            this.max = new Vector2(center.X + width * 0.5, center.Y + height * 0.5);
+            min = new Vector2(center.X - width * 0.5, center.Y - height * 0.5);
+            max = new Vector2(center.X + width * 0.5, center.Y + height * 0.5);
         }
 
         /// <summary>
@@ -139,13 +139,13 @@ namespace netDxf
             }
             if (any)
             {
-                this.min = new Vector2(minX, minY);
-                this.max = new Vector2(maxX, maxY);
+                min = new Vector2(minX, minY);
+                max = new Vector2(maxX, maxY);
             }
             else
             {
-                this.min = new Vector2(double.MinValue, double.MinValue);
-                this.max = new Vector2(double.MaxValue, double.MaxValue);
+                min = new Vector2(double.MinValue, double.MinValue);
+                max = new Vector2(double.MaxValue, double.MaxValue);
             }
         }
 
@@ -158,8 +158,8 @@ namespace netDxf
         /// </summary>
         public Vector2 Min
         {
-            get { return this.min; }
-            set { this.min = value; }
+            get { return min; }
+            set { min = value; }
         }
 
         /// <summary>
@@ -167,8 +167,8 @@ namespace netDxf
         /// </summary>
         public Vector2 Max
         {
-            get { return this.max; }
-            set { this.max = value; }
+            get { return max; }
+            set { max = value; }
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace netDxf
         /// </summary>
         public Vector2 Center
         {
-            get { return (this.min + this.max) * 0.5; }
+            get { return (min + max) * 0.5; }
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace netDxf
         /// </summary>
         public double Radius
         {
-            get { return Vector2.Distance(this.min, this.max) * 0.5; }
+            get { return Vector2.Distance(min, max) * 0.5; }
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace netDxf
         /// </summary>
         public double Width
         {
-            get { return this.max.X - this.min.X; }
+            get { return max.X - min.X; }
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace netDxf
         /// </summary>
         public double Height
         {
-            get { return this.max.Y - this.min.Y; }
+            get { return max.Y - min.Y; }
         }
 
         #endregion
@@ -215,7 +215,7 @@ namespace netDxf
         /// <remarks></remarks>
         public bool PointInside(Vector2 point)
         {
-            return point.X >= this.min.X && point.X <= this.max.X && point.Y >= this.min.Y && point.Y <= this.max.Y;
+            return point.X >= min.X && point.X <= max.X && point.Y >= min.Y && point.Y <= max.Y;
         }
 
         /// <summary>

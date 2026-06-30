@@ -60,24 +60,24 @@ namespace netDxf.GTE
 
         public bool Intersect
         {
-            get { return this.intersect; }
+            get { return intersect; }
         }
 
         public double FirstTime
         {
-            get { return this.firstTime; }
+            get { return firstTime; }
         }
 
         public double LastTime
         {
-            get { return this.lastTime; }
+            get { return lastTime; }
         }
 
         private TIQueryIntervals()
         {
-            this.intersect = false;
-            this.firstTime = 0.0;
-            this.lastTime = 0.0;
+            intersect = false;
+            firstTime = 0.0;
+            lastTime = 0.0;
         }
 
         // Static query. The firstTime and lastTime values are set to zero by
@@ -86,7 +86,7 @@ namespace netDxf.GTE
         public TIQueryIntervals(double[] interval0, double[] interval1)
             : this()
         {
-            this.intersect = interval0[0] <= interval1[1] && interval0[1] >= interval1[0];
+            intersect = interval0[0] <= interval1[1] && interval0[1] >= interval1[0];
         }
 
         // Static queries where at least one interval is semiinfinite. The
@@ -100,11 +100,11 @@ namespace netDxf.GTE
         {
             if (isPositiveInfinite)
             {
-                this.intersect = finite[1] >= a;
+                intersect = finite[1] >= a;
             }
             else // is negative-infinite
             {
-                this.intersect = finite[0] <= a;
+                intersect = finite[0] <= a;
             }
 
         }
@@ -116,22 +116,22 @@ namespace netDxf.GTE
             {
                 if (isPositiveInfinite1)
                 {
-                    this.intersect = true;
+                    intersect = true;
                 }
                 else // interval1 is negative-infinite
                 {
-                    this.intersect = a0 <= a1;
+                    intersect = a0 <= a1;
                 }
             }
             else // interval0 is negative-infinite
             {
                 if (isPositiveInfinite1)
                 {
-                    this.intersect = a0 >= a1;
+                    intersect = a0 >= a1;
                 }
                 else // interval1 is negative-infinite
                 {
-                    this.intersect = true;
+                    intersect = true;
                 }
             }
         }
@@ -151,9 +151,9 @@ namespace netDxf.GTE
                     // The intervals must move towards each other. 'intersect'
                     // is true when the intervals will intersect by maxTime.
                     double diffPos = interval1[0] - interval0[1];
-                    this.intersect = (diffPos <= maxTime * diffSpeed);
-                    this.firstTime = diffPos / diffSpeed;
-                    this.lastTime = (interval1[1] - interval0[0]) / diffSpeed;
+                    intersect = (diffPos <= maxTime * diffSpeed);
+                    firstTime = diffPos / diffSpeed;
+                    lastTime = (interval1[1] - interval0[0]) / diffSpeed;
                 }
             }
             else if (interval0[0] > interval1[1])
@@ -165,27 +165,27 @@ namespace netDxf.GTE
                     // The intervals must move towards each other. 'intersect'
                     // is true when the intervals will intersect by maxTime.
                     double diffPos = interval0[0] - interval1[1];
-                    this.intersect = (diffPos <= maxTime * diffSpeed);
-                    this.firstTime = diffPos / diffSpeed;
-                    this.lastTime = (interval0[1] - interval1[0]) / diffSpeed;
+                    intersect = (diffPos <= maxTime * diffSpeed);
+                    firstTime = diffPos / diffSpeed;
+                    lastTime = (interval0[1] - interval1[0]) / diffSpeed;
                 }
             }
             else
             {
                 // The intervals are initially intersecting.
-                this.intersect = true;
-                this.firstTime = zero;
+                intersect = true;
+                firstTime = zero;
                 if (speed1 > speed0)
                 {
-                    this.lastTime = (interval0[1] - interval1[0]) / (speed1 - speed0);
+                    lastTime = (interval0[1] - interval1[0]) / (speed1 - speed0);
                 }
                 else if (speed1 < speed0)
                 {
-                    this.lastTime = (interval1[1] - interval0[0]) / (speed0 - speed1);
+                    lastTime = (interval1[1] - interval0[0]) / (speed0 - speed1);
                 }
                 else
                 {
-                    this.lastTime = double.MaxValue;
+                    lastTime = double.MaxValue;
                 }
             }
 
@@ -257,42 +257,42 @@ namespace netDxf.GTE
 
         public bool Intersect
         {
-            get { return this.intersect; }
+            get { return intersect; }
         }
 
         public int NumIntersections
         {
-            get { return this.numIntersections; }
+            get { return numIntersections; }
         }
 
         public double[] Overlap
         {
-            get { return this.overlap; }
+            get { return overlap; }
         }
 
         public FIQueryIntervalsType Type
         {
-            get { return this.type; }
+            get { return type; }
         }
 
         public double FirstTime
         {
-            get { return this.firstTime; }
+            get { return firstTime; }
         }
 
         public double LastTime
         {
-            get { return this.lastTime; }
+            get { return lastTime; }
         }
 
         private FIQueryIntervals()
         {
-            this.intersect = false;
-            this.numIntersections = 0;
-            this.overlap = new[] {0.0, 0.0};
-            this.type = FIQueryIntervalsType.IsEmpty;
-            this.firstTime = 0.0;
-            this.lastTime = 0.0;
+            intersect = false;
+            numIntersections = 0;
+            overlap = new[] {0.0, 0.0};
+            type = FIQueryIntervalsType.IsEmpty;
+            firstTime = 0.0;
+            lastTime = 0.0;
         }
 
         // Static query.
@@ -301,45 +301,45 @@ namespace netDxf.GTE
         {
             if (interval0[1] < interval1[0] || interval0[0] > interval1[1])
             {
-                this.numIntersections = 0;
-                this.overlap[0] = 0.0;
-                this.overlap[1] = 0.0;
-                this.type = FIQueryIntervalsType.IsEmpty;
+                numIntersections = 0;
+                overlap[0] = 0.0;
+                overlap[1] = 0.0;
+                type = FIQueryIntervalsType.IsEmpty;
             }
             else if (interval0[1] > interval1[0])
             {
                 if (interval0[0] < interval1[1])
                 {
-                    this.overlap[0] = (interval0[0] < interval1[0] ? interval1[0] : interval0[0]);
-                    this.overlap[1] = (interval0[1] > interval1[1] ? interval1[1] : interval0[1]);
-                    if (this.overlap[0] < this.overlap[1])
+                    overlap[0] = (interval0[0] < interval1[0] ? interval1[0] : interval0[0]);
+                    overlap[1] = (interval0[1] > interval1[1] ? interval1[1] : interval0[1]);
+                    if (overlap[0] < overlap[1])
                     {
-                        this.numIntersections = 2;
-                        this.type = FIQueryIntervalsType.IsFinite;
+                        numIntersections = 2;
+                        type = FIQueryIntervalsType.IsFinite;
                     }
                     else
                     {
-                        this.numIntersections = 1;
-                        this.type = FIQueryIntervalsType.IsPoint;
+                        numIntersections = 1;
+                        type = FIQueryIntervalsType.IsPoint;
                     }
                 }
                 else // interval0[0] == interval1[1]
                 {
-                    this.numIntersections = 1;
-                    this.overlap[0] = interval0[0];
-                    this.overlap[1] = this.overlap[0];
-                    this.type = FIQueryIntervalsType.IsPoint;
+                    numIntersections = 1;
+                    overlap[0] = interval0[0];
+                    overlap[1] = overlap[0];
+                    type = FIQueryIntervalsType.IsPoint;
                 }
             }
             else // interval0[1] == interval1[0]
             {
-                this.numIntersections = 1;
-                this.overlap[0] = interval0[1];
-                this.overlap[1] = this.overlap[0];
-                this.type = FIQueryIntervalsType.IsPoint;
+                numIntersections = 1;
+                overlap[0] = interval0[1];
+                overlap[1] = overlap[0];
+                type = FIQueryIntervalsType.IsPoint;
             }
 
-            this.intersect = this.numIntersections > 0;
+            intersect = numIntersections > 0;
         }
 
         // Static queries where at least one interval is semiinfinite. The
@@ -353,68 +353,68 @@ namespace netDxf.GTE
             {
                 if (finite[1] > a)
                 {
-                    this.overlap[0] = Math.Max(finite[0], a);
-                    this.overlap[1] = finite[1];
-                    if (this.overlap[0] < this.overlap[1])
+                    overlap[0] = Math.Max(finite[0], a);
+                    overlap[1] = finite[1];
+                    if (overlap[0] < overlap[1])
                     {
-                        this.numIntersections = 2;
-                        this.type = FIQueryIntervalsType.IsFinite;
+                        numIntersections = 2;
+                        type = FIQueryIntervalsType.IsFinite;
                     }
                     else
                     {
-                        this.numIntersections = 1;
-                        this.type = FIQueryIntervalsType.IsPoint;
+                        numIntersections = 1;
+                        type = FIQueryIntervalsType.IsPoint;
                     }
                 }
                 else if (Math.Abs(finite[1] - a) < double.Epsilon)
                 {
-                    this.numIntersections = 1;
-                    this.overlap[0] = a;
-                    this.overlap[1] = this.overlap[0];
-                    this.type = FIQueryIntervalsType.IsPoint;
+                    numIntersections = 1;
+                    overlap[0] = a;
+                    overlap[1] = overlap[0];
+                    type = FIQueryIntervalsType.IsPoint;
                 }
                 else
                 {
-                    this.numIntersections = 0;
-                    this.overlap[0] = 0.0;
-                    this.overlap[1] = 0.0;
-                    this.type = FIQueryIntervalsType.IsEmpty;
+                    numIntersections = 0;
+                    overlap[0] = 0.0;
+                    overlap[1] = 0.0;
+                    type = FIQueryIntervalsType.IsEmpty;
                 }
             }
             else // is negative-infinite
             {
                 if (finite[0] < a)
                 {
-                    this.overlap[0] = finite[0];
-                    this.overlap[1] = Math.Min(finite[1], a);
-                    if (this.overlap[0] < this.overlap[1])
+                    overlap[0] = finite[0];
+                    overlap[1] = Math.Min(finite[1], a);
+                    if (overlap[0] < overlap[1])
                     {
-                        this.numIntersections = 2;
-                        this.type = FIQueryIntervalsType.IsFinite;
+                        numIntersections = 2;
+                        type = FIQueryIntervalsType.IsFinite;
                     }
                     else
                     {
-                        this.numIntersections = 1;
-                        this.type = FIQueryIntervalsType.IsPoint;
+                        numIntersections = 1;
+                        type = FIQueryIntervalsType.IsPoint;
                     }
                 }
                 else if (Math.Abs(finite[0] - a) < double.Epsilon)
                 {
-                    this.numIntersections = 1;
-                    this.overlap[0] = a;
-                    this.overlap[1] = this.overlap[0];
-                    this.type = FIQueryIntervalsType.IsPoint;
+                    numIntersections = 1;
+                    overlap[0] = a;
+                    overlap[1] = overlap[0];
+                    type = FIQueryIntervalsType.IsPoint;
                 }
                 else
                 {
-                    this.numIntersections = 0;
-                    this.overlap[0] = 0.0;
-                    this.overlap[1] = 0.0;
-                    this.type = FIQueryIntervalsType.IsEmpty;
+                    numIntersections = 0;
+                    overlap[0] = 0.0;
+                    overlap[1] = 0.0;
+                    type = FIQueryIntervalsType.IsEmpty;
                 }
             }
 
-            this.intersect = (this.numIntersections > 0);
+            intersect = (numIntersections > 0);
         }
 
         public FIQueryIntervals(double a0, bool isPositiveInfinite0, double a1, bool isPositiveInfinite1)
@@ -428,33 +428,33 @@ namespace netDxf.GTE
                     // might not have a representation for +infinity. The
                     // type indicates the interval is positive-infinite, so
                     // the +1 is a reminder that overlap[1] is +infinity.
-                    this.numIntersections = 1;
-                    this.overlap[0] = Math.Max(a0, a1);
-                    this.overlap[1] = 1.0;
-                    this.type = FIQueryIntervalsType.IsPositiveInfinite;
+                    numIntersections = 1;
+                    overlap[0] = Math.Max(a0, a1);
+                    overlap[1] = 1.0;
+                    type = FIQueryIntervalsType.IsPositiveInfinite;
                 }
                 else // interval1 is negative-infinite
                 {
                     if (a0 > a1)
                     {
-                        this.numIntersections = 0;
-                        this.overlap[0] = 0.0;
-                        this.overlap[1] = 0.0;
-                        this.type = FIQueryIntervalsType.IsEmpty;
+                        numIntersections = 0;
+                        overlap[0] = 0.0;
+                        overlap[1] = 0.0;
+                        type = FIQueryIntervalsType.IsEmpty;
                     }
                     else if (a0 < a1)
                     {
-                        this.numIntersections = 2;
-                        this.overlap[0] = a0;
-                        this.overlap[1] = a1;
-                        this.type = FIQueryIntervalsType.IsFinite;
+                        numIntersections = 2;
+                        overlap[0] = a0;
+                        overlap[1] = a1;
+                        type = FIQueryIntervalsType.IsFinite;
                     }
                     else // a0 == a1
                     {
-                        this.numIntersections = 1;
-                        this.overlap[0] = a0;
-                        this.overlap[1] = this.overlap[0];
-                        this.type = FIQueryIntervalsType.IsPoint;
+                        numIntersections = 1;
+                        overlap[0] = a0;
+                        overlap[1] = overlap[0];
+                        type = FIQueryIntervalsType.IsPoint;
                     }
                 }
             }
@@ -464,27 +464,27 @@ namespace netDxf.GTE
                 {
                     if (a0 < a1)
                     {
-                        this.numIntersections = 0;
-                        this.overlap[0] = 0.0;
-                        this.overlap[1] = 0.0;
-                        this.type = FIQueryIntervalsType.IsEmpty;
+                        numIntersections = 0;
+                        overlap[0] = 0.0;
+                        overlap[1] = 0.0;
+                        type = FIQueryIntervalsType.IsEmpty;
                     }
                     else if (a0 > a1)
                     {
-                        this.numIntersections = 2;
-                        this.overlap[0] = a1;
-                        this.overlap[1] = a0;
-                        this.type = FIQueryIntervalsType.IsFinite;
+                        numIntersections = 2;
+                        overlap[0] = a1;
+                        overlap[1] = a0;
+                        type = FIQueryIntervalsType.IsFinite;
                     }
                     else
                     {
-                        this.numIntersections = 1;
-                        this.overlap[0] = a1;
-                        this.overlap[1] = this.overlap[0];
-                        this.type = FIQueryIntervalsType.IsPoint;
+                        numIntersections = 1;
+                        overlap[0] = a1;
+                        overlap[1] = overlap[0];
+                        type = FIQueryIntervalsType.IsPoint;
                     }
 
-                    this.intersect = a0 >= a1;
+                    intersect = a0 >= a1;
                 }
                 else // interval1 is negative-infinite
                 {
@@ -492,21 +492,21 @@ namespace netDxf.GTE
                     // might not have a representation for -infinity. The
                     // type indicates the interval is negative-infinite, so
                     // the -1 is a reminder that overlap[0] is -infinity.
-                    this.numIntersections = 1;
-                    this.overlap[0] = -1.0;
-                    this.overlap[1] = Math.Min(a0, a1);
-                    this.type = FIQueryIntervalsType.IsNegativeInfinite;
+                    numIntersections = 1;
+                    overlap[0] = -1.0;
+                    overlap[1] = Math.Min(a0, a1);
+                    type = FIQueryIntervalsType.IsNegativeInfinite;
                 }
             }
 
-            this.intersect = (this.numIntersections > 0);
+            intersect = (numIntersections > 0);
         }
 
         // Dynamic query. Current time is 0, maxTime > 0 is required.
         public FIQueryIntervals(double maxTime, double[] interval0, double speed0, double[] interval1, double speed1)
             : this()
         {
-            this.type = FIQueryIntervalsType.IsDynamicQuery;
+            type = FIQueryIntervalsType.IsDynamicQuery;
 
             if (interval0[1] < interval1[0])
             {
@@ -517,12 +517,12 @@ namespace netDxf.GTE
                     // The intervals must move towards each other. 'intersect'
                     // is true when the intervals will intersect by maxTime.
                     double diffPos = interval1[0] - interval0[1];
-                    this.intersect = (diffPos <= maxTime * diffSpeed);
-                    this.numIntersections = 1;
-                    this.firstTime = diffPos / diffSpeed;
-                    this.lastTime = (interval1[1] - interval0[0]) / diffSpeed;
-                    this.overlap[0] = interval0[0] + this.firstTime * speed0;
-                    this.overlap[1] = this.overlap[0];
+                    intersect = (diffPos <= maxTime * diffSpeed);
+                    numIntersections = 1;
+                    firstTime = diffPos / diffSpeed;
+                    lastTime = (interval1[1] - interval0[0]) / diffSpeed;
+                    overlap[0] = interval0[0] + firstTime * speed0;
+                    overlap[1] = overlap[0];
                 }
             }
             else if (interval0[0] > interval1[1])
@@ -534,52 +534,52 @@ namespace netDxf.GTE
                     // The intervals must move towards each other. 'intersect'
                     // is true when the intervals will intersect by maxTime.
                     double diffPos = interval0[0] - interval1[1];
-                    this.intersect = (diffPos <= maxTime * diffSpeed);
-                    this.numIntersections = 1;
-                    this.firstTime = diffPos / diffSpeed;
-                    this.lastTime = (interval0[1] - interval1[0]) / diffSpeed;
-                    this.overlap[0] = interval1[1] + this.firstTime * speed1;
-                    this.overlap[1] = this.overlap[0];
+                    intersect = (diffPos <= maxTime * diffSpeed);
+                    numIntersections = 1;
+                    firstTime = diffPos / diffSpeed;
+                    lastTime = (interval0[1] - interval1[0]) / diffSpeed;
+                    overlap[0] = interval1[1] + firstTime * speed1;
+                    overlap[1] = overlap[0];
                 }
             }
             else
             {
                 // The intervals are initially intersecting.
-                this.intersect = true;
-                this.firstTime = 0.0;
+                intersect = true;
+                firstTime = 0.0;
                 if (speed1 > speed0)
                 {
-                    this.lastTime = (interval0[1] - interval1[0]) / (speed1 - speed0);
+                    lastTime = (interval0[1] - interval1[0]) / (speed1 - speed0);
                 }
                 else if (speed1 < speed0)
                 {
-                    this.lastTime = (interval1[1] - interval0[0]) / (speed0 - speed1);
+                    lastTime = (interval1[1] - interval0[0]) / (speed0 - speed1);
                 }
                 else
                 {
-                    this.lastTime = double.MaxValue;
+                    lastTime = double.MaxValue;
                 }
 
                 if (interval0[1] > interval1[0])
                 {
                     if (interval0[0] < interval1[1])
                     {
-                        this.numIntersections = 2;
-                        this.overlap[0] = (interval0[0] < interval1[0] ? interval1[0] : interval0[0]);
-                        this.overlap[1] = (interval0[1] > interval1[1] ? interval1[1] : interval0[1]);
+                        numIntersections = 2;
+                        overlap[0] = (interval0[0] < interval1[0] ? interval1[0] : interval0[0]);
+                        overlap[1] = (interval0[1] > interval1[1] ? interval1[1] : interval0[1]);
                     }
                     else // interval0[0] == interval1[1]
                     {
-                        this.numIntersections = 1;
-                        this.overlap[0] = interval0[0];
-                        this.overlap[1] = this.overlap[0];
+                        numIntersections = 1;
+                        overlap[0] = interval0[0];
+                        overlap[1] = overlap[0];
                     }
                 }
                 else // interval0[1] == interval1[0]
                 {
-                    this.numIntersections = 1;
-                    this.overlap[0] = interval0[1];
-                    this.overlap[1] = this.overlap[0];
+                    numIntersections = 1;
+                    overlap[0] = interval0[1];
+                    overlap[1] = overlap[0];
                 }
             }
 

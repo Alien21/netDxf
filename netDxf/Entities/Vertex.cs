@@ -61,16 +61,16 @@ namespace netDxf.Entities
         public Vertex()
             : base(DxfObjectCode.Vertex)
         {
-            this.flags = VertexTypeFlags.Polyline2DVertex;
-            this.position = Vector3.Zero;
-            this.layer = null;
-            this.color = null;
-            this.linetype = null;
-            this.bulge = 0.0;
-            this.startWidth = 0.0;
-            this.endWidth = 0.0;
-            this.vertexIndexes = null;
-            this.subclassMarker = netDxf.SubclassMarker.Polyline2DVertex;
+            flags = VertexTypeFlags.Polyline2DVertex;
+            position = Vector3.Zero;
+            layer = null;
+            color = null;
+            linetype = null;
+            bulge = 0.0;
+            startWidth = 0.0;
+            endWidth = 0.0;
+            vertexIndexes = null;
+            subclassMarker = netDxf.SubclassMarker.Polyline2DVertex;
         }
 
         #endregion
@@ -82,8 +82,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Position
         {
-            get { return this.position; }
-            set { this.position = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         /// <summary>
@@ -91,8 +91,8 @@ namespace netDxf.Entities
         /// </summary>
         public short[] VertexIndexes
         {
-            get { return this.vertexIndexes; }
-            set { this.vertexIndexes = value; }
+            get { return vertexIndexes; }
+            set { vertexIndexes = value; }
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace netDxf.Entities
         /// </summary>
         public double StartWidth
         {
-            get { return this.startWidth; }
-            set { this.startWidth = value; }
+            get { return startWidth; }
+            set { startWidth = value; }
         }
 
         /// <summary>
@@ -109,8 +109,8 @@ namespace netDxf.Entities
         /// </summary>
         public double EndWidth
         {
-            get { return this.endWidth; }
-            set { this.endWidth = value; }
+            get { return endWidth; }
+            set { endWidth = value; }
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Bulge
         {
-            get { return this.bulge; }
-            set { this.bulge = value; }
+            get { return bulge; }
+            set { bulge = value; }
         }
 
         /// <summary>
@@ -127,8 +127,8 @@ namespace netDxf.Entities
         /// </summary>
         public VertexTypeFlags Flags
         {
-            get { return this.flags; }
-            set { this.flags = value; }
+            get { return flags; }
+            set { flags = value; }
         }
 
         /// <summary>
@@ -136,8 +136,8 @@ namespace netDxf.Entities
         /// </summary>
         public AciColor Color
         {
-            get { return this.color; }
-            set { this.color = value; }
+            get { return color; }
+            set { color = value; }
         }
 
         /// <summary>
@@ -145,8 +145,8 @@ namespace netDxf.Entities
         /// </summary>
         public Layer Layer
         {
-            get { return this.layer; }
-            set { this.layer = value; }
+            get { return layer; }
+            set { layer = value; }
         }
 
         /// <summary>
@@ -154,8 +154,8 @@ namespace netDxf.Entities
         /// </summary>
         public Linetype Linetype
         {
-            get { return this.linetype; }
-            set { this.linetype = value; }
+            get { return linetype; }
+            set { linetype = value; }
         }
 
         /// <summary>
@@ -163,8 +163,8 @@ namespace netDxf.Entities
         /// </summary>
         public string SubclassMarker
         {
-            get { return this.subclassMarker; }
-            set { this.subclassMarker = value; }
+            get { return subclassMarker; }
+            set { subclassMarker = value; }
         }
 
         #endregion

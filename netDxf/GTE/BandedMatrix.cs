@@ -49,26 +49,26 @@ namespace netDxf.GTE
 
             if (size > 0 && 0 <= numLBands && numLBands < size && 0 <= numUBands && numUBands < size)
             {
-                this.dBand = new double[size];
+                dBand = new double[size];
                 int numElements;
 
                 if (numLBands > 0)
                 {
-                    this.lBands = new double[numLBands][];
+                    lBands = new double[numLBands][];
                     numElements = size - 1;
                     for (int i = 0; i < numLBands; i++)
                     {
-                        this.lBands[i] = new double[numElements--];
+                        lBands[i] = new double[numElements--];
                     }
                 }
 
                 if (numUBands > 0)
                 {
-                    this.uBands = new double[numUBands][];
+                    uBands = new double[numUBands][];
                     numElements = size - 1;
                     for (int i = 0; i < numUBands; i++)
                     {
-                        this.uBands[i] = new double[numElements--];
+                        uBands[i] = new double[numElements--];
                     }
                 }
             }
@@ -82,51 +82,51 @@ namespace netDxf.GTE
         // Member access.
         public int Size
         {
-            get { return this.size; }
+            get { return size; }
         }
 
         public double[] DBand
         {
-            get { return this.dBand; }
+            get { return dBand; }
         }
 
         public double[][] LBands
         {
-            get { return this.lBands; }
+            get { return lBands; }
         }
 
         public double[][] UBands
         {
-            get { return this.uBands; }
+            get { return uBands; }
         }
 
         public double this[int r, int c]
         {
             get
             {
-                if (0 <= r && r < this.size && 0 <= c && c < this.size)
+                if (0 <= r && r < size && 0 <= c && c < size)
                 {
                     int band = c - r;
                     if (band > 0)
                     {
-                        int numUBands = this.uBands.Length;
-                        if (--band < numUBands && r < this.size - 1 - band)
+                        int numUBands = uBands.Length;
+                        if (--band < numUBands && r < size - 1 - band)
                         {
-                            return this.uBands[band][r];
+                            return uBands[band][r];
                         }
                     }
                     else if (band < 0)
                     {
                         band = -band;
-                        int numLBands = this.lBands.Length;
-                        if (--band < numLBands && c < this.size - 1 - band)
+                        int numLBands = lBands.Length;
+                        if (--band < numLBands && c < size - 1 - band)
                         {
-                            return this.lBands[band][c];
+                            return lBands[band][c];
                         }
                     }
                     else
                     {
-                        return this.dBand[r];
+                        return dBand[r];
                     }
                 }
 
@@ -136,29 +136,29 @@ namespace netDxf.GTE
             }
             set
             {
-                if (0 <= r && r < this.size && 0 <= c && c < this.size)
+                if (0 <= r && r < size && 0 <= c && c < size)
                 {
                     int band = c - r;
                     if (band > 0)
                     {
-                        int numUBands = this.uBands.Length;
-                        if (--band < numUBands && r < this.size - 1 - band)
+                        int numUBands = uBands.Length;
+                        if (--band < numUBands && r < size - 1 - band)
                         {
-                            this.uBands[band][r] = value;
+                            uBands[band][r] = value;
                         }
                     }
                     else if (band < 0)
                     {
                         band = -band;
-                        int numLBands = this.lBands.Length;
-                        if (--band < numLBands && c < this.size - 1 - band)
+                        int numLBands = lBands.Length;
+                        if (--band < numLBands && c < size - 1 - band)
                         {
-                            this.lBands[band][c] = value;
+                            lBands[band][c] = value;
                         }
                     }
                     else
                     {
-                        this.dBand[r] = value;
+                        dBand[r] = value;
                     }
                 }
                 else
@@ -178,16 +178,16 @@ namespace netDxf.GTE
         // L^T in the upper-triangular part of A.
         public bool CholeskyFactor()
         {
-            if (this.dBand.Length == 0 || this.lBands.Length != this.uBands.Length)
+            if (dBand.Length == 0 || lBands.Length != uBands.Length)
             {
                 // Invalid number of bands.
                 return false;
             }
 
-            int sizeM1 = this.size - 1;
-            int numBands = this.lBands.Length;
+            int sizeM1 = size - 1;
+            int numBands = lBands.Length;
 
-            for (int i = 0; i < this.size; i++)
+            for (int i = 0; i < size; i++)
             {
                 int jMin = i - numBands;
                 if (jMin < 0)
@@ -246,7 +246,7 @@ namespace netDxf.GTE
         // of A.
         public bool SolveSystem(ref double[] bVector)
         {
-            return this.CholeskyFactor() && this.SolveLower(ref bVector) && this.SolveUpper(ref bVector);
+            return CholeskyFactor() && SolveLower(ref bVector) && SolveUpper(ref bVector);
         }
 
         // Solve the linear system A*X = B, where A is an NxN banded matrix
@@ -262,7 +262,7 @@ namespace netDxf.GTE
         // parameter.
         public bool SolveSystem(ref double[] bMatrix, int numBColumns)
         {
-            return this.CholeskyFactor() && this.SolveLower(ref bMatrix, numBColumns) && this.SolveUpper(ref bMatrix, numBColumns);
+            return CholeskyFactor() && SolveLower(ref bMatrix, numBColumns) && SolveUpper(ref bMatrix, numBColumns);
         }
 
         // Compute the inverse of the banded matrix.  The return value is
@@ -276,12 +276,12 @@ namespace netDxf.GTE
         // parameter.
         public bool ComputeInverse(double[] inverse)
         {
-            LexicoArray2 invA = new LexicoArray2(this.size, this.size, inverse);
+            LexicoArray2 invA = new LexicoArray2(size, size, inverse);
 
             BandedMatrix tmpA = this;
-            for (int row = 0; row < this.size; row++)
+            for (int row = 0; row < size; row++)
             {
-                for (int col = 0; col < this.size; col++)
+                for (int col = 0; col < size; col++)
                 {
                     if (row != col)
                     {
@@ -295,7 +295,7 @@ namespace netDxf.GTE
             }
 
             // Forward elimination.
-            for (int row = 0; row < this.size; row++)
+            for (int row = 0; row < size; row++)
             {
                 // The pivot must be nonzero in order to proceed.
                 double diag = tmpA[row, row];
@@ -309,10 +309,10 @@ namespace netDxf.GTE
 
                 // Multiply the row to be consistent with diagonal term of 1.
                 int colMin = row + 1;
-                int colMax = colMin + this.uBands.Length;
-                if (colMax > this.size)
+                int colMax = colMin + uBands.Length;
+                if (colMax > size)
                 {
-                    colMax = this.size;
+                    colMax = size;
                 }
 
                 int c;
@@ -327,10 +327,10 @@ namespace netDxf.GTE
 
                 // Reduce the remaining rows.
                 int rowMin = row + 1;
-                int rowMax = rowMin + this.lBands.Length;
-                if (rowMax > this.size)
+                int rowMax = rowMin + lBands.Length;
+                if (rowMax > size)
                 {
-                    rowMax = this.size;
+                    rowMax = size;
                 }
 
                 for (int r = rowMin; r < rowMax; r++)
@@ -349,10 +349,10 @@ namespace netDxf.GTE
             }
 
             // Backward elimination.
-            for (int row = this.size - 1; row >= 1; row--)
+            for (int row = size - 1; row >= 1; row--)
             {
                 int rowMax = row - 1;
-                int rowMin = row - this.uBands.Length;
+                int rowMin = row - uBands.Length;
                 if (rowMin < 0)
                 {
                     rowMin = 0;
@@ -362,7 +362,7 @@ namespace netDxf.GTE
                 {
                     double mult = tmpA[r, row];
                     tmpA[r, row] = 0.0;
-                    for (int c = 0; c < this.size; c++)
+                    for (int c = 0; c < size; c++)
                     {
                         invA[r, c] -= mult * invA[row, c];
                     }
@@ -377,7 +377,7 @@ namespace netDxf.GTE
         // operation is successful.
         private bool SolveLower(ref double[] dataVector)
         {
-            int dBandSize = this.dBand.Length;
+            int dBandSize = dBand.Length;
             for (int r = 0; r < dBandSize; r++)
             {
                 double lowerRR = this[r, r];
@@ -403,8 +403,8 @@ namespace netDxf.GTE
         // is successful.
         private bool SolveUpper(ref double[] dataVector)
         {
-            int dBandSize = this.dBand.Length;
-            for (int r = this.size - 1; r >= 0; r--)
+            int dBandSize = dBand.Length;
+            for (int r = size - 1; r >= 0; r--)
             {
                 double upperRR = this[r, r];
                 if (upperRR > 0.0)
@@ -431,9 +431,9 @@ namespace netDxf.GTE
         // SolveSystem(double*,int) about the storage for dataMatrix.
         private bool SolveLower(ref double[] dataMatrix, int numColumns)
         {
-            LexicoArray2 data = new LexicoArray2(this.size, numColumns, dataMatrix);
+            LexicoArray2 data = new LexicoArray2(size, numColumns, dataMatrix);
 
-            for (int r = 0; r < this.size; r++)
+            for (int r = 0; r < size; r++)
             {
                 double lowerRR = this[r, r];
                 if (lowerRR > 0.0)
@@ -467,14 +467,14 @@ namespace netDxf.GTE
         // the storage for dataMatrix.
         private bool SolveUpper(ref double[] dataMatrix, int numColumns)
         {
-            LexicoArray2 data = new LexicoArray2(this.size, numColumns, dataMatrix);
+            LexicoArray2 data = new LexicoArray2(size, numColumns, dataMatrix);
 
-            for (int r = this.size - 1; r >= 0; r--)
+            for (int r = size - 1; r >= 0; r--)
             {
                 double upperRR = this[r, r];
                 if (upperRR > 0.0)
                 {
-                    for (int c = r + 1; c < this.size; c++)
+                    for (int c = r + 1; c < size; c++)
                     {
                         double upperRC = this[r, c];
                         for (int bCol = 0; bCol < numColumns; bCol++)

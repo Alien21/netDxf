@@ -43,7 +43,7 @@ namespace netDxf.Tables
         public event LinetypeChangedEventHandler LinetypeChanged;
         protected virtual Linetype OnLinetypeChangedEvent(Linetype oldLinetype, Linetype newLinetype)
         {
-            LinetypeChangedEventHandler ae = this.LinetypeChanged;
+            LinetypeChangedEventHandler ae = LinetypeChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<Linetype> eventArgs = new TableObjectChangedEventArgs<Linetype>(oldLinetype, newLinetype);
@@ -57,7 +57,7 @@ namespace netDxf.Tables
         public event TextStyleChangedEventHandler TextStyleChanged;
         protected virtual TextStyle OnTextStyleChangedEvent(TextStyle oldTextStyle, TextStyle newTextStyle)
         {
-            TextStyleChangedEventHandler ae = this.TextStyleChanged;
+            TextStyleChangedEventHandler ae = TextStyleChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<TextStyle> eventArgs = new TableObjectChangedEventArgs<TextStyle>(oldTextStyle, newTextStyle);
@@ -71,7 +71,7 @@ namespace netDxf.Tables
         public event BlockChangedEventHandler BlockChanged;
         protected virtual Block OnBlockChangedEvent(Block oldBlock, Block newBlock)
         {
-            BlockChangedEventHandler ae = this.BlockChanged;
+            BlockChangedEventHandler ae = BlockChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<Block> eventArgs = new TableObjectChangedEventArgs<Block>(oldBlock, newBlock);
@@ -235,79 +235,79 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(name), "The dimension style name should be at least one character long.");
             }
 
-            this.IsReserved = name.Equals(DefaultName, StringComparison.OrdinalIgnoreCase);
+            IsReserved = name.Equals(DefaultName, StringComparison.OrdinalIgnoreCase);
 
             // dimension and extension lines
-            this.dimclrd = AciColor.ByBlock;
-            this.dimltype = Linetype.ByBlock;
-            this.dimlwd = Lineweight.ByBlock;
-            this.dimdle = 0.0;
-            this.dimdli = 0.38;
-            this.dimsd1 = false;
-            this.dimsd2 = false;
+            dimclrd = AciColor.ByBlock;
+            dimltype = Linetype.ByBlock;
+            dimlwd = Lineweight.ByBlock;
+            dimdle = 0.0;
+            dimdli = 0.38;
+            dimsd1 = false;
+            dimsd2 = false;
 
-            this.dimclre = AciColor.ByBlock;
-            this.dimltex1 = Linetype.ByBlock;
-            this.dimltex2 = Linetype.ByBlock;
-            this.dimlwe = Lineweight.ByBlock;
-            this.dimse1 = false;
-            this.dimse2 = false;
-            this.dimexo = 0.0625;
-            this.dimexe = 0.18;
-            this.dimfxlon = false;
-            this.dimfxl = 1.0;
+            dimclre = AciColor.ByBlock;
+            dimltex1 = Linetype.ByBlock;
+            dimltex2 = Linetype.ByBlock;
+            dimlwe = Lineweight.ByBlock;
+            dimse1 = false;
+            dimse2 = false;
+            dimexo = 0.0625;
+            dimexe = 0.18;
+            dimfxlon = false;
+            dimfxl = 1.0;
 
             // symbols and arrows
-            this.dimldrblk = null;
-            this.dimblk1 = null;
-            this.dimblk2 = null;
-            this.dimasz = 0.18;
-            this.dimcen = 0.09;
+            dimldrblk = null;
+            dimblk1 = null;
+            dimblk2 = null;
+            dimasz = 0.18;
+            dimcen = 0.09;
 
             // text
-            this.dimtxsty = TextStyle.Default;
-            this.dimclrt = AciColor.ByBlock;
-            this.dimtfillclr = null;
-            this.dimtxt = 0.18;
-            this.dimtad = DimensionStyleTextVerticalPlacement.Centered;
-            this.dimjust = DimensionStyleTextHorizontalPlacement.Centered;
-            this.dimgap = 0.09;
-            this.dimtih = false;
-            this.dimtoh = false;
-            this.dimtxtdirection = DimensionStyleTextDirection.LeftToRight;
-            this.dimtfac = 1.0;
+            dimtxsty = TextStyle.Default;
+            dimclrt = AciColor.ByBlock;
+            dimtfillclr = null;
+            dimtxt = 0.18;
+            dimtad = DimensionStyleTextVerticalPlacement.Centered;
+            dimjust = DimensionStyleTextHorizontalPlacement.Centered;
+            dimgap = 0.09;
+            dimtih = false;
+            dimtoh = false;
+            dimtxtdirection = DimensionStyleTextDirection.LeftToRight;
+            dimtfac = 1.0;
 
             // fit
-            this.dimtofl = false;
-            this.dimsoxd = true;
-            this.dimscale = 1.0;
-            this.dimatfit = DimensionStyleFitOptions.BestFit;
-            this.dimtix = false;
-            this.dimtmove = DimensionStyleFitTextMove.BesideDimLine;
+            dimtofl = false;
+            dimsoxd = true;
+            dimscale = 1.0;
+            dimatfit = DimensionStyleFitOptions.BestFit;
+            dimtix = false;
+            dimtmove = DimensionStyleFitTextMove.BesideDimLine;
 
             // primary units
-            this.dimdec = 4;
-            this.dimadec = 0;
-            this.dimPrefix = string.Empty;
-            this.dimSuffix = string.Empty;
-            this.dimdsep = '.';
-            this.dimlfac = 1.0;
-            this.dimaunit = AngleUnitType.DecimalDegrees;
-            this.dimlunit = LinearUnitType.Decimal;
-            this.dimfrac = FractionFormatType.Horizontal;
-            this.suppressLinearLeadingZeros = false;
-            this.suppressLinearTrailingZeros = false;
-            this.suppressZeroFeet = true;
-            this.suppressZeroInches = true;
-            this.suppressAngularLeadingZeros = false;
-            this.suppressAngularTrailingZeros = false;
-            this.dimrnd = 0.0;
+            dimdec = 4;
+            dimadec = 0;
+            dimPrefix = string.Empty;
+            dimSuffix = string.Empty;
+            dimdsep = '.';
+            dimlfac = 1.0;
+            dimaunit = AngleUnitType.DecimalDegrees;
+            dimlunit = LinearUnitType.Decimal;
+            dimfrac = FractionFormatType.Horizontal;
+            suppressLinearLeadingZeros = false;
+            suppressLinearTrailingZeros = false;
+            suppressZeroFeet = true;
+            suppressZeroInches = true;
+            suppressAngularLeadingZeros = false;
+            suppressAngularTrailingZeros = false;
+            dimrnd = 0.0;
 
             // alternate units
-            this.alternateUnits = new DimensionStyleAlternateUnits();
+            alternateUnits = new DimensionStyleAlternateUnits();
 
             // tolerances
-            this.tolerances = new DimensionStyleTolerances();
+            tolerances = new DimensionStyleTolerances();
         }
 
         #endregion
@@ -325,10 +325,10 @@ namespace netDxf.Tables
         /// </remarks>
         public AciColor DimLineColor
         {
-            get { return this.dimclrd; }
+            get { return dimclrd; }
             set
             {
-                this.dimclrd = value ?? throw new ArgumentNullException(nameof(value));
+                dimclrd = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -340,14 +340,14 @@ namespace netDxf.Tables
         /// </remarks>
         public Linetype DimLineLinetype
         {
-            get { return this.dimltype; }
+            get { return dimltype; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.dimltype = this.OnLinetypeChangedEvent(this.dimltype, value);
+                dimltype = OnLinetypeChangedEvent(dimltype, value);
             }
         }
 
@@ -359,8 +359,8 @@ namespace netDxf.Tables
         /// </remarks>
         public Lineweight DimLineLineweight
         {
-            get { return this.dimlwd; }
-            set { this.dimlwd = value; }
+            get { return dimlwd; }
+            set { dimlwd = value; }
         }
 
         /// <summary>
@@ -372,8 +372,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool DimLine1Off
         {
-            get { return this.dimsd1; }
-            set { this.dimsd1 = value; }
+            get { return dimsd1; }
+            set { dimsd1 = value; }
         }
 
         /// <summary>
@@ -385,8 +385,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool DimLine2Off
         {
-            get { return this.dimsd2; }
-            set { this.dimsd2 = value; }
+            get { return dimsd2; }
+            set { dimsd2 = value; }
         }
 
         /// <summary>
@@ -398,14 +398,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double DimLineExtend
         {
-            get { return this.dimdle; }
+            get { return dimdle; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The DimLineExtend must be equals or greater than zero.");
                 }
-                this.dimdle = value;
+                dimdle = value;
             }
         }
 
@@ -419,14 +419,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double DimBaselineSpacing
         {
-            get { return this.dimdli; }
+            get { return dimdli; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The DimBaselineSpacing must be equals or greater than zero.");
                 }
-                this.dimdli = value;
+                dimdli = value;
             }
         }
 
@@ -439,10 +439,10 @@ namespace netDxf.Tables
         /// </remarks>
         public AciColor ExtLineColor
         {
-            get { return this.dimclre; }
+            get { return dimclre; }
             set
             {
-                this.dimclre = value ?? throw new ArgumentNullException(nameof(value));
+                dimclre = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -454,14 +454,14 @@ namespace netDxf.Tables
         /// </remarks>
         public Linetype ExtLine1Linetype
         {
-            get { return this.dimltex1; }
+            get { return dimltex1; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.dimltex1 = this.OnLinetypeChangedEvent(this.dimltex1, value);
+                dimltex1 = OnLinetypeChangedEvent(dimltex1, value);
             }
         }
 
@@ -473,14 +473,14 @@ namespace netDxf.Tables
         /// </remarks>
         public Linetype ExtLine2Linetype
         {
-            get { return this.dimltex2; }
+            get { return dimltex2; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.dimltex2 = this.OnLinetypeChangedEvent(this.dimltex2, value);
+                dimltex2 = OnLinetypeChangedEvent(dimltex2, value);
             }
         }
 
@@ -492,8 +492,8 @@ namespace netDxf.Tables
         /// </remarks>
         public Lineweight ExtLineLineweight
         {
-            get { return this.dimlwe; }
-            set { this.dimlwe = value; }
+            get { return dimlwe; }
+            set { dimlwe = value; }
         }
 
         /// <summary>
@@ -504,8 +504,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool ExtLine1Off
         {
-            get { return this.dimse1; }
-            set { this.dimse1 = value; }
+            get { return dimse1; }
+            set { dimse1 = value; }
         }
 
         /// <summary>
@@ -516,8 +516,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool ExtLine2Off
         {
-            get { return this.dimse2; }
-            set { this.dimse2 = value; }
+            get { return dimse2; }
+            set { dimse2 = value; }
         }
 
         /// <summary>
@@ -528,14 +528,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double ExtLineOffset
         {
-            get { return this.dimexo; }
+            get { return dimexo; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The ExtLineOffset must be equals or greater than zero.");
                 }
-                this.dimexo = value;
+                dimexo = value;
             }
         }
 
@@ -547,14 +547,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double ExtLineExtend
         {
-            get { return this.dimexe; }
+            get { return dimexe; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The ExtLineExtend must be equals or greater than zero.");
                 }
-                this.dimexe = value;
+                dimexe = value;
             }
         }
 
@@ -566,8 +566,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool ExtLineFixed
         {
-            get { return this.dimfxlon; }
-            set { this.dimfxlon = value; }
+            get { return dimfxlon; }
+            set { dimfxlon = value; }
         }
 
         /// <summary>
@@ -578,14 +578,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double ExtLineFixedLength
         {
-            get { return this.dimfxl; }
+            get { return dimfxl; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The ExtLineFixedLength must be equals or greater than zero.");
                 }
-                this.dimfxl = value;
+                dimfxl = value;
             }
         }
 
@@ -601,8 +601,8 @@ namespace netDxf.Tables
         /// </remarks>
         public Block DimArrow1
         {
-            get { return this.dimblk1; }
-            set { this.dimblk1 = value == null ? null : this.OnBlockChangedEvent(this.dimblk1, value); }
+            get { return dimblk1; }
+            set { dimblk1 = value == null ? null : OnBlockChangedEvent(dimblk1, value); }
         }
 
         /// <summary>
@@ -613,8 +613,8 @@ namespace netDxf.Tables
         /// </remarks>
         public Block DimArrow2
         {
-            get { return this.dimblk2; }
-            set { this.dimblk2 = value == null ? null : this.OnBlockChangedEvent(this.dimblk2, value); }
+            get { return dimblk2; }
+            set { dimblk2 = value == null ? null : OnBlockChangedEvent(dimblk2, value); }
         }
 
         /// <summary>
@@ -625,8 +625,8 @@ namespace netDxf.Tables
         /// </remarks>
         public Block LeaderArrow
         {
-            get { return this.dimldrblk; }
-            set { this.dimldrblk = value == null ? null : this.OnBlockChangedEvent(this.dimldrblk, value); }
+            get { return dimldrblk; }
+            set { dimldrblk = value == null ? null : OnBlockChangedEvent(dimldrblk, value); }
         }
 
         /// <summary>
@@ -637,14 +637,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double ArrowSize
         {
-            get { return this.dimasz; }
+            get { return dimasz; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The ArrowSize must be equals or greater than zero.");
                 }
-                this.dimasz = value;
+                dimasz = value;
             }
         }
 
@@ -663,8 +663,8 @@ namespace netDxf.Tables
         /// </remarks>
         public double CenterMarkSize
         {
-            get { return this.dimcen; }
-            set { this.dimcen = value; }
+            get { return dimcen; }
+            set { dimcen = value; }
         }
 
         #endregion
@@ -679,14 +679,14 @@ namespace netDxf.Tables
         /// </remarks>
         public TextStyle TextStyle
         {
-            get { return this.dimtxsty; }
+            get { return dimtxsty; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.dimtxsty = this.OnTextStyleChangedEvent(this.dimtxsty, value);
+                dimtxsty = OnTextStyleChangedEvent(dimtxsty, value);
             }
         }
 
@@ -699,10 +699,10 @@ namespace netDxf.Tables
         /// </remarks>
         public AciColor TextColor
         {
-            get { return this.dimclrt; }
+            get { return dimclrt; }
             set
             {
-                this.dimclrt = value ?? throw new ArgumentNullException(nameof(value));
+                dimclrt = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -715,8 +715,8 @@ namespace netDxf.Tables
         /// </remarks>
         public AciColor TextFillColor
         {
-            get { return this.dimtfillclr; }
-            set { this.dimtfillclr = value; }
+            get { return dimtfillclr; }
+            set { dimtfillclr = value; }
         }
 
         /// <summary>
@@ -727,14 +727,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double TextHeight
         {
-            get { return this.dimtxt; }
+            get { return dimtxt; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The TextHeight must be greater than zero.");
                 }
-                this.dimtxt = value;
+                dimtxt = value;
             }
         }
 
@@ -746,8 +746,8 @@ namespace netDxf.Tables
         /// </remarks>
         public DimensionStyleTextHorizontalPlacement TextHorizontalPlacement
         {
-            get { return this.dimjust; }
-            set { this.dimjust = value; }
+            get { return dimjust; }
+            set { dimjust = value; }
         }
 
         /// <summary>
@@ -758,8 +758,8 @@ namespace netDxf.Tables
         /// </remarks>
         public DimensionStyleTextVerticalPlacement TextVerticalPlacement
         {
-            get { return this.dimtad; }
-            set { this.dimtad = value; }
+            get { return dimtad; }
+            set { dimtad = value; }
         }
 
         /// <summary>
@@ -771,8 +771,8 @@ namespace netDxf.Tables
         /// </remarks>
         public double TextOffset
         {
-            get { return this.dimgap; }
-            set { this.dimgap = value; }
+            get { return dimgap; }
+            set { dimgap = value; }
         }
 
         /// <summary>
@@ -783,8 +783,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool TextInsideAlign
         {
-            get { return this.dimtih; }
-            set { this.dimtih = value; }
+            get { return dimtih; }
+            set { dimtih = value; }
         }
 
         /// <summary>
@@ -795,8 +795,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool TextOutsideAlign
         {
-            get { return this.dimtoh; }
-            set { this.dimtoh = value; }
+            get { return dimtoh; }
+            set { dimtoh = value; }
         }
 
         /// <summary>
@@ -807,8 +807,8 @@ namespace netDxf.Tables
         /// </remarks>
         public DimensionStyleTextDirection TextDirection
         {
-            get { return this.dimtxtdirection; }
-            set { this.dimtxtdirection = value; }
+            get { return dimtxtdirection; }
+            set { dimtxtdirection = value; }
         }
 
         /// <summary>
@@ -821,14 +821,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double TextFractionHeightScale
         {
-            get { return this.dimtfac; }
+            get { return dimtfac; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The TextFractionHeightScale must be greater than zero.");
                 }
-                this.dimtfac = value;
+                dimtfac = value;
             }
         }
 
@@ -844,8 +844,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool FitDimLineForce
         {
-            get { return this.dimtofl; }
-            set { this.dimtofl = value; }
+            get { return dimtofl; }
+            set { dimtofl = value; }
         }
 
         /// <summary>
@@ -859,8 +859,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool FitDimLineInside
         {
-            get { return this.dimsoxd; }
-            set { this.dimsoxd = value; }
+            get { return dimsoxd; }
+            set { dimsoxd = value; }
         }
 
         /// <summary>
@@ -873,14 +873,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double DimScaleOverall
         {
-            get { return this.dimscale; }
+            get { return dimscale; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The DimScaleOverall must be greater than zero.");
                 }
-                this.dimscale = value;
+                dimscale = value;
             }
         }
 
@@ -893,8 +893,8 @@ namespace netDxf.Tables
         /// </remarks>
         public DimensionStyleFitOptions FitOptions
         {
-            get { return this.dimatfit; }
-            set { this.dimatfit = value; }
+            get { return dimatfit; }
+            set { dimatfit = value; }
         }
 
         /// <summary>
@@ -905,8 +905,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool FitTextInside
         {
-            get { return this.dimtix; }
-            set { this.dimtix = value; }
+            get { return dimtix; }
+            set { dimtix = value; }
         }
 
         /// <summary>
@@ -917,8 +917,8 @@ namespace netDxf.Tables
         /// </remarks>
         public DimensionStyleFitTextMove FitTextMove
         {
-            get { return this.dimtmove; }
-            set { this.dimtmove = value; }
+            get { return dimtmove; }
+            set { dimtmove = value; }
         }
 
         #endregion
@@ -935,14 +935,14 @@ namespace netDxf.Tables
         /// </remarks>
         public short AngularPrecision
         {
-            get { return this.dimadec; }
+            get { return dimadec; }
             set
             {
                 if (value < -1)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The AngularPrecision must be greater than -1.");
                 }
-                this.dimadec = value;
+                dimadec = value;
             }
         }
 
@@ -956,14 +956,14 @@ namespace netDxf.Tables
         /// </remarks>
         public short LengthPrecision
         {
-            get { return this.dimdec; }
+            get { return dimdec; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The LengthPrecision must be equals or greater than zero.");
                 }
-                this.dimdec = value;
+                dimdec = value;
             }
         }
 
@@ -975,8 +975,8 @@ namespace netDxf.Tables
         /// </remarks>
         public string DimPrefix
         {
-            get { return this.dimPrefix; }
-            set { this.dimPrefix = value ?? string.Empty; }
+            get { return dimPrefix; }
+            set { dimPrefix = value ?? string.Empty; }
         }
 
         /// <summary>
@@ -987,8 +987,8 @@ namespace netDxf.Tables
         /// </remarks>
         public string DimSuffix
         {
-            get { return this.dimSuffix; }
-            set { this.dimSuffix = value ?? string.Empty; }
+            get { return dimSuffix; }
+            set { dimSuffix = value ?? string.Empty; }
         }
 
         /// <summary>
@@ -999,8 +999,8 @@ namespace netDxf.Tables
         /// </remarks>
         public char DecimalSeparator
         {
-            get { return this.dimdsep; }
-            set { this.dimdsep = value; }
+            get { return dimdsep; }
+            set { dimdsep = value; }
         }
 
         /// <summary>
@@ -1013,14 +1013,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double DimScaleLinear
         {
-            get { return this.dimlfac; }
+            get { return dimlfac; }
             set
             {
                 if (MathHelper.IsZero(value))
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The scale factor cannot be zero.");
                 }
-                this.dimlfac = value;
+                dimlfac = value;
             }
         }
 
@@ -1036,8 +1036,8 @@ namespace netDxf.Tables
         /// </remarks>
         public LinearUnitType DimLengthUnits
         {
-            get { return this.dimlunit; }
-            set { this.dimlunit = value; }
+            get { return dimlunit; }
+            set { dimlunit = value; }
         }
 
         /// <summary>
@@ -1051,14 +1051,14 @@ namespace netDxf.Tables
         /// </remarks>
         public AngleUnitType DimAngularUnits
         {
-            get { return this.dimaunit; }
+            get { return dimaunit; }
             set
             {
                 if (value == AngleUnitType.SurveyorUnits)
                 {
                     throw new ArgumentException("Surveyor's units are not applicable in angular dimensions.");
                 }
-                this.dimaunit = value;
+                dimaunit = value;
             }
         }
 
@@ -1072,8 +1072,8 @@ namespace netDxf.Tables
         /// </remarks>
         public FractionFormatType FractionType
         {
-            get { return this.dimfrac; }
-            set { this.dimfrac = value; }
+            get { return dimfrac; }
+            set { dimfrac = value; }
         }
 
         /// <summary>
@@ -1084,8 +1084,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool SuppressLinearLeadingZeros
         {
-            get { return this.suppressLinearLeadingZeros; }
-            set { this.suppressLinearLeadingZeros = value; }
+            get { return suppressLinearLeadingZeros; }
+            set { suppressLinearLeadingZeros = value; }
         }
 
         /// <summary>
@@ -1096,8 +1096,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool SuppressLinearTrailingZeros
         {
-            get { return this.suppressLinearTrailingZeros; }
-            set { this.suppressLinearTrailingZeros = value; }
+            get { return suppressLinearTrailingZeros; }
+            set { suppressLinearTrailingZeros = value; }
         }
 
         /// <summary>
@@ -1108,8 +1108,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool SuppressZeroFeet
         {
-            get { return this.suppressZeroFeet; }
-            set { this.suppressZeroFeet = value; }
+            get { return suppressZeroFeet; }
+            set { suppressZeroFeet = value; }
         }
 
         /// <summary>
@@ -1120,8 +1120,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool SuppressZeroInches
         {
-            get { return this.suppressZeroInches; }
-            set { this.suppressZeroInches = value; }
+            get { return suppressZeroInches; }
+            set { suppressZeroInches = value; }
         }
 
         /// <summary>
@@ -1132,8 +1132,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool SuppressAngularLeadingZeros
         {
-            get { return this.suppressAngularLeadingZeros; }
-            set { this.suppressAngularLeadingZeros = value; }
+            get { return suppressAngularLeadingZeros; }
+            set { suppressAngularLeadingZeros = value; }
         }
 
         /// <summary>
@@ -1144,8 +1144,8 @@ namespace netDxf.Tables
         /// </remarks>
         public bool SuppressAngularTrailingZeros
         {
-            get { return this.suppressAngularTrailingZeros; }
-            set { this.suppressAngularTrailingZeros = value; }
+            get { return suppressAngularTrailingZeros; }
+            set { suppressAngularTrailingZeros = value; }
         }
 
         /// <summary>
@@ -1160,14 +1160,14 @@ namespace netDxf.Tables
         /// </remarks>
         public double DimRoundoff
         {
-            get { return this.dimrnd; }
+            get { return dimrnd; }
             set
             {
                 if (value < 0.000001 && !MathHelper.IsZero(value, double.Epsilon))
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The nearest value to round all distances must be equal or greater than 0.000001 or zero (no rounding off).");
                 }
-                this.dimrnd = value;
+                dimrnd = value;
             }
         }
 
@@ -1181,10 +1181,10 @@ namespace netDxf.Tables
         /// <remarks>Alternative units are not applicable for angular dimensions.</remarks>
         public DimensionStyleAlternateUnits AlternateUnits
         {
-            get { return this.alternateUnits; }
+            get { return alternateUnits; }
             set
             {
-                this.alternateUnits = value ?? throw new ArgumentNullException(nameof(value));
+                alternateUnits = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -1197,10 +1197,10 @@ namespace netDxf.Tables
         /// </summary>
         public DimensionStyleTolerances Tolerances
         {
-            get { return this.tolerances; }
+            get { return tolerances; }
             set
             {
-                this.tolerances = value ?? throw new ArgumentNullException(nameof(value));
+                tolerances = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -1231,7 +1231,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -1246,7 +1246,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -1259,75 +1259,75 @@ namespace netDxf.Tables
             DimensionStyle copy = new DimensionStyle(newName)
             {
                 // dimension lines
-                DimLineColor = (AciColor) this.dimclrd.Clone(),
-                DimLineLinetype = (Linetype) this.dimltype.Clone(),
-                DimLineLineweight = this.dimlwd,
-                DimLine1Off = this.dimsd1,
-                DimLine2Off = this.dimsd2,
-                DimBaselineSpacing = this.dimdli,
-                DimLineExtend = this.dimdle,
+                DimLineColor = (AciColor) dimclrd.Clone(),
+                DimLineLinetype = (Linetype) dimltype.Clone(),
+                DimLineLineweight = dimlwd,
+                DimLine1Off = dimsd1,
+                DimLine2Off = dimsd2,
+                DimBaselineSpacing = dimdli,
+                DimLineExtend = dimdle,
 
                 // extension lines
-                ExtLineColor = (AciColor) this.dimclre.Clone(),
-                ExtLine1Linetype = (Linetype) this.dimltex1.Clone(),
-                ExtLine2Linetype = (Linetype) this.dimltex2.Clone(),
-                ExtLineLineweight = this.dimlwe,
-                ExtLine1Off = this.dimse1,
-                ExtLine2Off = this.dimse2,
-                ExtLineOffset = this.dimexo,
-                ExtLineExtend = this.dimexe,
+                ExtLineColor = (AciColor) dimclre.Clone(),
+                ExtLine1Linetype = (Linetype) dimltex1.Clone(),
+                ExtLine2Linetype = (Linetype) dimltex2.Clone(),
+                ExtLineLineweight = dimlwe,
+                ExtLine1Off = dimse1,
+                ExtLine2Off = dimse2,
+                ExtLineOffset = dimexo,
+                ExtLineExtend = dimexe,
 
                 // symbols and arrows
-                ArrowSize = this.dimasz,
-                CenterMarkSize = this.dimcen,
-                LeaderArrow  = (Block) this.dimldrblk?.Clone(),
-                DimArrow1 = (Block) this.dimblk1?.Clone(),
-                DimArrow2 = (Block) this.dimblk2?.Clone(),
+                ArrowSize = dimasz,
+                CenterMarkSize = dimcen,
+                LeaderArrow  = (Block) dimldrblk?.Clone(),
+                DimArrow1 = (Block) dimblk1?.Clone(),
+                DimArrow2 = (Block) dimblk2?.Clone(),
 
                 // text appearance
-                TextStyle = (TextStyle) this.dimtxsty.Clone(),
-                TextColor = (AciColor) this.dimclrt.Clone(),
-                TextFillColor = (AciColor) this.dimtfillclr?.Clone(),
-                TextHeight = this.dimtxt,
-                TextHorizontalPlacement = this.dimjust,
-                TextVerticalPlacement = this.dimtad,
-                TextOffset = this.dimgap,
-                TextFractionHeightScale = this.dimtfac,
+                TextStyle = (TextStyle) dimtxsty.Clone(),
+                TextColor = (AciColor) dimclrt.Clone(),
+                TextFillColor = (AciColor) dimtfillclr?.Clone(),
+                TextHeight = dimtxt,
+                TextHorizontalPlacement = dimjust,
+                TextVerticalPlacement = dimtad,
+                TextOffset = dimgap,
+                TextFractionHeightScale = dimtfac,
 
                 // fit
-                FitDimLineForce = this.dimtofl,
-                FitDimLineInside = this.dimsoxd,
-                DimScaleOverall = this.dimscale,
-                FitOptions = this.dimatfit,
-                FitTextInside = this.dimtix,
-                FitTextMove = this.dimtmove,
+                FitDimLineForce = dimtofl,
+                FitDimLineInside = dimsoxd,
+                DimScaleOverall = dimscale,
+                FitOptions = dimatfit,
+                FitTextInside = dimtix,
+                FitTextMove = dimtmove,
 
                 // primary units
-                AngularPrecision = this.dimadec,
-                LengthPrecision = this.dimdec,
-                DimPrefix = this.dimPrefix,
-                DimSuffix = this.dimSuffix,
-                DecimalSeparator = this.dimdsep,
-                DimScaleLinear = this.dimlfac,
-                DimLengthUnits = this.dimlunit,
-                DimAngularUnits = this.dimaunit,
-                FractionType = this.dimfrac,
-                SuppressLinearLeadingZeros = this.suppressLinearLeadingZeros,
-                SuppressLinearTrailingZeros = this.suppressLinearTrailingZeros,
-                SuppressZeroFeet = this.suppressZeroFeet,
-                SuppressZeroInches = this.suppressZeroInches,
-                SuppressAngularLeadingZeros = this.suppressAngularLeadingZeros,
-                SuppressAngularTrailingZeros = this.suppressAngularTrailingZeros,
-                DimRoundoff = this.dimrnd,
+                AngularPrecision = dimadec,
+                LengthPrecision = dimdec,
+                DimPrefix = dimPrefix,
+                DimSuffix = dimSuffix,
+                DecimalSeparator = dimdsep,
+                DimScaleLinear = dimlfac,
+                DimLengthUnits = dimlunit,
+                DimAngularUnits = dimaunit,
+                FractionType = dimfrac,
+                SuppressLinearLeadingZeros = suppressLinearLeadingZeros,
+                SuppressLinearTrailingZeros = suppressLinearTrailingZeros,
+                SuppressZeroFeet = suppressZeroFeet,
+                SuppressZeroInches = suppressZeroInches,
+                SuppressAngularLeadingZeros = suppressAngularLeadingZeros,
+                SuppressAngularTrailingZeros = suppressAngularTrailingZeros,
+                DimRoundoff = dimrnd,
 
                 // alternate units
-                AlternateUnits = (DimensionStyleAlternateUnits) this.alternateUnits.Clone(),
+                AlternateUnits = (DimensionStyleAlternateUnits) alternateUnits.Clone(),
 
                 // tolerances
-                Tolerances = (DimensionStyleTolerances) this.tolerances.Clone()
+                Tolerances = (DimensionStyleTolerances) tolerances.Clone()
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -1341,7 +1341,7 @@ namespace netDxf.Tables
         /// <returns>A new DimensionStyle that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

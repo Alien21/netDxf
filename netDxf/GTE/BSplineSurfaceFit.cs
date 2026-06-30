@@ -65,25 +65,25 @@ namespace netDxf.GTE
             Debug.Assert(sampleData != null, "Invalid sample data.");
 
             this.sampleData = sampleData;
-            this.controlData = new Vector3[numControls0 * numControls1];
-            this.degree = new[] {degree0, degree1};
-            this.numSamples = new[] {numSamples0, numSamples1};
-            this.numControls = new[] {numControls0, numControls1};
-            this.basisFunctions = new BasisFunction[2];
+            controlData = new Vector3[numControls0 * numControls1];
+            degree = new[] {degree0, degree1};
+            numSamples = new[] {numSamples0, numSamples1};
+            numControls = new[] {numControls0, numControls1};
+            basisFunctions = new BasisFunction[2];
 
             BasisFunctionInput input = new BasisFunctionInput();
             double[] tMultiplier = new double[2];
             int dim;
             for (dim = 0; dim < 2; dim++)
             {
-                input.NumControls = this.numControls[dim];
-                input.Degree = this.degree[dim];
+                input.NumControls = numControls[dim];
+                input.Degree = degree[dim];
                 input.Uniform = true;
                 input.Periodic = false;
-                input.NumUniqueKnots = this.numControls[dim] - this.degree[dim] + 1;
+                input.NumUniqueKnots = numControls[dim] - degree[dim] + 1;
                 input.UniqueKnots = new UniqueKnot[input.NumUniqueKnots];
                 input.UniqueKnots[0].T = 0.0;
-                input.UniqueKnots[0].Multiplicity = this.degree[dim] + 1;
+                input.UniqueKnots[0].Multiplicity = degree[dim] + 1;
                 int last = input.NumUniqueKnots - 1;
                 double factor = 1.0 / last;
                 for (int i = 1; i < last; i++)
@@ -93,10 +93,10 @@ namespace netDxf.GTE
                 }
 
                 input.UniqueKnots[last].T = 1.0;
-                input.UniqueKnots[last].Multiplicity = this.degree[dim] + 1;
-                tMultiplier[dim] = 1.0 / (this.numSamples[dim] - 1.0);
+                input.UniqueKnots[last].Multiplicity = degree[dim] + 1;
+                tMultiplier[dim] = 1.0 / (numSamples[dim] - 1.0);
 
-                this.basisFunctions[dim] = new BasisFunction(input);
+                basisFunctions[dim] = new BasisFunction(input);
             }
 
             // Fit the data points with a B-spline surface using a
@@ -110,36 +110,36 @@ namespace netDxf.GTE
             // Construct the matrices A0^T*A0 and A1^T*A1.
             BandedMatrix[] ATAMat =
             {
-                new BandedMatrix(this.numControls[0], this.degree[0] + 1, this.degree[0] + 1),
-                new BandedMatrix(this.numControls[1], this.degree[1] + 1, this.degree[1] + 1)
+                new BandedMatrix(numControls[0], degree[0] + 1, degree[0] + 1),
+                new BandedMatrix(numControls[1], degree[1] + 1, degree[1] + 1)
             };
 
             for (dim = 0; dim < 2; dim++)
             {
-                for (i0 = 0; i0 < this.numControls[dim]; i0++)
+                for (i0 = 0; i0 < numControls[dim]; i0++)
                 {
                     for (i1 = 0; i1 < i0; i1++)
                     {
                         ATAMat[dim][i0, i1] = ATAMat[dim][i1, i0];
                     }
 
-                    int i1Max = i0 + this.degree[dim];
-                    if (i1Max >= this.numControls[dim])
+                    int i1Max = i0 + degree[dim];
+                    if (i1Max >= numControls[dim])
                     {
-                        i1Max = this.numControls[dim] - 1;
+                        i1Max = numControls[dim] - 1;
                     }
 
                     for (i1 = i0; i1 <= i1Max; i1++)
                     {
                         double value = 0;
-                        for (i2 = 0; i2 < this.numSamples[dim]; i2++)
+                        for (i2 = 0; i2 < numSamples[dim]; i2++)
                         {
                             t = tMultiplier[dim] * i2;
-                            this.basisFunctions[dim].Evaluate(t, 0, out imin, out imax);
+                            basisFunctions[dim].Evaluate(t, 0, out imin, out imax);
                             if (imin <= i0 && i0 <= imax && imin <= i1 && i1 <= imax)
                             {
-                                double b0 = this.basisFunctions[dim].GetValue(0, i0);
-                                double b1 = this.basisFunctions[dim].GetValue(0, i1);
+                                double b0 = basisFunctions[dim].GetValue(0, i0);
+                                double b1 = basisFunctions[dim].GetValue(0, i1);
                                 value += b0 * b1;
                             }
                         }
@@ -154,16 +154,16 @@ namespace netDxf.GTE
             double[][] ATMat = new double[2][];
             for (dim = 0; dim < 2; dim++)
             {
-                ATMat[dim] = new double[this.numControls[dim] * this.numSamples[dim]];
-                for (i0 = 0; i0 < this.numControls[dim]; i0++)
+                ATMat[dim] = new double[numControls[dim] * numSamples[dim]];
+                for (i0 = 0; i0 < numControls[dim]; i0++)
                 {
-                    for (i1 = 0; i1 < this.numSamples[dim]; i1++)
+                    for (i1 = 0; i1 < numSamples[dim]; i1++)
                     {
                         t = tMultiplier[dim] * i1;
-                        this.basisFunctions[dim].Evaluate(t, 0, out imin, out imax);
+                        basisFunctions[dim].Evaluate(t, 0, out imin, out imax);
                         if (imin <= i0 && i0 <= imax)
                         {
-                            ATMat[dim][i0 * this.numSamples[dim] + i1] = this.basisFunctions[dim].GetValue(0, i0);
+                            ATMat[dim][i0 * numSamples[dim] + i1] = basisFunctions[dim].GetValue(0, i0);
                         }
                     }
                 }
@@ -174,29 +174,29 @@ namespace netDxf.GTE
             // A1^T*A1*X1 = A1^T.
             for (dim = 0; dim < 2; dim++)
             {
-                bool solved = ATAMat[dim].SolveSystem(ref ATMat[dim], this.numSamples[dim]);
+                bool solved = ATAMat[dim].SolveSystem(ref ATMat[dim], numSamples[dim]);
                 Debug.Assert(solved, "Failed to solve linear system in BSplineSurfaceFit constructor.");
             }
 
             // The control points for the fitted surface are stored in the matrix
             // Q = X0*P*X1^T, where P is the matrix of sample data.
-            for (i1 = 0; i1 < this.numControls[1]; i1++)
+            for (i1 = 0; i1 < numControls[1]; i1++)
             {
-                for (i0 = 0; i0 < this.numControls[0]; i0++)
+                for (i0 = 0; i0 < numControls[0]; i0++)
                 {
                     Vector3 sum = Vector3.Zero;
-                    for (int j1 = 0; j1 < this.numSamples[1]; j1++)
+                    for (int j1 = 0; j1 < numSamples[1]; j1++)
                     {
-                        double x1Value = ATMat[1][i1 * this.numSamples[1] + j1];
-                        for (int j0 = 0; j0 < this.numSamples[0]; j0++)
+                        double x1Value = ATMat[1][i1 * numSamples[1] + j1];
+                        for (int j0 = 0; j0 < numSamples[0]; j0++)
                         {
-                            double x0Value = ATMat[0][i0 * this.numSamples[0] + j0];
-                            Vector3 sample = this.sampleData[j0 + this.numSamples[0] * j1];
+                            double x0Value = ATMat[0][i0 * numSamples[0] + j0];
+                            Vector3 sample = this.sampleData[j0 + numSamples[0] * j1];
                             sum += x0Value * x1Value * sample;
                         }
                     }
 
-                    this.controlData[i0 + this.numControls[0] * i1] = sum;
+                    controlData[i0 + numControls[0] * i1] = sum;
                 }
             }
         }
@@ -204,33 +204,33 @@ namespace netDxf.GTE
         // Access to input sample information.
         public int NumSamples(int dimension)
         {
-            return this.numSamples[dimension];
+            return numSamples[dimension];
         }
 
         public Vector3[] SampleData
         {
-            get { return this.sampleData; }
+            get { return sampleData; }
         }
 
         // Access to output control point and surface information.
         public int Degree(int dimension)
         {
-            return this.degree[dimension];
+            return degree[dimension];
         }
 
         public int NumControls(int dimension)
         {
-            return this.numControls[dimension];
+            return numControls[dimension];
         }
 
         public Vector3[] ControlData
         {
-            get { return this.controlData; }
+            get { return controlData; }
         }
 
         public BasisFunction BasisFunction(int dimension)
         {
-            return this.basisFunctions[dimension];
+            return basisFunctions[dimension];
         }
 
         // Evaluation of the B-spline surface.  It is defined for
@@ -238,17 +238,17 @@ namespace netDxf.GTE
         // [0,1], it is clamped to [0,1].
         public Vector3 GetPosition(double u, double v)
         {
-            this.basisFunctions[0].Evaluate(u, 0, out int iumin, out int iumax);
-            this.basisFunctions[1].Evaluate(v, 0, out int ivmin, out int ivmax);
+            basisFunctions[0].Evaluate(u, 0, out int iumin, out int iumax);
+            basisFunctions[1].Evaluate(v, 0, out int ivmin, out int ivmax);
 
             Vector3 position = Vector3.Zero;
             for (int iv = ivmin; iv <= ivmax; iv++)
             {
-                double value1 = this.basisFunctions[1].GetValue(0, iv);
+                double value1 = basisFunctions[1].GetValue(0, iv);
                 for (int iu = iumin; iu <= iumax; iu++)
                 {
-                    double value0 = this.basisFunctions[0].GetValue(0, iu);
-                    Vector3 control = this.controlData[iu + this.numControls[0] * iv];
+                    double value0 = basisFunctions[0].GetValue(0, iu);
+                    Vector3 control = controlData[iu + numControls[0] * iv];
                     position += value0 * value1 * control;
                 }
             }

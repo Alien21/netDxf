@@ -39,7 +39,7 @@ namespace netDxf.Tables
         public event ShapeStyleChangedEventHandler ShapeStyleChanged;
         protected virtual ShapeStyle OnShapeStyleChangedEvent(ShapeStyle oldShapeStyle, ShapeStyle newShapeStyle)
         {
-            ShapeStyleChangedEventHandler ae = this.ShapeStyleChanged;
+            ShapeStyleChangedEventHandler ae = ShapeStyleChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<ShapeStyle> eventArgs = new TableObjectChangedEventArgs<ShapeStyle>(oldShapeStyle, newShapeStyle);
@@ -140,14 +140,14 @@ namespace netDxf.Tables
         /// </remarks>
         public string Name
         {
-            get { return this.name; }
+            get { return name; }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException(nameof(value), "The linetype shape name should be at least one character long.");
                 }
-                this.name = value;
+                name = value;
             }
         }
 
@@ -159,14 +159,14 @@ namespace netDxf.Tables
         /// </remarks>
         public ShapeStyle Style
         {
-            get { return this.style; }
+            get { return style; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.style = this.OnShapeStyleChangedEvent(this.style, value);
+                style = OnShapeStyleChangedEvent(style, value);
             }
         }
 
@@ -175,8 +175,8 @@ namespace netDxf.Tables
         /// </summary>
         public Vector2 Offset
         {
-            get { return this.offset; }
-            set { this.offset = value; }
+            get { return offset; }
+            set { offset = value; }
         }
 
         /// <summary>
@@ -184,8 +184,8 @@ namespace netDxf.Tables
         /// </summary>
         public LinetypeSegmentRotationType RotationType
         {
-            get { return this.rotationType; }
-            set { this.rotationType = value; }
+            get { return rotationType; }
+            set { rotationType = value; }
         }
 
         /// <summary>
@@ -193,8 +193,8 @@ namespace netDxf.Tables
         /// </summary>
         public double Rotation
         {
-            get { return this.rotation; }
-            set { this.rotation = MathHelper.NormalizeAngle(value); }
+            get { return rotation; }
+            set { rotation = MathHelper.NormalizeAngle(value); }
         }
 
         /// <summary>
@@ -202,8 +202,8 @@ namespace netDxf.Tables
         /// </summary>
         public double Scale
         {
-            get { return this.scale; }
-            set { this.scale = value; }
+            get { return scale; }
+            set { scale = value; }
         }
 
         #endregion
@@ -216,12 +216,12 @@ namespace netDxf.Tables
         /// <returns>A new <c>LinetypeShapeSegment</c> that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return new LinetypeShapeSegment(this.name, (ShapeStyle) this.style.Clone(), this.Length)
+            return new LinetypeShapeSegment(name, (ShapeStyle) style.Clone(), Length)
             {
-                Offset = this.offset,
-                RotationType = this.rotationType,
-                Rotation = this.rotation,
-                Scale = this.scale
+                Offset = offset,
+                RotationType = rotationType,
+                Rotation = rotation,
+                Scale = scale
             };
         }
 

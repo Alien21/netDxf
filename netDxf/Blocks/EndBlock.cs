@@ -37,7 +37,7 @@ namespace netDxf.Blocks
         public EndBlock(DxfObject owner)
             : base(DxfObjectCode.BlockEnd)
         {
-            this.Owner = owner;
+            Owner = owner;
         }
     }
 }

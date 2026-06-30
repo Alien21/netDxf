@@ -63,25 +63,25 @@ namespace netDxf.Units
         /// </summary>
         public UnitStyleFormat()
         {
-            this.linearDecimalPlaces = 2;
-            this.angularDecimalPlaces = 0;
-            this.decimalSeparator = ".";
-            this.feetInchesSeparator = "-";
-            this.degreesSymbol = "°";
-            this.minutesSymbol = "\'";
-            this.secondsSymbol = "\"";
-            this.radiansSymbol = "r";
-            this.gradiansSymbol = "g";
-            this.feetSymbol = "\'";
-            this.inchesSymbol = "\"";
-            this.fractionHeightScale = 1.0;
-            this.fractionType = FractionFormatType.Horizontal;
-            this.suppressLinearLeadingZeros = false;
-            this.suppressLinearTrailingZeros = false;
-            this.suppressAngularLeadingZeros = false;
-            this.suppressAngularTrailingZeros = false;
-            this.suppressZeroFeet = true;
-            this.suppressZeroInches = true;
+            linearDecimalPlaces = 2;
+            angularDecimalPlaces = 0;
+            decimalSeparator = ".";
+            feetInchesSeparator = "-";
+            degreesSymbol = "°";
+            minutesSymbol = "\'";
+            secondsSymbol = "\"";
+            radiansSymbol = "r";
+            gradiansSymbol = "g";
+            feetSymbol = "\'";
+            inchesSymbol = "\"";
+            fractionHeightScale = 1.0;
+            fractionType = FractionFormatType.Horizontal;
+            suppressLinearLeadingZeros = false;
+            suppressLinearTrailingZeros = false;
+            suppressAngularLeadingZeros = false;
+            suppressAngularTrailingZeros = false;
+            suppressZeroFeet = true;
+            suppressZeroInches = true;
         }
 
         #endregion
@@ -96,14 +96,14 @@ namespace netDxf.Units
         /// </remarks>
         public short LinearDecimalPlaces
         {
-            get { return this.linearDecimalPlaces; }
+            get { return linearDecimalPlaces; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The number of decimal places must be equals or greater than zero.");
                 }
-                this.linearDecimalPlaces = value;
+                linearDecimalPlaces = value;
             }
         }
 
@@ -112,14 +112,14 @@ namespace netDxf.Units
         /// </summary>
         public short AngularDecimalPlaces
         {
-            get { return this.angularDecimalPlaces; }
+            get { return angularDecimalPlaces; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The number of decimal places must be equals or greater than zero.");
                 }
-                this.angularDecimalPlaces = value;
+                angularDecimalPlaces = value;
             }
         }
 
@@ -128,8 +128,8 @@ namespace netDxf.Units
         /// </summary>
         public string DecimalSeparator
         {
-            get { return this.decimalSeparator; }
-            set { this.decimalSeparator = value; }
+            get { return decimalSeparator; }
+            set { decimalSeparator = value; }
         }
 
         /// <summary>
@@ -137,8 +137,8 @@ namespace netDxf.Units
         /// </summary>
         public string FeetInchesSeparator
         {
-            get { return this.feetInchesSeparator; }
-            set { this.feetInchesSeparator = value; }
+            get { return feetInchesSeparator; }
+            set { feetInchesSeparator = value; }
         }
 
         /// <summary>
@@ -146,8 +146,8 @@ namespace netDxf.Units
         /// </summary>
         public string DegreesSymbol
         {
-            get { return this.degreesSymbol; }
-            set { this.degreesSymbol = value; }
+            get { return degreesSymbol; }
+            set { degreesSymbol = value; }
         }
 
         /// <summary>
@@ -155,8 +155,8 @@ namespace netDxf.Units
         /// </summary>
         public string MinutesSymbol
         {
-            get { return this.minutesSymbol; }
-            set { this.minutesSymbol = value; }
+            get { return minutesSymbol; }
+            set { minutesSymbol = value; }
         }
 
         /// <summary>
@@ -164,8 +164,8 @@ namespace netDxf.Units
         /// </summary>
         public string SecondsSymbol
         {
-            get { return this.secondsSymbol; }
-            set { this.secondsSymbol = value; }
+            get { return secondsSymbol; }
+            set { secondsSymbol = value; }
         }
 
         /// <summary>
@@ -173,8 +173,8 @@ namespace netDxf.Units
         /// </summary>
         public string RadiansSymbol
         {
-            get { return this.radiansSymbol; }
-            set { this.radiansSymbol = value; }
+            get { return radiansSymbol; }
+            set { radiansSymbol = value; }
         }
 
         /// <summary>
@@ -182,8 +182,8 @@ namespace netDxf.Units
         /// </summary>
         public string GradiansSymbol
         {
-            get { return this.gradiansSymbol; }
-            set { this.gradiansSymbol = value; }
+            get { return gradiansSymbol; }
+            set { gradiansSymbol = value; }
         }
 
         /// <summary>
@@ -191,8 +191,8 @@ namespace netDxf.Units
         /// </summary>
         public string FeetSymbol
         {
-            get { return this.feetSymbol; }
-            set { this.feetSymbol = value; }
+            get { return feetSymbol; }
+            set { feetSymbol = value; }
         }
 
         /// <summary>
@@ -200,8 +200,8 @@ namespace netDxf.Units
         /// </summary>
         public string InchesSymbol
         {
-            get { return this.inchesSymbol; }
-            set { this.inchesSymbol = value; }
+            get { return inchesSymbol; }
+            set { inchesSymbol = value; }
         }
 
         /// <summary>
@@ -209,14 +209,14 @@ namespace netDxf.Units
         /// </summary>
         public double FractionHeightScale
         {
-            get { return this.fractionHeightScale; }
+            get { return fractionHeightScale; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The fraction height scale must be greater than zero.");
                 }
-                this.fractionHeightScale = value;
+                fractionHeightScale = value;
             }
         }
 
@@ -230,8 +230,8 @@ namespace netDxf.Units
         /// </remarks>
         public FractionFormatType FractionType
         {
-            get { return this.fractionType; }
-            set { this.fractionType = value; }
+            get { return fractionType; }
+            set { fractionType = value; }
         }
 
         /// <summary>
@@ -239,8 +239,8 @@ namespace netDxf.Units
         /// </summary>
         public bool SuppressLinearLeadingZeros
         {
-            get { return this.suppressLinearLeadingZeros; }
-            set { this.suppressLinearLeadingZeros = value; }
+            get { return suppressLinearLeadingZeros; }
+            set { suppressLinearLeadingZeros = value; }
         }
 
         /// <summary>
@@ -248,8 +248,8 @@ namespace netDxf.Units
         /// </summary>
         public bool SuppressLinearTrailingZeros
         {
-            get { return this.suppressLinearTrailingZeros; }
-            set { this.suppressLinearTrailingZeros = value; }
+            get { return suppressLinearTrailingZeros; }
+            set { suppressLinearTrailingZeros = value; }
         }
 
         /// <summary>
@@ -257,8 +257,8 @@ namespace netDxf.Units
         /// </summary>
         public bool SuppressAngularLeadingZeros
         {
-            get { return this.suppressAngularLeadingZeros; }
-            set { this.suppressAngularLeadingZeros = value; }
+            get { return suppressAngularLeadingZeros; }
+            set { suppressAngularLeadingZeros = value; }
         }
 
         /// <summary>
@@ -266,8 +266,8 @@ namespace netDxf.Units
         /// </summary>
         public bool SuppressAngularTrailingZeros
         {
-            get { return this.suppressAngularTrailingZeros; }
-            set { this.suppressAngularTrailingZeros = value; }
+            get { return suppressAngularTrailingZeros; }
+            set { suppressAngularTrailingZeros = value; }
         }
 
         /// <summary>
@@ -275,8 +275,8 @@ namespace netDxf.Units
         /// </summary>
         public bool SuppressZeroFeet
         {
-            get { return this.suppressZeroFeet; }
-            set { this.suppressZeroFeet = value; }
+            get { return suppressZeroFeet; }
+            set { suppressZeroFeet = value; }
         }
 
         /// <summary>
@@ -284,8 +284,8 @@ namespace netDxf.Units
         /// </summary>
         public bool SuppressZeroInches
         {
-            get { return this.suppressZeroInches; }
-            set { this.suppressZeroInches = value; }
+            get { return suppressZeroInches; }
+            set { suppressZeroInches = value; }
         }
 
         #endregion

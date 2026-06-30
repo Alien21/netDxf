@@ -60,7 +60,7 @@ namespace netDxf.Blocks
         /// </summary>
         public AttributeDefinition Item
         {
-            get { return this.item; }
+            get { return item; }
         }
 
         #endregion

@@ -48,7 +48,7 @@ namespace netDxf.Objects
 
         public string ImageHandle
         {
-            get { return this.imageHandle; }
+            get { return imageHandle; }
         }
 
         #endregion

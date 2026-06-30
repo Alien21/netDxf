@@ -68,16 +68,16 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(name), "The view name should be at least one character long.");
             }
 
-            this.IsReserved = false;
-            this.target = Vector3.Zero;
-            this.camera = Vector3.UnitZ;
-            this.height = 1.0;
-            this.width = 1.0;
-            this.rotation = 0.0;
-            this.viewmode = ViewModeFlags.Off;
-            this.fov = 40.0;
-            this.frontClippingPlane = 0.0;
-            this.backClippingPlane = 0.0;
+            IsReserved = false;
+            target = Vector3.Zero;
+            camera = Vector3.UnitZ;
+            height = 1.0;
+            width = 1.0;
+            rotation = 0.0;
+            viewmode = ViewModeFlags.Off;
+            fov = 40.0;
+            frontClippingPlane = 0.0;
+            backClippingPlane = 0.0;
         }
 
         #endregion
@@ -86,56 +86,56 @@ namespace netDxf.Tables
 
         public Vector3 Target
         {
-            get { return this.target; }
-            set { this.target = value; }
+            get { return target; }
+            set { target = value; }
         }
 
         public Vector3 Camera
         {
-            get { return this.camera; }
-            set { this.camera = value; }
+            get { return camera; }
+            set { camera = value; }
         }
 
         public double Height
         {
-            get { return this.height; }
-            set { this.height = value; }
+            get { return height; }
+            set { height = value; }
         }
 
         public double Width
         {
-            get { return this.width; }
-            set { this.width = value; }
+            get { return width; }
+            set { width = value; }
         }
 
         public double Rotation
         {
-            get { return this.rotation; }
-            set { this.rotation = value; }
+            get { return rotation; }
+            set { rotation = value; }
         }
 
         public ViewModeFlags Viewmode
         {
-            get { return this.viewmode; }
-            set { this.viewmode = value; }
+            get { return viewmode; }
+            set { viewmode = value; }
         }
 
         public double Fov
         {
-            get { return this.fov; }
-            set { this.fov = value; }
+            get { return fov; }
+            set { fov = value; }
         }
 
         public double FrontClippingPlane
         {
-            get { return this.frontClippingPlane; }
-            set { this.frontClippingPlane = value; }
+            get { return frontClippingPlane; }
+            set { frontClippingPlane = value; }
         }
 
         public double BackClippingPlane
         {
-            get { return this.backClippingPlane; }
-            set { this.backClippingPlane = value; }
+            get { return backClippingPlane; }
+            set { backClippingPlane = value; }
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -190,18 +190,18 @@ namespace netDxf.Tables
         {
             View copy = new View(newName)
             {
-                Target = this.target,
-                Camera = this.camera,
-                Height = this.height,
-                Width = this.width,
-                Rotation = this.rotation,
-                Viewmode = this.viewmode,
-                Fov = this.fov,
-                FrontClippingPlane = this.frontClippingPlane,
-                BackClippingPlane = this.backClippingPlane
+                Target = target,
+                Camera = camera,
+                Height = height,
+                Width = width,
+                Rotation = rotation,
+                Viewmode = viewmode,
+                Fov = fov,
+                FrontClippingPlane = frontClippingPlane,
+                BackClippingPlane = backClippingPlane
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -215,7 +215,7 @@ namespace netDxf.Tables
         /// <returns>A new View that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

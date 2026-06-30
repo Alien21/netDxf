@@ -52,7 +52,7 @@ namespace netDxf.Collections
         internal DrawingEntities(DxfDocument document)
         {
             this.document = document;
-            this.activeLayout = Layout.ModelSpaceName;
+            activeLayout = Layout.ModelSpaceName;
         }
 
         #endregion
@@ -64,14 +64,14 @@ namespace netDxf.Collections
         /// </summary>
         public string ActiveLayout
         {
-            get { return this.activeLayout; }
+            get { return activeLayout; }
             set
             {
-                if (!this.document.Layouts.Contains(value))
+                if (!document.Layouts.Contains(value))
                 {
                     throw new ArgumentException(string.Format("The layout {0} does not exist.", value), nameof(value));
                 }
-                this.activeLayout = value;
+                activeLayout = value;
             }
         }
 
@@ -80,7 +80,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<EntityObject> All
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities; }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities; }
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Arc> Arcs
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Arc>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Arc>(); }
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Ellipse> Ellipses
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Ellipse>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Ellipse>(); }
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Circle> Circles
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Circle>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Circle>(); }
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Face3D> Faces3D
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Face3D>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Face3D>(); }
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Solid> Solids
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Solid>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Solid>(); }
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Trace> Traces
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Trace>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Trace>(); }
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Insert> Inserts
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Insert>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Insert>(); }
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Line> Lines
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Line>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Line>(); }
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Shape> Shapes
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Shape>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Shape>(); }
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Polyline2D> Polylines2D
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Polyline2D>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Polyline2D>(); }
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Polyline3D> Polylines3D
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Polyline3D>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Polyline3D>(); }
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<PolyfaceMesh> PolyfaceMeshes
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<PolyfaceMesh>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<PolyfaceMesh>(); }
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<PolygonMesh> PolygonMeshes
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<PolygonMesh>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<PolygonMesh>(); }
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Point> Points
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Point>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Point>(); }
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Text> Texts
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Text>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Text>(); }
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<MText> MTexts
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<MText>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<MText>(); }
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Hatch> Hatches
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Hatch>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Hatch>(); }
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Image> Images
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Image>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Image>(); }
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Mesh> Meshes
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Mesh>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Mesh>(); }
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Leader> Leaders
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Leader>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Leader>(); }
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Tolerance> Tolerances
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Tolerance>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Tolerance>(); }
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Underlay> Underlays
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Underlay>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Underlay>(); }
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<MLine> MLines
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<MLine>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<MLine>(); }
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Dimension> Dimensions
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Dimension>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Dimension>(); }
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Spline> Splines
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Spline>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Spline>(); }
         }
 
         /// <summary>
@@ -288,7 +288,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Ray> Rays
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Ray>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Ray>(); }
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Viewport> Viewports
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Viewport>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Viewport>(); }
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<XLine> XLines
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<XLine>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<XLine>(); }
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace netDxf.Collections
         /// </summary>
         public IEnumerable<Wipeout> Wipeouts
         {
-            get { return this.document.Layouts[this.activeLayout].AssociatedBlock.Entities.OfType<Wipeout>(); }
+            get { return document.Layouts[activeLayout].AssociatedBlock.Entities.OfType<Wipeout>(); }
         }
 
         ///// <summary>
@@ -340,7 +340,7 @@ namespace netDxf.Collections
 
             foreach (EntityObject entity in entities)
             {
-                this.Add(entity);
+                Add(entity);
             }
         }
 
@@ -356,7 +356,7 @@ namespace netDxf.Collections
                 throw new ArgumentException("The entity already belongs to a document. Clone it instead.", nameof(entity));
             }
 
-            this.document.Blocks[this.document.Layouts[this.activeLayout].AssociatedBlock.Name].Entities.Add(entity);
+            document.Blocks[document.Layouts[activeLayout].AssociatedBlock.Name].Entities.Add(entity);
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace netDxf.Collections
 
             foreach (EntityObject entity in entities)
             {
-                this.Remove(entity);
+                Remove(entity);
             }
         }
 
@@ -414,7 +414,7 @@ namespace netDxf.Collections
             //    return false;
             //}
 
-            if (!ReferenceEquals(this.document, entity.Owner.Owner.Owner.Owner))
+            if (!ReferenceEquals(document, entity.Owner.Owner.Owner.Owner))
             {
                 return false;
             }
@@ -423,9 +423,9 @@ namespace netDxf.Collections
             Debug.Assert(entity.Handle != null, "The entity has no handle.");
 
             // if an entity belongs to a document its handle should have been stored
-            Debug.Assert(this.document.AddedObjects.ContainsKey(entity.Handle), "The entity has no handle but belongs to a document.");
+            Debug.Assert(document.AddedObjects.ContainsKey(entity.Handle), "The entity has no handle but belongs to a document.");
 
-            return this.document.Blocks[entity.Owner.Name].Entities.Remove(entity);
+            return document.Blocks[entity.Owner.Name].Entities.Remove(entity);
 
         }
 

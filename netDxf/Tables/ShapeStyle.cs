@@ -59,7 +59,7 @@ namespace netDxf.Tables
         /// <remarks>AutoCad stores the shapes for the predefined complex linetypes in the ltypeshp.shx file.</remarks>
         internal static ShapeStyle Default
         {
-            get { return new ShapeStyle("ltypeshp", ShapeStyle.DefaultShapeFile);}
+            get { return new ShapeStyle("ltypeshp", DefaultShapeFile);}
         }
 
         #endregion
@@ -89,7 +89,7 @@ namespace netDxf.Tables
                 throw new ArgumentException("File path contains invalid characters.", nameof(file));
             }
 
-            this.shapeFile = file;
+            shapeFile = file;
             this.size = size;
             this.widthFactor = widthFactor;
             this.obliqueAngle = obliqueAngle;
@@ -104,7 +104,7 @@ namespace netDxf.Tables
         /// </summary>
         public string File
         {
-            get { return this.shapeFile; }
+            get { return shapeFile; }
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -117,7 +117,7 @@ namespace netDxf.Tables
                     throw new ArgumentException("File path contains invalid characters.", nameof(value));
                 }
 
-                this.shapeFile = value;
+                shapeFile = value;
             }
         }
 
@@ -127,7 +127,7 @@ namespace netDxf.Tables
         /// <remarks>This value seems to have no effect on shapes or complex line types with shapes. Default: 0.0.</remarks>
         public double Size
         {
-            get { return this.size; }
+            get { return size; }
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace netDxf.Tables
         /// <remarks>This value seems to have no effect on shapes or complex line types with shapes. Default: 1.0.</remarks>
         public double WidthFactor
         {
-            get { return this.widthFactor; }
+            get { return widthFactor; }
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace netDxf.Tables
         /// <remarks>This value seems to have no effect on shapes or complex line types with shapes. Default: 0.0.</remarks>
         public double ObliqueAngle
         {
-            get { return this.obliqueAngle; }
+            get { return obliqueAngle; }
         }
 
         /// <summary>
@@ -248,10 +248,10 @@ namespace netDxf.Tables
         /// </remarks>
         public List<string> NamesFromShapeStyle()
         {
-            string f = this.shapeFile;
-            if (this.Owner != null)
+            string f = shapeFile;
+            if (Owner != null)
             {
-                f = this.Owner.Owner.SupportFolders.FindFile(f);
+                f = Owner.Owner.SupportFolders.FindFile(f);
             }
 
             if (string.IsNullOrEmpty(f) || !System.IO.File.Exists(f))
@@ -270,7 +270,7 @@ namespace netDxf.Tables
         /// <remarks>If the actual shape style belongs to a document, it will look for the SHX file also in the document support folders.</remarks>
         public bool ContainsShapeName(string name)
         {
-            List<string> names = this.NamesFromShapeStyle();
+            List<string> names = NamesFromShapeStyle();
             foreach (string s in names)
             {
                 if (s.Equals(name, StringComparison.InvariantCultureIgnoreCase))
@@ -299,10 +299,10 @@ namespace netDxf.Tables
                 return 0;
             }
 
-            string f = this.shapeFile;
-            if (this.Owner != null)
+            string f = shapeFile;
+            if (Owner != null)
             {
-                f = this.Owner.Owner.SupportFolders.FindFile(f);
+                f = Owner.Owner.SupportFolders.FindFile(f);
             }
             else
             {
@@ -368,10 +368,10 @@ namespace netDxf.Tables
         /// <remarks>If the actual shape style belongs to a document, it will look for the SHX file also in the document support folders.</remarks>
         public string ShapeName(short number)
         {
-            string f = this.shapeFile;
-            if (this.Owner != null)
+            string f = shapeFile;
+            if (Owner != null)
             {
-                f = this.Owner.Owner.SupportFolders.FindFile(f);
+                f = Owner.Owner.SupportFolders.FindFile(f);
             }
             else
             {
@@ -763,7 +763,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -778,7 +778,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -788,9 +788,9 @@ namespace netDxf.Tables
         /// <returns>A new TextStyle that is a copy of this instance.</returns>
         public override TableObject Clone(string newName)
         {
-            ShapeStyle copy = new ShapeStyle(newName, this.shapeFile, this.size, this.widthFactor, this.obliqueAngle);
+            ShapeStyle copy = new ShapeStyle(newName, shapeFile, size, widthFactor, obliqueAngle);
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -804,7 +804,7 @@ namespace netDxf.Tables
         /// <returns>A new TextStyle that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

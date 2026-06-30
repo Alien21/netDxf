@@ -49,12 +49,12 @@ namespace netDxf.GTE
         //   (vmax-vmin)*(u-umin)+(umax-umin)*(v-vmax) <= 0
         protected ParametricSurface(double umin, double umax, double vmin, double vmax, bool isRectangular)
         {
-            this.uMin = umin;
-            this.uMax = umax;
-            this.vMin = vmin;
-            this.vMax = vmax;
+            uMin = umin;
+            uMax = umax;
+            vMin = vmin;
+            vMax = vmax;
             this.isRectangular = isRectangular;
-            this.isConstructed = false;
+            isConstructed = false;
         }
 
         // Member access.
@@ -64,32 +64,32 @@ namespace netDxf.GTE
         //     if (!surface) { <constructor failed, handle accordingly>; }
         public bool IsConstructed
         {
-            get { return this.isConstructed; }
+            get { return isConstructed; }
         }
 
         public double UMin
         {
-            get { return this.uMin; }
+            get { return uMin; }
         }
 
         public double UMax
         {
-            get { return this.uMax; }
+            get { return uMax; }
         }
 
         public double VMin
         {
-            get { return this.vMin; }
+            get { return vMin; }
         }
 
         public double VMax
         {
-            get { return this.vMax; }
+            get { return vMax; }
         }
 
         public bool IsIsRectangular
         {
-            get { return this.isRectangular; }
+            get { return isRectangular; }
         }
 
         // Evaluation of the surface.  The function supports derivative
@@ -107,19 +107,19 @@ namespace netDxf.GTE
         // Differential geometric quantities.
         public Vector3 GetPosition(double u, double v)
         {
-            this.Evaluate(u, v, 0, out Vector3[] jet);
+            Evaluate(u, v, 0, out Vector3[] jet);
             return jet[0];
         }
 
         public Vector3 GetUTangent(double u, double v)
         {
-            this.Evaluate(u, v, 1, out Vector3[] jet);
+            Evaluate(u, v, 1, out Vector3[] jet);
             return Vector3.Normalize(jet[1]);
         }
 
         public Vector3 GetVTangent(double u, double v)
         {
-            this.Evaluate(u, v, 1, out Vector3[] jet);
+            Evaluate(u, v, 1, out Vector3[] jet);
             return Vector3.Normalize(jet[2]);
         }
     }

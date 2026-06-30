@@ -82,7 +82,7 @@ namespace netDxf.Tables
             //    throw new ArgumentOutOfRangeException(nameof(name), "The application registry name cannot have more than 31 characters.");
             //}
 
-            this.IsReserved = name.Equals(DefaultName, StringComparison.OrdinalIgnoreCase);
+            IsReserved = name.Equals(DefaultName, StringComparison.OrdinalIgnoreCase);
         }
 
         #endregion
@@ -114,7 +114,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace netDxf.Tables
         /// <returns>A new ApplicationRegistry that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

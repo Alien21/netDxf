@@ -49,7 +49,7 @@ namespace netDxf
         /// </summary>
         public DxfObject Reference
         {
-            get { return this.reference; }
+            get { return reference; }
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace netDxf
         /// </summary>
         public int Uses
         {
-            get { return this.uses; }
+            get { return uses; }
         }
     }
 }

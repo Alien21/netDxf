@@ -37,7 +37,7 @@ namespace netDxf.Entities
         public EndSequence()
             : base(DxfObjectCode.EndSequence)
         {
-            this.Owner = null;
+            Owner = null;
         }
     }
 }

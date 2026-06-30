@@ -107,7 +107,7 @@ namespace netDxf.Entities
             this.secondVertex = secondVertex;
             this.thirdVertex = thirdVertex;
             this.fourthVertex = fourthVertex;
-            this.edgeFlags = Face3DEdgeFlags.None;
+            edgeFlags = Face3DEdgeFlags.None;
         }
 
         #endregion
@@ -119,8 +119,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 FirstVertex
         {
-            get { return this.firstVertex; }
-            set { this.firstVertex = value; }
+            get { return firstVertex; }
+            set { firstVertex = value; }
         }
 
         /// <summary>
@@ -128,8 +128,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 SecondVertex
         {
-            get { return this.secondVertex; }
-            set { this.secondVertex = value; }
+            get { return secondVertex; }
+            set { secondVertex = value; }
         }
 
         /// <summary>
@@ -137,8 +137,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 ThirdVertex
         {
-            get { return this.thirdVertex; }
-            set { this.thirdVertex = value; }
+            get { return thirdVertex; }
+            set { thirdVertex = value; }
         }
 
         /// <summary>
@@ -146,8 +146,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 FourthVertex
         {
-            get { return this.fourthVertex; }
-            set { this.fourthVertex = value; }
+            get { return fourthVertex; }
+            set { fourthVertex = value; }
         }
 
         /// <summary>
@@ -155,8 +155,8 @@ namespace netDxf.Entities
         /// </summary>
         public Face3DEdgeFlags EdgeFlags
         {
-            get { return this.edgeFlags; }
-            set { this.edgeFlags = value; }
+            get { return edgeFlags; }
+            set { edgeFlags = value; }
         }
 
         #endregion
@@ -171,17 +171,17 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            this.firstVertex = transformation * this.firstVertex + translation;
-            this.secondVertex = transformation * this.secondVertex + translation;
-            this.thirdVertex = transformation * this.thirdVertex + translation;
-            this.fourthVertex = transformation * this.fourthVertex + translation;
+            firstVertex = transformation * firstVertex + translation;
+            secondVertex = transformation * secondVertex + translation;
+            thirdVertex = transformation * thirdVertex + translation;
+            fourthVertex = transformation * fourthVertex + translation;
 
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
-            this.Normal = newNormal;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -193,23 +193,23 @@ namespace netDxf.Entities
             Face3D entity = new Face3D
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Face3d properties
-                FirstVertex = this.firstVertex,
-                SecondVertex = this.secondVertex,
-                ThirdVertex = this.thirdVertex,
-                FourthVertex = this.fourthVertex,
-                EdgeFlags = this.edgeFlags
+                FirstVertex = firstVertex,
+                SecondVertex = secondVertex,
+                ThirdVertex = thirdVertex,
+                FourthVertex = fourthVertex,
+                EdgeFlags = edgeFlags
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

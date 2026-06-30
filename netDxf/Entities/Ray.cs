@@ -88,8 +88,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Origin
         {
-            get { return this.origin; }
-            set { this.origin = value; }
+            get { return origin; }
+            set { origin = value; }
         }
 
         /// <summary>
@@ -97,11 +97,11 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Direction
         {
-            get { return this.direction; }
+            get { return direction; }
             set
             {
-                this.direction = Vector3.Normalize(value);
-                if (Vector3.IsZero(this.direction))
+                direction = Vector3.Normalize(value);
+                if (Vector3.IsZero(direction))
                 {
                     throw new ArgumentException("The direction can not be the zero vector.", nameof(value));
                 }
@@ -120,21 +120,21 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            this.Origin = transformation * this.Origin + translation;
+            Origin = transformation * Origin + translation;
 
-            Vector3 newDirection = transformation * this.Direction;
+            Vector3 newDirection = transformation * Direction;
             if (Vector3.Equals(Vector3.Zero, newDirection))
             {
-                newDirection = this.Direction;
+                newDirection = Direction;
             }
-            this.Direction = newDirection;
+            Direction = newDirection;
 
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
-            this.Normal = newNormal;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -146,20 +146,20 @@ namespace netDxf.Entities
             Ray entity = new Ray
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Ray properties
-                Origin = this.origin,
-                Direction = this.direction,
+                Origin = origin,
+                Direction = direction,
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

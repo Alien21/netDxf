@@ -47,7 +47,7 @@ namespace netDxf.Entities
 
         protected virtual void OnClippingBoundaryAddedEvent(EntityObject item)
         {
-            ClippingBoundaryAddedEventHandler ae = this.ClippingBoundaryAdded;
+            ClippingBoundaryAddedEventHandler ae = ClippingBoundaryAdded;
             if (ae != null)
                 ae(this, new EntityChangeEventArgs(item));
         }
@@ -58,7 +58,7 @@ namespace netDxf.Entities
 
         protected virtual void OnClippingBoundaryRemovedEvent(EntityObject item)
         {
-            ClippingBoundaryRemovedEventHandler ae = this.ClippingBoundaryRemoved;
+            ClippingBoundaryRemovedEventHandler ae = ClippingBoundaryRemoved;
             if (ae != null)
                 ae(this, new EntityChangeEventArgs(item));
         }
@@ -103,15 +103,15 @@ namespace netDxf.Entities
         public Viewport()
             : this(2)
         {
-            this.status |= ViewportStatusFlags.GridMode;
+            status |= ViewportStatusFlags.GridMode;
         }
 
         public Viewport(Vector2 bottomLeftCorner, Vector2 topRightCorner)
             :this(2)
         {
-            this.center = new Vector3((topRightCorner.X + bottomLeftCorner.X) * 0.5, (topRightCorner.Y + bottomLeftCorner.Y) * 0.5, 0);
-            this.width = (topRightCorner.X - bottomLeftCorner.X) * 0.5;
-            this.height = (topRightCorner.Y - bottomLeftCorner.Y) * 0.5;
+            center = new Vector3((topRightCorner.X + bottomLeftCorner.X) * 0.5, (topRightCorner.Y + bottomLeftCorner.Y) * 0.5, 0);
+            width = (topRightCorner.X - bottomLeftCorner.X) * 0.5;
+            height = (topRightCorner.Y - bottomLeftCorner.Y) * 0.5;
         }
 
         public Viewport(Vector2 center, double width, double height)
@@ -125,42 +125,42 @@ namespace netDxf.Entities
         public Viewport(EntityObject clippingBoundary)
             :this(2)
         {
-            this.ClippingBoundary = clippingBoundary;
+            ClippingBoundary = clippingBoundary;
         }
 
         internal Viewport(short id)
             : base(EntityType.Viewport, DxfObjectCode.Viewport)
         {
-            this.center = Vector3.Zero;
-            this.width = 297;
-            this.height = 210;
-            this.stacking = id;
+            center = Vector3.Zero;
+            width = 297;
+            height = 210;
+            stacking = id;
             this.id = id;
-            this.viewCenter = Vector2.Zero;
-            this.snapBase = Vector2.Zero;
-            this.snapSpacing = new Vector2(10.0);
-            this.gridSpacing = new Vector2(10.0);
-            this.viewDirection = Vector3.UnitZ;
-            this.viewTarget = Vector3.Zero;
-            this.lensLength = 50.0;
-            this.frontClipPlane = 0.0;
-            this.backClipPlane = 0.0;
-            this.viewHeight = 250;
-            this.snapAngle = 0.0;
-            this.twistAngle = 0.0;
-            this.circleZoomPercent = 1000;
-            this.status = ViewportStatusFlags.AdaptiveGridDisplay |
+            viewCenter = Vector2.Zero;
+            snapBase = Vector2.Zero;
+            snapSpacing = new Vector2(10.0);
+            gridSpacing = new Vector2(10.0);
+            viewDirection = Vector3.UnitZ;
+            viewTarget = Vector3.Zero;
+            lensLength = 50.0;
+            frontClipPlane = 0.0;
+            backClipPlane = 0.0;
+            viewHeight = 250;
+            snapAngle = 0.0;
+            twistAngle = 0.0;
+            circleZoomPercent = 1000;
+            status = ViewportStatusFlags.AdaptiveGridDisplay |
                           ViewportStatusFlags.DisplayGridBeyondDrawingLimits |
                           ViewportStatusFlags.CurrentlyAlwaysEnabled |
                           ViewportStatusFlags.UcsIconVisibility |
                           ViewportStatusFlags.GridMode;
-            this.frozenLayers = new ObservableCollection<Layer>();
-            this.frozenLayers.BeforeAddItem += this.FrozenLayers_BeforeAddItem;
-            this.ucsOrigin = Vector3.Zero;
-            this.ucsXAxis = Vector3.UnitX;
-            this.ucsYAxis = Vector3.UnitY;
-            this.elevation = 0.0;
-            this.boundary = null;
+            frozenLayers = new ObservableCollection<Layer>();
+            frozenLayers.BeforeAddItem += FrozenLayers_BeforeAddItem;
+            ucsOrigin = Vector3.Zero;
+            ucsXAxis = Vector3.UnitX;
+            ucsYAxis = Vector3.UnitY;
+            elevation = 0.0;
+            boundary = null;
         }
 
         #endregion
@@ -172,8 +172,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Center
         {
-            get { return this.center; }
-            set { this.center = value; }
+            get { return center; }
+            set { center = value; }
         }
 
         /// <summary>
@@ -181,8 +181,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Width
         {
-            get { return this.width; }
-            set { this.width = value; }
+            get { return width; }
+            set { width = value; }
         }
 
         /// <summary>
@@ -190,8 +190,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Height
         {
-            get { return this.height; }
-            set { this.height = value; }
+            get { return height; }
+            set { height = value; }
         }
 
         /// <summary>
@@ -203,14 +203,14 @@ namespace netDxf.Entities
         /// </summary>
         public short Stacking
         {
-            get { return this.stacking; }
+            get { return stacking; }
             set
             {
                 if (value < -1)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "The stacking value must be greater than -1.");
                 }
-                this.stacking = value;
+                stacking = value;
             }
         }
 
@@ -219,8 +219,8 @@ namespace netDxf.Entities
         /// </summary>
         internal short Id
         {
-            get { return this.id; }
-            set { this.id = value; }
+            get { return id; }
+            set { id = value; }
         }
 
         /// <summary>
@@ -228,8 +228,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 ViewCenter
         {
-            get { return this.viewCenter; }
-            set { this.viewCenter = value; }
+            get { return viewCenter; }
+            set { viewCenter = value; }
         }
 
         /// <summary>
@@ -237,8 +237,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 SnapBase
         {
-            get { return this.snapBase; }
-            set { this.snapBase = value; }
+            get { return snapBase; }
+            set { snapBase = value; }
         }
 
         /// <summary>
@@ -246,8 +246,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 SnapSpacing
         {
-            get { return this.snapSpacing; }
-            set { this.snapSpacing = value; }
+            get { return snapSpacing; }
+            set { snapSpacing = value; }
         }
 
         /// <summary>
@@ -255,8 +255,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 GridSpacing
         {
-            get { return this.gridSpacing; }
-            set { this.gridSpacing = value; }
+            get { return gridSpacing; }
+            set { gridSpacing = value; }
         }
 
         /// <summary>
@@ -264,8 +264,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 ViewDirection
         {
-            get { return this.viewDirection; }
-            set { this.viewDirection = value; }
+            get { return viewDirection; }
+            set { viewDirection = value; }
         }
 
         /// <summary>
@@ -273,8 +273,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 ViewTarget
         {
-            get { return this.viewTarget; }
-            set { this.viewTarget = value; }
+            get { return viewTarget; }
+            set { viewTarget = value; }
         }
 
         /// <summary>
@@ -282,8 +282,8 @@ namespace netDxf.Entities
         /// </summary>
         public double LensLength
         {
-            get { return this.lensLength; }
-            set { this.lensLength = value; }
+            get { return lensLength; }
+            set { lensLength = value; }
         }
 
         /// <summary>
@@ -291,8 +291,8 @@ namespace netDxf.Entities
         /// </summary>
         public double FrontClipPlane
         {
-            get { return this.frontClipPlane; }
-            set { this.frontClipPlane = value; }
+            get { return frontClipPlane; }
+            set { frontClipPlane = value; }
         }
 
         /// <summary>
@@ -300,8 +300,8 @@ namespace netDxf.Entities
         /// </summary>
         public double BackClipPlane
         {
-            get { return this.backClipPlane; }
-            set { this.backClipPlane = value; }
+            get { return backClipPlane; }
+            set { backClipPlane = value; }
         }
 
         /// <summary>
@@ -309,8 +309,8 @@ namespace netDxf.Entities
         /// </summary>
         public double ViewHeight
         {
-            get { return this.viewHeight; }
-            set { this.viewHeight = value; }
+            get { return viewHeight; }
+            set { viewHeight = value; }
         }
 
         /// <summary>
@@ -318,8 +318,8 @@ namespace netDxf.Entities
         /// </summary>
         public double SnapAngle
         {
-            get { return this.snapAngle; }
-            set { this.snapAngle = value; }
+            get { return snapAngle; }
+            set { snapAngle = value; }
         }
 
         /// <summary>
@@ -327,8 +327,8 @@ namespace netDxf.Entities
         /// </summary>
         public double TwistAngle
         {
-            get { return this.twistAngle; }
-            set { this.twistAngle = value; }
+            get { return twistAngle; }
+            set { twistAngle = value; }
         }
 
         /// <summary>
@@ -336,8 +336,8 @@ namespace netDxf.Entities
         /// </summary>
         public short CircleZoomPercent
         {
-            get { return this.circleZoomPercent; }
-            set { this.circleZoomPercent = value; }
+            get { return circleZoomPercent; }
+            set { circleZoomPercent = value; }
         }
 
         /// <summary>
@@ -349,7 +349,7 @@ namespace netDxf.Entities
         /// </remarks>
         public ObservableCollection<Layer> FrozenLayers
         {
-            get { return this.frozenLayers; }
+            get { return frozenLayers; }
         }
 
         /// <summary>
@@ -357,8 +357,8 @@ namespace netDxf.Entities
         /// </summary>
         public ViewportStatusFlags Status
         {
-            get { return this.status; }
-            set { this.status = value; }
+            get { return status; }
+            set { status = value; }
         }
 
         /// <summary>
@@ -366,8 +366,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 UcsOrigin
         {
-            get { return this.ucsOrigin; }
-            set { this.ucsOrigin = value; }
+            get { return ucsOrigin; }
+            set { ucsOrigin = value; }
         }
 
         /// <summary>
@@ -375,8 +375,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 UcsXAxis
         {
-            get { return this.ucsXAxis; }
-            set { this.ucsXAxis = value; }
+            get { return ucsXAxis; }
+            set { ucsXAxis = value; }
         }
 
         /// <summary>
@@ -384,8 +384,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 UcsYAxis
         {
-            get { return this.ucsYAxis; }
-            set { this.ucsYAxis = value; }
+            get { return ucsYAxis; }
+            set { ucsYAxis = value; }
         }
 
         /// <summary>
@@ -393,8 +393,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Elevation
         {
-            get { return this.elevation; }
-            set { this.elevation = value; }
+            get { return elevation; }
+            set { elevation = value; }
         }
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace netDxf.Entities
         /// </remarks>
         public EntityObject ClippingBoundary
         {
-            get { return this.boundary; }
+            get { return boundary; }
             set
             {
                 if (value != null)
@@ -452,35 +452,35 @@ namespace netDxf.Entities
                             throw new ArgumentException("Only lightweight polylines, polylines, circles, ellipses and splines are allowed as a viewport clipping boundary.");
                     }
 
-                    this.width = abbr.Width;
-                    this.height = abbr.Height;
-                    this.center = new Vector3(abbr.Center.X, abbr.Center.Y, 0.0);
-                    this.status |= ViewportStatusFlags.NonRectangularClipping;
+                    width = abbr.Width;
+                    height = abbr.Height;
+                    center = new Vector3(abbr.Center.X, abbr.Center.Y, 0.0);
+                    status |= ViewportStatusFlags.NonRectangularClipping;
                 }
                 else
                 {
-                    this.status &= ~ViewportStatusFlags.NonRectangularClipping;
+                    status &= ~ViewportStatusFlags.NonRectangularClipping;
                 }
 
                 // nothing else to do if it is the same
-                if (ReferenceEquals(this.boundary, value))
+                if (ReferenceEquals(boundary, value))
                     return;
 
                 // remove the previous clipping boundary
-                if (this.boundary != null)
+                if (boundary != null)
                 {
-                    this.boundary.RemoveReactor(this);
-                    this.OnClippingBoundaryRemovedEvent(this.boundary);
+                    boundary.RemoveReactor(this);
+                    OnClippingBoundaryRemovedEvent(boundary);
                 }
 
                 // add the new clipping boundary
                 if (value != null)
                 {
                     value.AddReactor(this);
-                    this.OnClippingBoundaryAddedEvent(value);
+                    OnClippingBoundaryAddedEvent(value);
                 }
 
-                this.boundary = value;
+                boundary = value;
             }
         }
 
@@ -496,35 +496,35 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
-            this.Normal = newNormal;
+            Normal = newNormal;
 
-            EntityObject clippingEntity = this.ClippingBoundary;
+            EntityObject clippingEntity = ClippingBoundary;
             if (clippingEntity == null)
             {
                 if (transformation.IsIdentity)
                 {
-                    this.center += translation;
+                    center += translation;
                     return;
                 }
 
                 // when a view port is transformed a Polyline2D will be generated
                 List<Polyline2DVertex> vertexes = new List<Polyline2DVertex>
                 {
-                    new Polyline2DVertex(this.center.X - this.width * 0.5, this.center.Y - this.height * 0.5),
-                    new Polyline2DVertex(this.center.X + this.width * 0.5, this.center.Y - this.height * 0.5),
-                    new Polyline2DVertex(this.center.X + this.width * 0.5, this.center.Y + this.height * 0.5),
-                    new Polyline2DVertex(this.center.X - this.width * 0.5, this.center.Y + this.height * 0.5)
+                    new Polyline2DVertex(center.X - width * 0.5, center.Y - height * 0.5),
+                    new Polyline2DVertex(center.X + width * 0.5, center.Y - height * 0.5),
+                    new Polyline2DVertex(center.X + width * 0.5, center.Y + height * 0.5),
+                    new Polyline2DVertex(center.X - width * 0.5, center.Y + height * 0.5)
                 };
                 clippingEntity = new Polyline2D(vertexes, true);
             }
 
             clippingEntity.TransformBy(transformation, translation);
-            this.ClippingBoundary = clippingEntity;
+            ClippingBoundary = clippingEntity;
         }
 
         /// <summary>
@@ -536,45 +536,45 @@ namespace netDxf.Entities
             Viewport viewport = new Viewport
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //viewport properties
-                ClippingBoundary = (EntityObject) this.boundary?.Clone(),
-                Center = this.center,
-                Width = this.width,
-                Height = this.height,
-                Stacking = this.stacking,
-                Id = this.id,
-                ViewCenter = this.viewCenter,
-                SnapBase = this.snapBase,
-                SnapSpacing = this.snapSpacing,
-                GridSpacing = this.gridSpacing,
-                ViewDirection = this.viewDirection,
-                ViewTarget = this.viewTarget,
-                LensLength = this.lensLength,
-                FrontClipPlane = this.frontClipPlane,
-                BackClipPlane = this.backClipPlane,
-                ViewHeight = this.viewHeight,
-                SnapAngle = this.snapAngle,
-                TwistAngle = this.twistAngle,
-                CircleZoomPercent = this.circleZoomPercent,
-                Status = this.status,
-                UcsOrigin = this.ucsOrigin,
-                UcsXAxis = this.ucsXAxis,
-                UcsYAxis = this.ucsYAxis,
-                Elevation = this.elevation
+                ClippingBoundary = (EntityObject) boundary?.Clone(),
+                Center = center,
+                Width = width,
+                Height = height,
+                Stacking = stacking,
+                Id = id,
+                ViewCenter = viewCenter,
+                SnapBase = snapBase,
+                SnapSpacing = snapSpacing,
+                GridSpacing = gridSpacing,
+                ViewDirection = viewDirection,
+                ViewTarget = viewTarget,
+                LensLength = lensLength,
+                FrontClipPlane = frontClipPlane,
+                BackClipPlane = backClipPlane,
+                ViewHeight = viewHeight,
+                SnapAngle = snapAngle,
+                TwistAngle = twistAngle,
+                CircleZoomPercent = circleZoomPercent,
+                Status = status,
+                UcsOrigin = ucsOrigin,
+                UcsXAxis = ucsXAxis,
+                UcsYAxis = ucsYAxis,
+                Elevation = elevation
             };
 
-            foreach (Layer layer in this.frozenLayers)
+            foreach (Layer layer in frozenLayers)
                 viewport.frozenLayers.Add((Layer) layer.Clone());
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
                 viewport.XData.Add((XData) data.Clone());
 
             return viewport;
@@ -591,25 +591,25 @@ namespace netDxf.Entities
                 // the frozen layer list cannot contain null items
                 e.Cancel = true; 
             }
-            else if (this.Owner != null && e.Item.Owner == null)
+            else if (Owner != null && e.Item.Owner == null)
             {
                 // the frozen layer and the viewport must belong to the same document
                 e.Cancel = true;
             }
-            else if (this.Owner == null && e.Item.Owner != null)
+            else if (Owner == null && e.Item.Owner != null)
             {
                 // the frozen layer and the viewport must belong to the same document
                 e.Cancel = true;
             }
-            else if (this.Owner != null && e.Item.Owner != null)
+            else if (Owner != null && e.Item.Owner != null)
             {
                // the frozen layer and the viewport must belong to the same document
-               if (!ReferenceEquals(this.Owner.Owner.Owner.Owner, e.Item.Owner.Owner))
+               if (!ReferenceEquals(Owner.Owner.Owner.Owner, e.Item.Owner.Owner))
                {
                    e.Cancel = true;
                }
             }
-            else if (this.frozenLayers.Contains(e.Item))
+            else if (frozenLayers.Contains(e.Item))
             {
                 // the frozen layer list cannot contain duplicates
                 e.Cancel = true;

@@ -41,7 +41,7 @@ namespace netDxf.Objects
         public event LinetypeChangedEventHandler LinetypeChanged;
         protected virtual Linetype OnLinetypeChangedEvent(Linetype oldLinetype, Linetype newLinetype)
         {
-            LinetypeChangedEventHandler ae = this.LinetypeChanged;
+            LinetypeChangedEventHandler ae = LinetypeChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<Linetype> eventArgs = new TableObjectChangedEventArgs<Linetype>(oldLinetype, newLinetype);
@@ -94,8 +94,8 @@ namespace netDxf.Objects
         /// </summary>
         public double Offset
         {
-            get { return this.offset; }
-            set { this.offset = value; }
+            get { return offset; }
+            set { offset = value; }
         }
 
         /// <summary>
@@ -106,10 +106,10 @@ namespace netDxf.Objects
         /// </remarks>
         public AciColor Color
         {
-            get { return this.color; }
+            get { return color; }
             set
             {
-                this.color = value ?? throw new ArgumentNullException(nameof(value));
+                color = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -118,14 +118,14 @@ namespace netDxf.Objects
         /// </summary>
         public Linetype Linetype
         {
-            get { return this.linetype; }
+            get { return linetype; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.linetype = this.OnLinetypeChangedEvent(this.linetype, value);
+                linetype = OnLinetypeChangedEvent(linetype, value);
             }
         }
 
@@ -150,7 +150,7 @@ namespace netDxf.Objects
                 throw new ArgumentNullException(nameof(other));
             }
 
-            return -this.offset.CompareTo(other.offset);
+            return -offset.CompareTo(other.offset);
         }
 
         /// <summary>
@@ -168,12 +168,12 @@ namespace netDxf.Objects
                 return false;
             }
 
-            if (this.GetType() != other.GetType())
+            if (GetType() != other.GetType())
             {
                 return false;
             }
 
-            return this.Equals((MLineStyleElement) other);
+            return Equals((MLineStyleElement) other);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace netDxf.Objects
                 return false;
             }
 
-            return MathHelper.IsEqual(this.offset, other.offset);
+            return MathHelper.IsEqual(offset, other.offset);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace netDxf.Objects
         /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
         public override int GetHashCode()
         {
-            return this.Offset.GetHashCode();
+            return Offset.GetHashCode();
         }
 
         #endregion
@@ -213,10 +213,10 @@ namespace netDxf.Objects
         /// <returns>A new MLineStyleElement is a copy of this instance.</returns>
         public object Clone()
         {
-            return new MLineStyleElement(this.offset)
+            return new MLineStyleElement(offset)
             {
-                Color = (AciColor) this.Color.Clone(),
-                Linetype = (Linetype) this.linetype.Clone()
+                Color = (AciColor) Color.Clone(),
+                Linetype = (Linetype) linetype.Clone()
             };
         }
 
@@ -230,7 +230,7 @@ namespace netDxf.Objects
         /// <returns>The string representation.</returns>
         public override string ToString()
         {
-            return string.Format("{0}, color:{1}, line type:{2}", this.offset, this.color, this.linetype);
+            return string.Format("{0}, color:{1}, line type:{2}", offset, color, linetype);
         }
 
         #endregion

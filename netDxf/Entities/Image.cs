@@ -42,7 +42,7 @@ namespace netDxf.Entities
         public event ImageDefinitionChangedEventHandler ImageDefinitionChanged;
         protected virtual ImageDefinition OnImageDefinitionChangedEvent(ImageDefinition oldImageDefinition, ImageDefinition newImageDefinition)
         {
-            ImageDefinitionChangedEventHandler ae = this.ImageDefinitionChanged;
+            ImageDefinitionChangedEventHandler ae = ImageDefinitionChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<ImageDefinition> eventArgs = new TableObjectChangedEventArgs<ImageDefinition>(oldImageDefinition, newImageDefinition);
@@ -124,8 +124,8 @@ namespace netDxf.Entities
         {
             this.imageDefinition = imageDefinition ?? throw new ArgumentNullException(nameof(imageDefinition));
             this.position = position;
-            this.uvector = Vector2.UnitX;
-            this.vvector = Vector2.UnitY;
+            uvector = Vector2.UnitX;
+            vvector = Vector2.UnitY;
             if (width <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(width), width, "The Image width must be greater than zero.");
@@ -136,12 +136,12 @@ namespace netDxf.Entities
                 throw new ArgumentOutOfRangeException(nameof(height), height, "The Image height must be greater than zero.");
             }
             this.height = height;
-            this.clipping = false;
-            this.brightness = 50;
-            this.contrast = 50;
-            this.fade = 0;
-            this.displayOptions = ImageDisplayFlags.ShowImage | ImageDisplayFlags.ShowImageWhenNotAlignedWithScreen | ImageDisplayFlags.UseClippingBoundary;
-            this.clippingBoundary = new ClippingBoundary(0, 0, imageDefinition.Width, imageDefinition.Height);
+            clipping = false;
+            brightness = 50;
+            contrast = 50;
+            fade = 0;
+            displayOptions = ImageDisplayFlags.ShowImage | ImageDisplayFlags.ShowImageWhenNotAlignedWithScreen | ImageDisplayFlags.UseClippingBoundary;
+            clippingBoundary = new ClippingBoundary(0, 0, imageDefinition.Width, imageDefinition.Height);
         }
 
         #endregion
@@ -153,8 +153,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Position
         {
-            get { return this.position; }
-            set { this.position = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 Uvector
         {
-            get { return this.uvector; }
+            get { return uvector; }
             set
             {
                 if (Vector2.Equals(Vector2.Zero, value))
@@ -170,7 +170,7 @@ namespace netDxf.Entities
                     throw new ArgumentException("The U vector can not be the zero vector.", nameof(value));
                 }
 
-                this.uvector = Vector2.Normalize(value);
+                uvector = Vector2.Normalize(value);
             }
         }
 
@@ -179,7 +179,7 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 Vvector
         {
-            get { return this.vvector; }
+            get { return vvector; }
             set
             {
                 if (Vector2.Equals(Vector2.Zero, value))
@@ -187,7 +187,7 @@ namespace netDxf.Entities
                     throw new ArgumentException("The V vector can not be the zero vector.", nameof(value));
                 }
 
-                this.vvector = Vector2.Normalize(value);
+                vvector = Vector2.Normalize(value);
             }
         }
 
@@ -196,14 +196,14 @@ namespace netDxf.Entities
         /// </summary>
         public double Height
         {
-            get { return this.height; }
+            get { return height; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The Image height must be greater than zero.");
                 }
-                this.height = value;
+                height = value;
             }
         }
 
@@ -212,14 +212,14 @@ namespace netDxf.Entities
         /// </summary>
         public double Width
         {
-            get { return this.width; }
+            get { return width; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The Image width must be greater than zero.");
                 }
-                this.width = value;
+                width = value;
             }
         }
 
@@ -231,15 +231,15 @@ namespace netDxf.Entities
         {
             get
             {
-                return Vector2.Angle(this.uvector) * MathHelper.RadToDeg;
+                return Vector2.Angle(uvector) * MathHelper.RadToDeg;
             }
             set
             {
-                List<Vector2> uv = MathHelper.Transform(new List<Vector2> { this.uvector, this.vvector },
+                List<Vector2> uv = MathHelper.Transform(new List<Vector2> { uvector, vvector },
                     MathHelper.NormalizeAngle(value) * MathHelper.DegToRad,
                     CoordinateSystem.Object, CoordinateSystem.World);
-                this.uvector = uv[0];
-                this.vvector = uv[1];
+                uvector = uv[0];
+                vvector = uv[1];
             }
         }
 
@@ -248,14 +248,14 @@ namespace netDxf.Entities
         /// </summary>
         public ImageDefinition Definition
         {
-            get { return this.imageDefinition; }
+            get { return imageDefinition; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.imageDefinition = this.OnImageDefinitionChangedEvent(this.imageDefinition, value);
+                imageDefinition = OnImageDefinitionChangedEvent(imageDefinition, value);
             }
         }
 
@@ -264,8 +264,8 @@ namespace netDxf.Entities
         /// </summary>
         public bool Clipping
         {
-            get { return this.clipping; }
-            set { this.clipping = value; }
+            get { return clipping; }
+            set { clipping = value; }
         }
 
         /// <summary>
@@ -273,14 +273,14 @@ namespace netDxf.Entities
         /// </summary>
         public short Brightness
         {
-            get { return this.brightness; }
+            get { return brightness; }
             set
             {
                 if (value < 0 || value > 100)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Accepted brightness values range from 0 to 100.");
                 }
-                this.brightness = value;
+                brightness = value;
             }
         }
 
@@ -289,14 +289,14 @@ namespace netDxf.Entities
         /// </summary>
         public short Contrast
         {
-            get { return this.contrast; }
+            get { return contrast; }
             set
             {
                 if (value < 0 || value > 100)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Accepted contrast values range from 0 to 100.");
                 }
-                this.contrast = value;
+                contrast = value;
             }
         }
 
@@ -305,14 +305,14 @@ namespace netDxf.Entities
         /// </summary>
         public short Fade
         {
-            get { return this.fade; }
+            get { return fade; }
             set
             {
                 if (value < 0 || value > 100)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Accepted fade values range from 0 to 100.");
                 }
-                this.fade = value;
+                fade = value;
             }
         }
 
@@ -321,8 +321,8 @@ namespace netDxf.Entities
         /// </summary>
         public ImageDisplayFlags DisplayOptions
         {
-            get { return this.displayOptions; }
-            set { this.displayOptions = value; }
+            get { return displayOptions; }
+            set { displayOptions = value; }
         }
 
         /// <summary>
@@ -334,8 +334,8 @@ namespace netDxf.Entities
         /// </remarks>
         public ClippingBoundary ClippingBoundary
         {
-            get { return this.clippingBoundary; }
-            set { this.clippingBoundary = value ?? new ClippingBoundary(0, 0, this.Definition.Width, this.Definition.Height); }
+            get { return clippingBoundary; }
+            set { clippingBoundary = value ?? new ClippingBoundary(0, 0, Definition.Width, Definition.Height); }
         }
 
         #endregion
@@ -350,20 +350,20 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newPosition = transformation * this.Position + translation;
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newPosition = transformation * Position + translation;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
 
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal);
             transWO = transWO.Transpose();
 
             Vector3 v;
-            v = transOW * new Vector3(this.Uvector.X * this.Width, this.Uvector.Y * this.Width, 0.0);
+            v = transOW * new Vector3(Uvector.X * Width, Uvector.Y * Width, 0.0);
             v = transformation * v;
             v = transWO * v;
             Vector2 newUvector = new Vector2(v.X, v.Y);
@@ -371,7 +371,7 @@ namespace netDxf.Entities
             double newWidth;
             if (Vector2.Equals(Vector2.Zero, newUvector))
             {
-                newUvector = this.Uvector;
+                newUvector = Uvector;
                 newWidth = MathHelper.Epsilon;
             }
             else
@@ -379,7 +379,7 @@ namespace netDxf.Entities
                 newWidth = newUvector.Modulus();
             }
 
-            v = transOW * new Vector3(this.Vvector.X * this.Height, this.Vvector.Y * this.Height, 0.0);
+            v = transOW * new Vector3(Vvector.X * Height, Vvector.Y * Height, 0.0);
             v = transformation * v;
             v = transWO * v;
             Vector2 newVvector = new Vector2(v.X, v.Y);
@@ -387,7 +387,7 @@ namespace netDxf.Entities
             double newHeight;
             if (Vector2.Equals(Vector2.Zero, newVvector))
             {
-                newVvector = this.Uvector;
+                newVvector = Uvector;
                 newHeight = MathHelper.Epsilon;
             }
             else
@@ -395,12 +395,12 @@ namespace netDxf.Entities
                 newHeight = newVvector.Modulus();
             }
 
-            this.Position = newPosition;
-            this.Normal = newNormal;
-            this.Uvector = newUvector;
-            this.Vvector = newVvector;
-            this.Width = newWidth;
-            this.Height = newHeight;
+            Position = newPosition;
+            Normal = newNormal;
+            Uvector = newUvector;
+            Vvector = newVvector;
+            Width = newWidth;
+            Height = newHeight;
         }
 
         /// <summary>
@@ -412,31 +412,31 @@ namespace netDxf.Entities
             Image entity = new Image
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Image properties
-                Position = this.position,
-                Height = this.height,
-                Width = this.width,
-                Uvector = this.uvector,
-                Vvector = this.vvector,
+                Position = position,
+                Height = height,
+                Width = width,
+                Uvector = uvector,
+                Vvector = vvector,
                 //Rotation = this.rotation,
-                Definition = (ImageDefinition) this.imageDefinition.Clone(),
-                Clipping = this.clipping,
-                Brightness = this.brightness,
-                Contrast = this.contrast,
-                Fade = this.fade,
-                DisplayOptions = this.displayOptions,
-                ClippingBoundary = (ClippingBoundary) this.clippingBoundary.Clone()
+                Definition = (ImageDefinition) imageDefinition.Clone(),
+                Clipping = clipping,
+                Brightness = brightness,
+                Contrast = contrast,
+                Fade = fade,
+                DisplayOptions = displayOptions,
+                ClippingBoundary = (ClippingBoundary) clippingBoundary.Clone()
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

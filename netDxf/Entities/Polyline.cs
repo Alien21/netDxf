@@ -68,7 +68,7 @@ namespace netDxf.Entities
         public Polyline()
             : base(DxfObjectCode.Polyline)
         {
-            this.subclassMarker = netDxf.SubclassMarker.Polyline;
+            subclassMarker = netDxf.SubclassMarker.Polyline;
         }
 
         #endregion
@@ -80,8 +80,8 @@ namespace netDxf.Entities
         /// </summary>
         public string SubclassMarker
         {
-            get { return this.subclassMarker; }
-            set { this.subclassMarker = value; }
+            get { return subclassMarker; }
+            set { subclassMarker = value; }
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace netDxf.Entities
         /// </summary>
         public Layer Layer
         {
-            get { return this.layer; }
-            set { this.layer = value; }
+            get { return layer; }
+            set { layer = value; }
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Thickness
         {
-            get { return this.thickness; }
-            set { this.thickness = value; }
+            get { return thickness; }
+            set { thickness = value; }
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Elevation
         {
-            get { return this.elevation; }
-            set { this.elevation = value; }
+            get { return elevation; }
+            set { elevation = value; }
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Normal
         {
-            get { return this.normal; }
-            set { this.normal = value; }
+            get { return normal; }
+            set { normal = value; }
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace netDxf.Entities
         /// </summary>
         public AciColor Color
         {
-            get { return this.color; }
-            set { this.color = value; }
+            get { return color; }
+            set { color = value; }
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace netDxf.Entities
         /// </summary>
         public EndSequence EndSequence
         {
-            get { return this.endSequence; }
-            set { this.endSequence = value; }
+            get { return endSequence; }
+            set { endSequence = value; }
         }
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace netDxf.Entities
         /// </summary>
         public List<Vertex> Vertexes
         {
-            get { return this.vertexes; }
-            set { this.vertexes = value; }
+            get { return vertexes; }
+            set { vertexes = value; }
         }
 
         /// <summary>
@@ -152,8 +152,8 @@ namespace netDxf.Entities
         /// </summary>
         public PolylineTypeFlags Flags
         {
-            get { return this.flags; }
-            set { this.flags = value; }
+            get { return flags; }
+            set { flags = value; }
         }
 
         /// <summary>
@@ -161,8 +161,8 @@ namespace netDxf.Entities
         /// </summary>
         public PolylineSmoothType SmoothType
         {
-            get { return this.smoothType; }
-            set { this.smoothType = value; }
+            get { return smoothType; }
+            set { smoothType = value; }
         }
 
         /// <summary>
@@ -170,8 +170,8 @@ namespace netDxf.Entities
         /// </summary>
         public short M
         {
-            get { return this.m; }
-            set { this.m = value; }
+            get { return m; }
+            set { m = value; }
         }
 
         /// <summary>
@@ -179,8 +179,8 @@ namespace netDxf.Entities
         /// </summary>
         public short N
         {
-            get { return this.n; }
-            set { this.n = value; }
+            get { return n; }
+            set { n = value; }
         }
 
         /// <summary>
@@ -188,8 +188,8 @@ namespace netDxf.Entities
         /// </summary>
         public short DensityM
         {
-            get { return this.densityM; }
-            set { this.densityM = value; }
+            get { return densityM; }
+            set { densityM = value; }
         }
 
         /// <summary>
@@ -197,8 +197,8 @@ namespace netDxf.Entities
         /// </summary>
         public short DensityN
         {
-            get { return this.densityN; }
-            set { this.densityN = value; }
+            get { return densityN; }
+            set { densityN = value; }
         }
 
         #endregion

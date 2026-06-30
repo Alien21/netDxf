@@ -50,7 +50,7 @@ namespace netDxf.Entities
         public event LayerChangedEventHandler LayerChanged;
         protected virtual Layer OnLayerChangedEvent(Layer oldLayer, Layer newLayer)
         {
-            LayerChangedEventHandler ae = this.LayerChanged;
+            LayerChangedEventHandler ae = LayerChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<Layer> eventArgs = new TableObjectChangedEventArgs<Layer>(oldLayer, newLayer);
@@ -99,8 +99,8 @@ namespace netDxf.Entities
                 throw new ArgumentOutOfRangeException(nameof(vertexIndexes), "The number of indexes per faces must be greater than 0, and a maximum of 4.");
             }
 
-            this.color = null;
-            this.layer = null;
+            color = null;
+            layer = null;
         }
 
         #endregion
@@ -112,7 +112,7 @@ namespace netDxf.Entities
         /// </summary>
         public short[] VertexIndexes
         {
-            get { return this.vertexIndexes; }
+            get { return vertexIndexes; }
         }
 
         /// <summary>
@@ -120,8 +120,8 @@ namespace netDxf.Entities
         /// </summary>
         public AciColor Color
         {
-            get { return this.color; }
-            set { this.color = value; }
+            get { return color; }
+            set { color = value; }
         }
 
         /// <summary>
@@ -129,8 +129,8 @@ namespace netDxf.Entities
         /// </summary>
         public Layer Layer
         {
-            get { return this.layer; }
-            set { this.layer = this.OnLayerChangedEvent(this.layer, value); }
+            get { return layer; }
+            set { layer = OnLayerChangedEvent(layer, value); }
         }
 
         #endregion
@@ -152,10 +152,10 @@ namespace netDxf.Entities
         /// <returns>A new PolyfaceMeshFace that is a copy of this instance.</returns>
         public object Clone()
         {
-            return new PolyfaceMeshFace(this.vertexIndexes)
+            return new PolyfaceMeshFace(vertexIndexes)
             {
-                Layer = (Layer) this.layer.Clone(),
-                Color = (AciColor) this.color.Clone()
+                Layer = (Layer) layer.Clone(),
+                Color = (AciColor) color.Clone()
                 
             };
         }

@@ -56,7 +56,7 @@ namespace netDxf.Objects
         /// </summary>
         public MLineStyleElement Item
         {
-            get { return this.item; }
+            get { return item; }
         }
 
         #endregion

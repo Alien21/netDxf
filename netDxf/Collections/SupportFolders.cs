@@ -50,8 +50,8 @@ namespace netDxf.Collections
         /// </summary>
         public SupportFolders()
         {
-            this.folders = new List<string>();
-            this.workingFolder = Environment.CurrentDirectory;
+            folders = new List<string>();
+            workingFolder = Environment.CurrentDirectory;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(folders));
             }
             this.folders = new List<string>(folders);
-            this.workingFolder = Environment.CurrentDirectory;
+            workingFolder = Environment.CurrentDirectory;
         }
 
         #endregion
@@ -78,8 +78,8 @@ namespace netDxf.Collections
         /// <remarks>By default it points to the current System.Environment.CurrentDirectory when the DxfDocument was created.</remarks>
         public string WorkingFolder
         {
-            get { return this.workingFolder; }
-            set { this.workingFolder = value; }
+            get { return workingFolder; }
+            set { workingFolder = value; }
         }
 
         #endregion
@@ -97,7 +97,7 @@ namespace netDxf.Collections
             string foundFile = string.Empty;
 
             string currentDirectory = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = this.workingFolder;
+            Environment.CurrentDirectory = workingFolder;
 
             if (File.Exists(file))
             {
@@ -106,7 +106,7 @@ namespace netDxf.Collections
             
             string name = Path.GetFileName(file);
 
-            foreach (string folder in this.folders)
+            foreach (string folder in folders)
             {
                 string newFile = string.Format("{0}{1}{2}", folder, Path.DirectorySeparatorChar, name);
                 if (File.Exists(newFile))
@@ -132,14 +132,14 @@ namespace netDxf.Collections
         /// <param name="index">The zero-based index of the element to get or set.</param>
         public string this[int index]
         {
-            get { return this.folders[index]; }
+            get { return folders[index]; }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.folders[index] = value;
+                folders[index] = value;
             }
         }
 
@@ -149,7 +149,7 @@ namespace netDxf.Collections
         /// <returns>The number of elements contained in the list.</returns>
         public int Count
         {
-            get { return this.folders.Count; }
+            get { return folders.Count; }
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace netDxf.Collections
         /// <returns>The enumerator for the list.</returns>
         public IEnumerator<string> GetEnumerator()
         {
-            return this.folders.GetEnumerator();
+            return folders.GetEnumerator();
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace netDxf.Collections
         /// <returns>The enumerator for the list.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.folders.GetEnumerator();
+            return folders.GetEnumerator();
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace netDxf.Collections
             {
                 throw new ArgumentNullException(nameof(item));
             }
-            this.folders.Add(item);
+            folders.Add(item);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace netDxf.Collections
             }
             foreach (string s in collection)
             {
-                this.folders.Add(s);
+                folders.Add(s);
             }
         }
 
@@ -213,7 +213,7 @@ namespace netDxf.Collections
         /// </summary>
         public void Clear()
         {
-            this.folders.Clear();
+            folders.Clear();
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace netDxf.Collections
             {
                 throw new ArgumentNullException(nameof(item));
             }
-            return this.folders.Contains(item);
+            return folders.Contains(item);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace netDxf.Collections
         /// <param name="arrayIndex">The zero-based index in the array at which copying begins.</param>
         public void CopyTo(string[] array, int arrayIndex)
         {
-            this.folders.CopyTo(array, arrayIndex);
+            folders.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace netDxf.Collections
             {
                 throw new ArgumentNullException(nameof(item));
             }
-            return this.folders.Remove(item);
+            return folders.Remove(item);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace netDxf.Collections
         /// <returns>The index of <paramref name="item"/> if found in the list; otherwise, -1.</returns>
         public int IndexOf(string item)
         {
-            return this.folders.IndexOf(item);
+            return folders.IndexOf(item);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace netDxf.Collections
             {
                 throw new ArgumentNullException(nameof(item));
             }
-            this.folders.Insert(index, item);
+            folders.Insert(index, item);
         }
 
         /// <summary>
@@ -284,7 +284,7 @@ namespace netDxf.Collections
         /// <param name="index">The zero-based index of the item to remove.</param>
         public void RemoveAt(int index)
         {
-            this.folders.RemoveAt(index);
+            folders.RemoveAt(index);
         }
 
         #endregion

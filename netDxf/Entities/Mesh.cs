@@ -85,7 +85,7 @@ namespace netDxf.Entities
                 throw new ArgumentOutOfRangeException(nameof(faces), this.faces.Count, string.Format("The maximum number of faces in a mesh is {0}", MaxFaces));
             }
             this.edges = edges == null ? new List<MeshEdge>() : new List<MeshEdge>(edges);
-            this.subdivisionLevel = 0;
+            subdivisionLevel = 0;
         }
 
         #endregion
@@ -97,7 +97,7 @@ namespace netDxf.Entities
         /// </summary>
         public List<Vector3> Vertexes
         {
-            get { return this.vertexes; }
+            get { return vertexes; }
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace netDxf.Entities
         /// </summary>
         public List<int[]> Faces
         {
-            get { return this.faces; }
+            get { return faces; }
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace netDxf.Entities
         /// </summary>
         public List<MeshEdge> Edges
         {
-            get { return this.edges; }
+            get { return edges; }
         }
 
         /// <summary>
@@ -124,8 +124,8 @@ namespace netDxf.Entities
         /// </remarks>
         public byte SubdivisionLevel
         {
-            get { return this.subdivisionLevel; }
-            set { this.subdivisionLevel = value; }
+            get { return subdivisionLevel; }
+            set { subdivisionLevel = value; }
         }
 
         #endregion
@@ -160,14 +160,14 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            for (int i = 0; i < this.Vertexes.Count; i++)
+            for (int i = 0; i < Vertexes.Count; i++)
             {
-                this.Vertexes[i] = transformation * this.Vertexes[i] + translation;
+                Vertexes[i] = transformation * Vertexes[i] + translation;
             }
 
-            Vector3 newNormal = transformation * this.Normal;
-            if (Vector3.Equals(Vector3.Zero, newNormal)) newNormal = this.Normal;
-            this.Normal = newNormal;
+            Vector3 newNormal = transformation * Normal;
+            if (Vector3.Equals(Vector3.Zero, newNormal)) newNormal = Normal;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -176,21 +176,21 @@ namespace netDxf.Entities
         /// <returns>A new Mesh that is a copy of this instance.</returns>
         public override object Clone()
         {
-            List<Vector3> copyVertexes = new List<Vector3>(this.vertexes.Count);
-            List<int[]> copyFaces = new List<int[]>(this.faces.Count);
+            List<Vector3> copyVertexes = new List<Vector3>(vertexes.Count);
+            List<int[]> copyFaces = new List<int[]>(faces.Count);
             List<MeshEdge> copyEdges = null;
 
-            copyVertexes.AddRange(this.vertexes);
-            foreach (int[] face in this.faces)
+            copyVertexes.AddRange(vertexes);
+            foreach (int[] face in faces)
             {
                 int[] copyFace = new int[face.Length];
                 face.CopyTo(copyFace, 0);
                 copyFaces.Add(copyFace);
             }
-            if (this.edges != null)
+            if (edges != null)
             {
-                copyEdges = new List<MeshEdge>(this.edges.Count);
-                foreach (MeshEdge meshEdge in this.edges)
+                copyEdges = new List<MeshEdge>(edges.Count);
+                foreach (MeshEdge meshEdge in edges)
                 {
                     copyEdges.Add((MeshEdge) meshEdge.Clone());
                 }
@@ -199,19 +199,19 @@ namespace netDxf.Entities
             Mesh entity = new Mesh(copyVertexes, copyFaces, copyEdges)
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Mesh properties
-                SubdivisionLevel = this.subdivisionLevel
+                SubdivisionLevel = subdivisionLevel
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
                 entity.XData.Add((XData) data.Clone());
 
             return entity;

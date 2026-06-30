@@ -39,7 +39,7 @@ namespace netDxf.Tables
         public event TextStyleChangedEventHandler TextStyleChanged;
         protected virtual TextStyle OnTextStyleChangedEvent(TextStyle oldTextStyle, TextStyle newTextStyle)
         {
-            TextStyleChangedEventHandler ae = this.TextStyleChanged;
+            TextStyleChangedEventHandler ae = TextStyleChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<TextStyle> eventArgs = new TableObjectChangedEventArgs<TextStyle>(oldTextStyle, newTextStyle);
@@ -111,8 +111,8 @@ namespace netDxf.Tables
         /// </summary>
         public string Text
         {
-            get { return this.text; }
-            set { this.text = string.IsNullOrEmpty(value) ? string.Empty : value; }
+            get { return text; }
+            set { text = string.IsNullOrEmpty(value) ? string.Empty : value; }
         }
 
         /// <summary>
@@ -120,14 +120,14 @@ namespace netDxf.Tables
         /// </summary>
         public TextStyle Style
         {
-            get { return this.style; }
+            get { return style; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.style = this.OnTextStyleChangedEvent(this.style, value);
+                style = OnTextStyleChangedEvent(style, value);
             }
         }
 
@@ -136,8 +136,8 @@ namespace netDxf.Tables
         /// </summary>
         public Vector2 Offset
         {
-            get { return this.offset; }
-            set { this.offset = value; }
+            get { return offset; }
+            set { offset = value; }
         }
 
         /// <summary>
@@ -145,8 +145,8 @@ namespace netDxf.Tables
         /// </summary>
         public LinetypeSegmentRotationType RotationType
         {
-            get { return this.rotationType; }
-            set { this.rotationType = value; }
+            get { return rotationType; }
+            set { rotationType = value; }
         }
 
         /// <summary>
@@ -154,8 +154,8 @@ namespace netDxf.Tables
         /// </summary>
         public double Rotation
         {
-            get { return this.rotation; }
-            set { this.rotation = MathHelper.NormalizeAngle(value); }
+            get { return rotation; }
+            set { rotation = MathHelper.NormalizeAngle(value); }
         }
 
         /// <summary>
@@ -163,8 +163,8 @@ namespace netDxf.Tables
         /// </summary>
         public double Scale
         {
-            get { return this.scale; }
-            set { this.scale = value; }
+            get { return scale; }
+            set { scale = value; }
         }
 
         #endregion
@@ -177,7 +177,7 @@ namespace netDxf.Tables
         /// <returns>A new <c>LinetypeShapeSegment</c> that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return new LinetypeTextSegment(this.text, (TextStyle) this.style.Clone(), this.Length, this.offset, this.rotationType, this.rotation, this.scale);
+            return new LinetypeTextSegment(text, (TextStyle) style.Clone(), Length, offset, rotationType, rotation, scale);
         }
 
         #endregion

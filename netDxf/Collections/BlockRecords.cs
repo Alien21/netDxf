@@ -70,46 +70,46 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(block));
             }
 
-            if (this.List.TryGetValue(block.Name, out Block add))
+            if (List.TryGetValue(block.Name, out Block add))
             {
                 return add;
             }
 
             if (assignHandle || string.IsNullOrEmpty(block.Handle))
             {
-                this.Owner.NumHandles = block.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = block.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(block.Name, block);
-            this.References.Add(block.Name, new DxfObjectReferences());
+            List.Add(block.Name, block);
+            References.Add(block.Name, new DxfObjectReferences());
 
-            block.Layer = this.Owner.Layers.Add(block.Layer);
-            this.Owner.Layers.References[block.Layer.Name].Add(block);
+            block.Layer = Owner.Layers.Add(block.Layer);
+            Owner.Layers.References[block.Layer.Name].Add(block);
 
             //for new block definitions configure its entities
             foreach (EntityObject entity in block.Entities)
             {
-                this.Owner.AddEntityToDocument(entity, assignHandle);
+                Owner.AddEntityToDocument(entity, assignHandle);
             }
 
             //for new block definitions configure its attributes
             foreach (AttributeDefinition attDef in block.AttributeDefinitions.Values)
             {
-                this.Owner.AddAttributeDefinitionToDocument(attDef, assignHandle);
+                Owner.AddAttributeDefinitionToDocument(attDef, assignHandle);
             }
 
             block.Record.Owner = this;
 
-            block.NameChanged += this.Item_NameChanged;
-            block.LayerChanged += this.Block_LayerChanged;
-            block.EntityAdded += this.Block_EntityAdded;
-            block.EntityRemoved += this.Block_EntityRemoved;
-            block.AttributeDefinitionAdded += this.Block_AttributeDefinitionAdded; 
-            block.AttributeDefinitionRemoved += this.Block_AttributeDefinitionRemoved;
+            block.NameChanged += Item_NameChanged;
+            block.LayerChanged += Block_LayerChanged;
+            block.EntityAdded += Block_EntityAdded;
+            block.EntityRemoved += Block_EntityRemoved;
+            block.AttributeDefinitionAdded += Block_AttributeDefinitionAdded; 
+            block.AttributeDefinitionRemoved += Block_AttributeDefinitionRemoved;
 
             Debug.Assert(!string.IsNullOrEmpty(block.Handle), "The block handle cannot be null or empty.");
-            this.Owner.AddedObjects.Add(block.Handle, block);
-            this.Owner.AddedObjects.Add(block.Owner.Handle, block.Owner);
+            Owner.AddedObjects.Add(block.Handle, block);
+            Owner.AddedObjects.Add(block.Owner.Handle, block.Owner);
 
             return block;
         }
@@ -122,7 +122,7 @@ namespace netDxf.Collections
         /// <remarks>Reserved blocks or any other referenced by objects cannot be removed.</remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -148,29 +148,29 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (this.HasReferences(item))
+            if (HasReferences(item))
             {
                 return false;
             }
 
             // remove the block from the associated layer
-            this.Owner.Layers.References[item.Layer.Name].Remove(item);
+            Owner.Layers.References[item.Layer.Name].Remove(item);
 
             // we will remove all entities from the block definition
             foreach (EntityObject entity in item.Entities)
             {
-                this.Owner.RemoveEntityFromDocument(entity);
+                Owner.RemoveEntityFromDocument(entity);
             }
 
             // remove all attribute definitions from the associated layers
             foreach (AttributeDefinition attDef in item.AttributeDefinitions.Values)
             {
-                this.Owner.RemoveAttributeDefinitionFromDocument(attDef);
+                Owner.RemoveAttributeDefinitionFromDocument(attDef);
             }
 
-            this.Owner.AddedObjects.Remove(item.Handle);
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            Owner.AddedObjects.Remove(item.Handle);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Record.Handle = null;
             item.Record.Owner = null;
@@ -178,12 +178,12 @@ namespace netDxf.Collections
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
-            item.LayerChanged -= this.Block_LayerChanged;
-            item.EntityAdded -= this.Block_EntityAdded;
-            item.EntityRemoved -= this.Block_EntityRemoved;
-            item.AttributeDefinitionAdded -= this.Block_AttributeDefinitionAdded;
-            item.AttributeDefinitionRemoved -= this.Block_AttributeDefinitionRemoved;
+            item.NameChanged -= Item_NameChanged;
+            item.LayerChanged -= Block_LayerChanged;
+            item.EntityAdded -= Block_EntityAdded;
+            item.EntityRemoved -= Block_EntityRemoved;
+            item.AttributeDefinitionAdded -= Block_AttributeDefinitionAdded;
+            item.AttributeDefinitionRemoved -= Block_AttributeDefinitionRemoved;
 
             return true;
         }
@@ -194,46 +194,46 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another block with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (Block) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (Block) sender);
 
-            List<DxfObjectReference> refs = this.GetReferences(sender.Name);
-            this.References.Remove(sender.Name);
-            this.References.Add(e.NewValue, new DxfObjectReferences());
-            this.References[e.NewValue].Add(refs);
+            List<DxfObjectReference> refs = GetReferences(sender.Name);
+            References.Remove(sender.Name);
+            References.Add(e.NewValue, new DxfObjectReferences());
+            References[e.NewValue].Add(refs);
         }
 
         private void Block_LayerChanged(Block sender, TableObjectChangedEventArgs<Layer> e)
         {
-            this.Owner.Layers.References[e.OldValue.Name].Remove(sender);
+            Owner.Layers.References[e.OldValue.Name].Remove(sender);
 
-            e.NewValue = this.Owner.Layers.Add(e.NewValue);
-            this.Owner.Layers.References[e.NewValue.Name].Add(sender);
+            e.NewValue = Owner.Layers.Add(e.NewValue);
+            Owner.Layers.References[e.NewValue.Name].Add(sender);
         }
 
         private void Block_EntityAdded(TableObject sender, BlockEntityChangeEventArgs e)
         {
-            this.Owner.AddEntityToDocument(e.Item, string.IsNullOrEmpty(e.Item.Handle));
+            Owner.AddEntityToDocument(e.Item, string.IsNullOrEmpty(e.Item.Handle));
         }
 
         private void Block_EntityRemoved(TableObject sender, BlockEntityChangeEventArgs e)
         {
-            this.Owner.RemoveEntityFromDocument(e.Item);
+            Owner.RemoveEntityFromDocument(e.Item);
         }
 
         private void Block_AttributeDefinitionAdded(Block sender, BlockAttributeDefinitionChangeEventArgs e)
         {
-            this.Owner.AddAttributeDefinitionToDocument(e.Item, string.IsNullOrEmpty(e.Item.Handle));
+            Owner.AddAttributeDefinitionToDocument(e.Item, string.IsNullOrEmpty(e.Item.Handle));
         }
 
         private void Block_AttributeDefinitionRemoved(Block sender, BlockAttributeDefinitionChangeEventArgs e)
         {
-            this.Owner.RemoveAttributeDefinitionFromDocument(e.Item);
+            Owner.RemoveAttributeDefinitionFromDocument(e.Item);
         }
 
         #endregion

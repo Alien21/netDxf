@@ -52,7 +52,7 @@ namespace netDxf.Collections
         public ObservableDictionaryEventArgs(KeyValuePair<TKey, TValue> item)
         {
             this.item = item;
-            this.cancel = false;
+            cancel = false;
         }
 
         #endregion
@@ -64,7 +64,7 @@ namespace netDxf.Collections
         /// </summary>
         public KeyValuePair<TKey, TValue> Item
         {
-            get { return this.item; }
+            get { return item; }
         }
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace netDxf.Collections
         /// <remarks>This property is used by the OnBeforeAdd and OnBeforeRemove events to cancel the add or remove operations.</remarks>
         public bool Cancel
         {
-            get { return this.cancel; }
-            set { this.cancel = value; }
+            get { return cancel; }
+            set { cancel = value; }
         }
 
         #endregion

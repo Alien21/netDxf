@@ -171,7 +171,7 @@ namespace netDxf
         /// <remarks>The only valid values are the ones defined in the <see cref="XDataCode">XDataCode</see> class.</remarks>
         public XDataCode Code
         {
-            get { return this.code; }
+            get { return code; }
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace netDxf
         /// </summary>
         public object Value
         {
-            get { return this.value; }
+            get { return value; }
         }
 
         #endregion
@@ -192,7 +192,7 @@ namespace netDxf
         /// <returns>A string text.</returns>
         public override string ToString()
         {
-            return string.Format("{0} - {1}", this.code, this.value);
+            return string.Format("{0} - {1}", code, value);
         }
 
         #endregion

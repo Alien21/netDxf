@@ -83,14 +83,14 @@ namespace netDxf.Entities
         public OrdinateDimension(Vector2 origin, Vector2 featurePoint, Vector2 leaderEndPoint, DimensionStyle style)
             : base(DimensionType.Ordinate)
         {
-            this.defPoint = origin;
-            this.firstPoint = featurePoint;
-            this.secondPoint = leaderEndPoint;
-            this.textRefPoint = leaderEndPoint;
+            defPoint = origin;
+            firstPoint = featurePoint;
+            secondPoint = leaderEndPoint;
+            textRefPoint = leaderEndPoint;
             Vector2 vec = leaderEndPoint - featurePoint;
-            this.axis = vec.Y > vec.X ? OrdinateDimensionAxis.X : OrdinateDimensionAxis.Y;
-            this.rotation = 0.0;
-            this.Style = style ?? throw new ArgumentNullException(nameof(style));
+            axis = vec.Y > vec.X ? OrdinateDimensionAxis.X : OrdinateDimensionAxis.Y;
+            rotation = 0.0;
+            Style = style ?? throw new ArgumentNullException(nameof(style));
         }
 
         /// <summary>
@@ -104,13 +104,13 @@ namespace netDxf.Entities
         public OrdinateDimension(Vector2 origin, Vector2 featurePoint, Vector2 leaderEndPoint, OrdinateDimensionAxis axis, DimensionStyle style)
             : base(DimensionType.Ordinate)
         {
-            this.defPoint = origin;
-            this.firstPoint = featurePoint;
-            this.secondPoint = leaderEndPoint;
-            this.textRefPoint = leaderEndPoint;
+            defPoint = origin;
+            firstPoint = featurePoint;
+            secondPoint = leaderEndPoint;
+            textRefPoint = leaderEndPoint;
             this.axis = axis;
-            this.rotation = 0.0;
-            this.Style = style ?? throw new ArgumentNullException(nameof(style));
+            rotation = 0.0;
+            Style = style ?? throw new ArgumentNullException(nameof(style));
         }
 
         /// <summary>
@@ -167,21 +167,21 @@ namespace netDxf.Entities
         public OrdinateDimension(Vector2 origin, Vector2 featurePoint, double length, OrdinateDimensionAxis axis, double rotation, DimensionStyle style)
             : base(DimensionType.Ordinate)
         {
-            this.defPoint = origin;
+            defPoint = origin;
             this.rotation = MathHelper.NormalizeAngle(rotation);
-            this.firstPoint = featurePoint;
+            firstPoint = featurePoint;
             this.axis = axis;
 
-            this.Style = style ?? throw new ArgumentNullException(nameof(style));
+            Style = style ?? throw new ArgumentNullException(nameof(style));
 
             double angle = rotation * MathHelper.DegToRad;
-            if (this.Axis == OrdinateDimensionAxis.X)
+            if (Axis == OrdinateDimensionAxis.X)
             {
                 angle += MathHelper.HalfPI;
             }
 
-            this.secondPoint = Vector2.Polar(featurePoint, length, angle);
-            this.textRefPoint = this.secondPoint;
+            secondPoint = Vector2.Polar(featurePoint, length, angle);
+            textRefPoint = secondPoint;
         }
 
         #endregion
@@ -193,8 +193,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 Origin
         {
-            get { return this.defPoint; }
-            set { this.defPoint = value; }
+            get { return defPoint; }
+            set { defPoint = value; }
         }
 
         /// <summary>
@@ -202,8 +202,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 FeaturePoint
         {
-            get { return this.firstPoint; }
-            set { this.firstPoint = value; }
+            get { return firstPoint; }
+            set { firstPoint = value; }
         }
 
         /// <summary>
@@ -211,8 +211,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector2 LeaderEndPoint
         {
-            get { return this.secondPoint; }
-            set { this.secondPoint = value; }
+            get { return secondPoint; }
+            set { secondPoint = value; }
         }
 
         /// <summary>
@@ -220,8 +220,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Rotation
         {
-            get { return this.rotation; }
-            set { MathHelper.NormalizeAngle(this.rotation = value); }
+            get { return rotation; }
+            set { MathHelper.NormalizeAngle(rotation = value); }
         }
 
         /// <summary>
@@ -229,8 +229,8 @@ namespace netDxf.Entities
         /// </summary>
         public OrdinateDimensionAxis Axis
         {
-            get { return this.axis; }
-            set { this.axis = value; }
+            get { return axis; }
+            set { axis = value; }
         }
 
         /// <summary>
@@ -240,8 +240,8 @@ namespace netDxf.Entities
         {
             get
             {
-                Vector2 dirRef = Vector2.Rotate(this.axis == OrdinateDimensionAxis.X ? Vector2.UnitY : Vector2.UnitX, this.rotation * MathHelper.DegToRad);
-                return MathHelper.PointLineDistance(this.firstPoint, this.defPoint, dirRef);
+                Vector2 dirRef = Vector2.Rotate(axis == OrdinateDimensionAxis.X ? Vector2.UnitY : Vector2.UnitX, rotation * MathHelper.DegToRad);
+                return MathHelper.PointLineDistance(firstPoint, defPoint, dirRef);
             }
         }
 
@@ -257,13 +257,13 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal).Transpose();
 
             Vector3 refAxis = transOW * Vector3.UnitX;
@@ -271,32 +271,32 @@ namespace netDxf.Entities
             refAxis = transWO * refAxis;
             double newRotation = Vector2.Angle(new Vector2(refAxis.X, refAxis.Y)) * MathHelper.RadToDeg;
 
-            Vector3 v = transOW * new Vector3(this.FeaturePoint.X, this.FeaturePoint.Y, this.Elevation);
+            Vector3 v = transOW * new Vector3(FeaturePoint.X, FeaturePoint.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
             Vector2 newStart = new Vector2(v.X, v.Y);
             double newElevation = v.Z;
 
-            v = transOW * new Vector3(this.LeaderEndPoint.X, this.LeaderEndPoint.Y, this.Elevation);
+            v = transOW * new Vector3(LeaderEndPoint.X, LeaderEndPoint.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
             Vector2 newEnd = new Vector2(v.X, v.Y);
 
-            v = transOW * new Vector3(this.textRefPoint.X, this.textRefPoint.Y, this.Elevation);
+            v = transOW * new Vector3(textRefPoint.X, textRefPoint.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
-            this.textRefPoint = new Vector2(v.X, v.Y);
+            textRefPoint = new Vector2(v.X, v.Y);
 
-            v = transOW * new Vector3(this.defPoint.X, this.defPoint.Y, this.Elevation);
+            v = transOW * new Vector3(defPoint.X, defPoint.Y, Elevation);
             v = transformation * v + translation;
             v = transWO * v;
-            this.defPoint = new Vector2(v.X, v.Y);
+            defPoint = new Vector2(v.X, v.Y);
 
-            this.Rotation += newRotation;
-            this.FeaturePoint = newStart;
-            this.LeaderEndPoint = newEnd;
-            this.Elevation = newElevation;
-            this.Normal = newNormal;
+            Rotation += newRotation;
+            FeaturePoint = newStart;
+            LeaderEndPoint = newEnd;
+            Elevation = newElevation;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -304,23 +304,23 @@ namespace netDxf.Entities
         /// </summary>
         protected override void CalculateReferencePoints()
         {
-            if (this.TextPositionManuallySet)
+            if (TextPositionManuallySet)
             {
-                DimensionStyleFitTextMove moveText = this.Style.FitTextMove;
+                DimensionStyleFitTextMove moveText = Style.FitTextMove;
                 DimensionStyleOverride styleOverride;
-                if (this.StyleOverrides.TryGetValue(DimensionStyleOverrideType.FitTextMove, out styleOverride))
+                if (StyleOverrides.TryGetValue(DimensionStyleOverrideType.FitTextMove, out styleOverride))
                 {
                     moveText = (DimensionStyleFitTextMove)styleOverride.Value;
                 }
 
                 if (moveText != DimensionStyleFitTextMove.OverDimLineWithoutLeader)
                 {
-                    this.secondPoint = this.textRefPoint;
+                    secondPoint = textRefPoint;
                 }
             }
             else
             {
-                this.textRefPoint = this.secondPoint;
+                textRefPoint = secondPoint;
             }
         }
 
@@ -343,39 +343,39 @@ namespace netDxf.Entities
             OrdinateDimension entity = new OrdinateDimension
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Dimension properties
-                Style = (DimensionStyle) this.Style.Clone(),
-                DefinitionPoint = this.defPoint,
-                TextReferencePoint = this.TextReferencePoint,
-                TextPositionManuallySet = this.TextPositionManuallySet,
-                TextRotation = this.TextRotation,
-                AttachmentPoint = this.AttachmentPoint,
-                LineSpacingStyle = this.LineSpacingStyle,
-                LineSpacingFactor = this.LineSpacingFactor,
-                UserText = this.UserText,
-                Elevation = this.Elevation,
+                Style = (DimensionStyle) Style.Clone(),
+                DefinitionPoint = defPoint,
+                TextReferencePoint = TextReferencePoint,
+                TextPositionManuallySet = TextPositionManuallySet,
+                TextRotation = TextRotation,
+                AttachmentPoint = AttachmentPoint,
+                LineSpacingStyle = LineSpacingStyle,
+                LineSpacingFactor = LineSpacingFactor,
+                UserText = UserText,
+                Elevation = Elevation,
                 //OrdinateDimension properties
-                FeaturePoint = this.firstPoint,
-                LeaderEndPoint = this.secondPoint,
-                Rotation = this.rotation,
-                Axis = this.axis
+                FeaturePoint = firstPoint,
+                LeaderEndPoint = secondPoint,
+                Rotation = rotation,
+                Axis = axis
             };
 
-            foreach (DimensionStyleOverride styleOverride in this.StyleOverrides.Values)
+            foreach (DimensionStyleOverride styleOverride in StyleOverrides.Values)
             {
                 object copy = styleOverride.Value is ICloneable value ? value.Clone() : styleOverride.Value;
                 entity.StyleOverrides.Add(new DimensionStyleOverride(styleOverride.Type, copy));
             }
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

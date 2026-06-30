@@ -63,10 +63,10 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(name), "The UCS name should be at least one character long.");
             }
 
-            this.origin = Vector3.Zero;
-            this.xAxis = Vector3.UnitX;
-            this.yAxis = Vector3.UnitY;
-            this.zAxis = Vector3.UnitZ;
+            origin = Vector3.Zero;
+            xAxis = Vector3.UnitX;
+            yAxis = Vector3.UnitY;
+            zAxis = Vector3.UnitZ;
         }
 
         /// <summary>
@@ -93,11 +93,11 @@ namespace netDxf.Tables
             }
 
             this.origin = origin;
-            this.xAxis = xDirection;
-            this.xAxis.Normalize();
-            this.yAxis = yDirection;
-            this.yAxis.Normalize();
-            this.zAxis = Vector3.CrossProduct(this.xAxis, this.yAxis);
+            xAxis = xDirection;
+            xAxis.Normalize();
+            yAxis = yDirection;
+            yAxis.Normalize();
+            zAxis = Vector3.CrossProduct(xAxis, yAxis);
         }
 
         #endregion
@@ -109,8 +109,8 @@ namespace netDxf.Tables
         /// </summary>
         public Vector3 Origin
         {
-            get { return this.origin; }
-            set { this.origin = value; }
+            get { return origin; }
+            set { origin = value; }
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace netDxf.Tables
         /// </summary>
         public Vector3 XAxis
         {
-            get { return this.xAxis; }
+            get { return xAxis; }
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace netDxf.Tables
         /// </summary>
         public Vector3 YAxis
         {
-            get { return this.yAxis; }
+            get { return yAxis; }
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace netDxf.Tables
         /// </summary>
         public Vector3 ZAxis
         {
-            get { return this.zAxis; }
+            get { return zAxis; }
         }
 
         /// <summary>
@@ -161,11 +161,11 @@ namespace netDxf.Tables
             {
                 throw new ArgumentException("X-axis direction and Y-axis direction must be perpendicular.");
             }
-            this.xAxis = xDirection;
-            this.xAxis.Normalize();
-            this.yAxis = yDirection;
-            this.yAxis.Normalize();
-            this.zAxis = Vector3.CrossProduct(this.xAxis, this.yAxis);
+            xAxis = xDirection;
+            xAxis.Normalize();
+            yAxis = yDirection;
+            yAxis.Normalize();
+            zAxis = Vector3.CrossProduct(xAxis, yAxis);
         }
 
         /// <summary>
@@ -235,9 +235,9 @@ namespace netDxf.Tables
         /// <returns>A Matrix3.</returns>
         public Matrix3 GetTransformation()
         {
-            return new Matrix3(this.xAxis.X, this.yAxis.X, this.zAxis.X,
-                               this.xAxis.Y, this.yAxis.Y, this.zAxis.Y,
-                               this.xAxis.Z, this.yAxis.Z, this.zAxis.Z);
+            return new Matrix3(xAxis.X, yAxis.X, zAxis.X,
+                               xAxis.Y, yAxis.Y, zAxis.Y,
+                               xAxis.Z, yAxis.Z, zAxis.Z);
         }
 
         /// <summary>
@@ -249,8 +249,8 @@ namespace netDxf.Tables
         /// <returns>Transformed point list.</returns>
         public Vector3 Transform(Vector3 point, CoordinateSystem from, CoordinateSystem to)
         {
-            Matrix3 transformation = this.GetTransformation();
-            Vector3 translation = this.origin;
+            Matrix3 transformation = GetTransformation();
+            Vector3 translation = origin;
 
             switch (from)
             {
@@ -282,8 +282,8 @@ namespace netDxf.Tables
                 throw new ArgumentNullException(nameof(points));
             }
 
-            Matrix3 transformation = this.GetTransformation();
-            Vector3 translation = this.origin;
+            Matrix3 transformation = GetTransformation();
+            Vector3 translation = origin;
             List<Vector3> transPoints;
 
             switch (from)
@@ -329,7 +329,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace netDxf.Tables
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -356,13 +356,13 @@ namespace netDxf.Tables
         {
             UCS copy = new UCS(newName)
             {
-                Origin = this.origin,
-                xAxis = this.xAxis,
-                yAxis = this.yAxis,
-                zAxis = this.zAxis,
+                Origin = origin,
+                xAxis = xAxis,
+                yAxis = yAxis,
+                zAxis = zAxis,
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -376,7 +376,7 @@ namespace netDxf.Tables
         /// <returns>A new UCS that is a copy of this instance.</returns>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         #endregion

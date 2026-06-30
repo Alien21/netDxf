@@ -42,7 +42,7 @@ namespace netDxf.Entities
         public event UnderlayDefinitionChangedEventHandler UnderlayDefinitionChanged;
         protected virtual UnderlayDefinition OnUnderlayDefinitionChangedEvent(UnderlayDefinition oldUnderlayDefinition, UnderlayDefinition newUnderlayDefinition)
         {
-            UnderlayDefinitionChangedEventHandler ae = this.UnderlayDefinitionChanged;
+            UnderlayDefinitionChangedEventHandler ae = UnderlayDefinitionChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<UnderlayDefinition> eventArgs = new TableObjectChangedEventArgs<UnderlayDefinition>(oldUnderlayDefinition, newUnderlayDefinition);
@@ -109,21 +109,21 @@ namespace netDxf.Entities
                 throw new ArgumentOutOfRangeException(nameof(scale), scale, "The Underlay scale must be greater than zero.");
             }
             this.scale = new Vector2(scale);
-            this.rotation = 0.0;
-            this.contrast = 100;
-            this.fade = 0;
-            this.displayOptions = UnderlayDisplayFlags.ShowUnderlay;
-            this.clippingBoundary = null;
+            rotation = 0.0;
+            contrast = 100;
+            fade = 0;
+            displayOptions = UnderlayDisplayFlags.ShowUnderlay;
+            clippingBoundary = null;
             switch (this.definition.Type)
             {
                 case UnderlayType.DGN:
-                    this.CodeName = DxfObjectCode.UnderlayDgn;
+                    CodeName = DxfObjectCode.UnderlayDgn;
                     break;
                 case UnderlayType.DWF:
-                    this.CodeName = DxfObjectCode.UnderlayDwf;
+                    CodeName = DxfObjectCode.UnderlayDwf;
                     break;
                 case UnderlayType.PDF:
-                    this.CodeName = DxfObjectCode.UnderlayPdf;
+                    CodeName = DxfObjectCode.UnderlayPdf;
                     break;
             }
         }
@@ -136,7 +136,7 @@ namespace netDxf.Entities
         /// </summary>
         public UnderlayDefinition Definition
         {
-            get { return this.definition; }
+            get { return definition; }
             set
             {
                 if (value == null)
@@ -144,18 +144,18 @@ namespace netDxf.Entities
                     throw new ArgumentNullException(nameof(value));
                 }
 
-                this.definition = this.OnUnderlayDefinitionChangedEvent(this.definition, value);
+                definition = OnUnderlayDefinitionChangedEvent(definition, value);
 
                 switch (value.Type)
                 {
                     case UnderlayType.DGN:
-                        this.CodeName = DxfObjectCode.UnderlayDgn;
+                        CodeName = DxfObjectCode.UnderlayDgn;
                         break;
                     case UnderlayType.DWF:
-                        this.CodeName = DxfObjectCode.UnderlayDwf;
+                        CodeName = DxfObjectCode.UnderlayDwf;
                         break;
                     case UnderlayType.PDF:
-                        this.CodeName = DxfObjectCode.UnderlayPdf;
+                        CodeName = DxfObjectCode.UnderlayPdf;
                         break;
                 }
             }
@@ -166,8 +166,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Position
         {
-            get { return this.position; }
-            set { this.position = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         /// <summary>
@@ -181,14 +181,14 @@ namespace netDxf.Entities
         /// </remarks>
         public Vector2 Scale
         {
-            get { return this.scale; }
+            get { return scale; }
             set
             {
                 if (MathHelper.IsZero(value.X) || MathHelper.IsZero(value.Y))
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Any of the vector scale components cannot be zero.");
                 }
-                this.scale = value;
+                scale = value;
             }
         }
 
@@ -197,8 +197,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Rotation
         {
-            get { return this.rotation; }
-            set { this.rotation = MathHelper.NormalizeAngle(value); }
+            get { return rotation; }
+            set { rotation = MathHelper.NormalizeAngle(value); }
         }
 
         /// <summary>
@@ -207,14 +207,14 @@ namespace netDxf.Entities
         /// <remarks>Valid values range from 20 to 100.</remarks>
         public short Contrast
         {
-            get { return this.contrast; }
+            get { return contrast; }
             set
             {
                 if (value < 20 || value > 100)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Accepted contrast values range from 20 to 100.");
                 }
-                this.contrast = value;
+                contrast = value;
             }
         }
 
@@ -224,14 +224,14 @@ namespace netDxf.Entities
         /// <remarks>Valid values range from 0 to 80.</remarks>
         public short Fade
         {
-            get { return this.fade; }
+            get { return fade; }
             set
             {
                 if (value < 0 || value > 80)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Accepted fade values range from 0 to 80.");
                 }
-                this.fade = value;
+                fade = value;
             }
         }
 
@@ -240,8 +240,8 @@ namespace netDxf.Entities
         /// </summary>
         public UnderlayDisplayFlags DisplayOptions
         {
-            get { return this.displayOptions; }
-            set { this.displayOptions = value; }
+            get { return displayOptions; }
+            set { displayOptions = value; }
         }
 
         /// <summary>
@@ -252,8 +252,8 @@ namespace netDxf.Entities
         /// </remarks>
         public ClippingBoundary ClippingBoundary
         {
-            get { return this.clippingBoundary; }
-            set { this.clippingBoundary = value; }
+            get { return clippingBoundary; }
+            set { clippingBoundary = value; }
         }
 
         #endregion
@@ -272,14 +272,14 @@ namespace netDxf.Entities
         /// </remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newPosition = transformation * this.Position + translation;
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newPosition = transformation * Position + translation;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
 
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal);
             transWO = transWO.Transpose();
@@ -287,10 +287,10 @@ namespace netDxf.Entities
             List<Vector2> uv = MathHelper.Transform(
                 new[]
                 {
-                    this.Scale.X * Vector2.UnitX,
-                    this.Scale.Y * Vector2.UnitY
+                    Scale.X * Vector2.UnitX,
+                    Scale.Y * Vector2.UnitY
                 },
-                this.rotation * MathHelper.DegToRad,
+                rotation * MathHelper.DegToRad,
                 CoordinateSystem.Object, CoordinateSystem.World);
 
             Vector3 v;
@@ -314,10 +314,10 @@ namespace netDxf.Entities
             Vector2 newScale = new Vector2(scaleX, scaleY);
             double newRotation = Vector2.Angle(sign * newUvector) * MathHelper.RadToDeg;
 
-            this.Position = newPosition;
-            this.Normal = newNormal;
-            this.Rotation = newRotation;
-            this.Scale = newScale;           
+            Position = newPosition;
+            Normal = newNormal;
+            Rotation = newRotation;
+            Scale = newScale;           
         }
 
         /// <summary>
@@ -329,26 +329,26 @@ namespace netDxf.Entities
             Underlay entity = new Underlay
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Underlay properties
-                Definition = (UnderlayDefinition) this.definition.Clone(),
-                Position = this.position,
-                Scale = this.scale,
-                Rotation = this.rotation,
-                Contrast = this.contrast,
-                Fade = this.fade,
-                DisplayOptions = this.displayOptions,
-                ClippingBoundary = this.clippingBoundary != null ? (ClippingBoundary) this.clippingBoundary.Clone() : null
+                Definition = (UnderlayDefinition) definition.Clone(),
+                Position = position,
+                Scale = scale,
+                Rotation = rotation,
+                Contrast = contrast,
+                Fade = fade,
+                DisplayOptions = displayOptions,
+                ClippingBoundary = clippingBoundary != null ? (ClippingBoundary) clippingBoundary.Clone() : null
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
                 entity.XData.Add((XData) data.Clone());
 
             return entity;

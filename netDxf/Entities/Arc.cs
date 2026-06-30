@@ -85,7 +85,7 @@ namespace netDxf.Entities
             this.radius = radius;
             this.startAngle = MathHelper.NormalizeAngle(startAngle);
             this.endAngle = MathHelper.NormalizeAngle(endAngle);
-            this.thickness = 0.0;
+            thickness = 0.0;
         }
 
         /// <summary>
@@ -102,11 +102,11 @@ namespace netDxf.Entities
             {
                 throw new ArgumentOutOfRangeException(nameof(radius), radius, "The arc radius must be greater than zero.");
             }
-            this.center = new Vector3(data.Item1.X, data.Item1.Y, 0.0) ;
-            this.radius = data.Item2;
-            this.startAngle = data.Item3;
-            this.endAngle = data.Item4;
-            this.thickness = 0.0;
+            center = new Vector3(data.Item1.X, data.Item1.Y, 0.0) ;
+            radius = data.Item2;
+            startAngle = data.Item3;
+            endAngle = data.Item4;
+            thickness = 0.0;
         }
 
         #endregion
@@ -118,8 +118,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Center
         {
-            get { return this.center; }
-            set { this.center = value; }
+            get { return center; }
+            set { center = value; }
         }
 
         /// <summary>
@@ -127,14 +127,14 @@ namespace netDxf.Entities
         /// </summary>
         public double Radius
         {
-            get { return this.radius; }
+            get { return radius; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The arc radius must be greater than zero.");
                 }
-                this.radius = value;
+                radius = value;
             }
         }
 
@@ -143,8 +143,8 @@ namespace netDxf.Entities
         /// </summary>
         public double StartAngle
         {
-            get { return this.startAngle; }
-            set { this.startAngle = MathHelper.NormalizeAngle(value); }
+            get { return startAngle; }
+            set { startAngle = MathHelper.NormalizeAngle(value); }
         }
 
         /// <summary>
@@ -152,8 +152,8 @@ namespace netDxf.Entities
         /// </summary>
         public double EndAngle
         {
-            get { return this.endAngle; }
-            set { this.endAngle = MathHelper.NormalizeAngle(value); }
+            get { return endAngle; }
+            set { endAngle = MathHelper.NormalizeAngle(value); }
         }
 
         /// <summary>
@@ -161,8 +161,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Thickness
         {
-            get { return this.thickness; }
-            set { this.thickness = value; }
+            get { return thickness; }
+            set { thickness = value; }
         }
 
         #endregion
@@ -182,8 +182,8 @@ namespace netDxf.Entities
             }
 
             List<Vector2> ocsVertexes = new List<Vector2>();
-            double start = this.startAngle * MathHelper.DegToRad;
-            double end = this.endAngle * MathHelper.DegToRad;
+            double start = startAngle * MathHelper.DegToRad;
+            double end = endAngle * MathHelper.DegToRad;
             if (end < start)
             {
                 end += MathHelper.TwoPI;
@@ -193,8 +193,8 @@ namespace netDxf.Entities
             for (int i = 0; i < precision; i++)
             {
                 double angle = start + delta*i;
-                double sine = this.radius * Math.Sin(angle);
-                double cosine = this.radius * Math.Cos(angle);
+                double sine = radius * Math.Sin(angle);
+                double cosine = radius * Math.Cos(angle);
                 ocsVertexes.Add(new Vector2(cosine, sine));
             }
 
@@ -208,20 +208,20 @@ namespace netDxf.Entities
         /// <returns>A new instance of <see cref="Polyline2D">Polyline2D</see> that represents the arc.</returns>
         public Polyline2D ToPolyline2D(int precision)
         {
-            IEnumerable<Vector2> vertexes = this.PolygonalVertexes(precision);
-            Vector3 ocsCenter = MathHelper.Transform(this.center, this.Normal, CoordinateSystem.World, CoordinateSystem.Object);
+            IEnumerable<Vector2> vertexes = PolygonalVertexes(precision);
+            Vector3 ocsCenter = MathHelper.Transform(center, Normal, CoordinateSystem.World, CoordinateSystem.Object);
 
             Polyline2D poly = new Polyline2D
             {
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
                 Elevation = ocsCenter.Z,
-                Thickness = this.Thickness,
+                Thickness = Thickness,
                 IsClosed = false
             };
             foreach (Vector2 v in vertexes)
@@ -246,17 +246,17 @@ namespace netDxf.Entities
         /// </remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newCenter = transformation * this.Center + translation;
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newCenter = transformation * Center + translation;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal).Transpose();
 
-            Vector3 axis = transOW * new Vector3(this.Radius, 0.0, 0.0);
+            Vector3 axis = transOW * new Vector3(Radius, 0.0, 0.0);
             axis = transformation * axis;
             axis = transWO * axis;
             Vector2 axisPoint = new Vector2(axis.X, axis.Y);
@@ -266,8 +266,8 @@ namespace netDxf.Entities
                 newRadius = MathHelper.Epsilon;
             }
 
-            Vector2 start = Vector2.Rotate(new Vector2(this.Radius, 0.0), this.StartAngle * MathHelper.DegToRad);
-            Vector2 end = Vector2.Rotate(new Vector2(this.Radius, 0.0), this.EndAngle * MathHelper.DegToRad);
+            Vector2 start = Vector2.Rotate(new Vector2(Radius, 0.0), StartAngle * MathHelper.DegToRad);
+            Vector2 end = Vector2.Rotate(new Vector2(Radius, 0.0), EndAngle * MathHelper.DegToRad);
 
             Vector3 vStart = transOW * new Vector3(start.X, start.Y, 0.0);
             vStart = transformation * vStart;
@@ -280,19 +280,19 @@ namespace netDxf.Entities
             Vector2 startPoint = new Vector2(vStart.X, vStart.Y);
             Vector2 endPoint = new Vector2(vEnd.X, vEnd.Y);
 
-            this.Normal = newNormal;
-            this.Center = newCenter;
-            this.Radius = newRadius;
+            Normal = newNormal;
+            Center = newCenter;
+            Radius = newRadius;
 
             if (Math.Sign(transformation.M11 * transformation.M22 * transformation.M33) < 0)
             {
-                this.EndAngle = Vector2.Angle(startPoint) * MathHelper.RadToDeg;
-                this.StartAngle = Vector2.Angle(endPoint) * MathHelper.RadToDeg;
+                EndAngle = Vector2.Angle(startPoint) * MathHelper.RadToDeg;
+                StartAngle = Vector2.Angle(endPoint) * MathHelper.RadToDeg;
             }
             else
             {
-                this.StartAngle = Vector2.Angle(startPoint) * MathHelper.RadToDeg;
-                this.EndAngle = Vector2.Angle(endPoint) * MathHelper.RadToDeg;
+                StartAngle = Vector2.Angle(startPoint) * MathHelper.RadToDeg;
+                EndAngle = Vector2.Angle(endPoint) * MathHelper.RadToDeg;
             }
         }
 
@@ -305,23 +305,23 @@ namespace netDxf.Entities
             Arc entity = new Arc
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Arc properties
-                Center = this.center,
-                Radius = this.radius,
-                StartAngle = this.startAngle,
-                EndAngle = this.endAngle,
-                Thickness = this.thickness
+                Center = center,
+                Radius = radius,
+                StartAngle = startAngle,
+                EndAngle = endAngle,
+                Thickness = thickness
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

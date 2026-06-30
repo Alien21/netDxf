@@ -42,7 +42,7 @@ namespace netDxf.Collections
         public event BeforeAddItemEventHandler BeforeAddItem;
         protected virtual bool OnBeforeAddItemEvent(EntityObject item)
         {
-            BeforeAddItemEventHandler ae = this.BeforeAddItem;
+            BeforeAddItemEventHandler ae = BeforeAddItem;
             if (ae != null)
             {
                 EntityCollectionEventArgs e = new EntityCollectionEventArgs(item);
@@ -56,7 +56,7 @@ namespace netDxf.Collections
         public event AddItemEventHandler AddItem;
         protected virtual void OnAddItemEvent(EntityObject item)
         {
-            AddItemEventHandler ae = this.AddItem;
+            AddItemEventHandler ae = AddItem;
             if (ae != null)
             {
                 ae(this, new EntityCollectionEventArgs(item));
@@ -67,7 +67,7 @@ namespace netDxf.Collections
         public event BeforeRemoveItemEventHandler BeforeRemoveItem;
         protected virtual bool OnBeforeRemoveItemEvent(EntityObject item)
         {
-            BeforeRemoveItemEventHandler ae = this.BeforeRemoveItem;
+            BeforeRemoveItemEventHandler ae = BeforeRemoveItem;
             if (ae != null)
             {
                 EntityCollectionEventArgs e = new EntityCollectionEventArgs(item);
@@ -81,7 +81,7 @@ namespace netDxf.Collections
         public event RemoveItemEventHandler RemoveItem;
         protected virtual void OnRemoveItemEvent(EntityObject item)
         {
-            RemoveItemEventHandler ae = this.RemoveItem;
+            RemoveItemEventHandler ae = RemoveItem;
             if (ae != null)
             {
                 ae(this, new EntityCollectionEventArgs(item));
@@ -103,7 +103,7 @@ namespace netDxf.Collections
         /// </summary>
         public EntityCollection()
         {
-            this.innerArray = new List<EntityObject>();
+            innerArray = new List<EntityObject>();
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace netDxf.Collections
             {
                 throw new ArgumentOutOfRangeException(nameof(capacity), "The collection capacity cannot be negative.");
             }
-            this.innerArray = new List<EntityObject>(capacity);
+            innerArray = new List<EntityObject>(capacity);
         }
 
         #endregion
@@ -130,7 +130,7 @@ namespace netDxf.Collections
         /// <returns>The <see cref="EntityObject">entity</see> at the specified index.</returns>
         public EntityObject this[int index]
         {
-            get { return this.innerArray[index]; }
+            get { return innerArray[index]; }
             set
             {
                 if (value == null)
@@ -138,21 +138,21 @@ namespace netDxf.Collections
                     throw new ArgumentNullException(nameof(value));
                 }
 
-                EntityObject remove = this.innerArray[index];
+                EntityObject remove = innerArray[index];
 
-                if (this.OnBeforeRemoveItemEvent(remove))
+                if (OnBeforeRemoveItemEvent(remove))
                 {
                     return;
                 }
 
-                if (this.OnBeforeAddItemEvent(value))
+                if (OnBeforeAddItemEvent(value))
                 {
                     return;
                 }
 
-                this.innerArray[index] = value;
-                this.OnAddItemEvent(value);
-                this.OnRemoveItemEvent(remove);
+                innerArray[index] = value;
+                OnAddItemEvent(value);
+                OnRemoveItemEvent(remove);
             }
         }
 
@@ -161,7 +161,7 @@ namespace netDxf.Collections
         /// </summary>
         public int Count
         {
-            get { return this.innerArray.Count; }
+            get { return innerArray.Count; }
         }
 
         /// <summary>
@@ -183,12 +183,12 @@ namespace netDxf.Collections
         /// <returns>True if the <see cref="EntityObject">entity</see> has been added to the collection, or false otherwise.</returns>
         public void Add(EntityObject item)
         {
-            if (this.OnBeforeAddItemEvent(item))
+            if (OnBeforeAddItemEvent(item))
             {
                 throw new ArgumentException("The entity cannot be added to the collection.", nameof(item));
             }
-            this.innerArray.Add(item);
-            this.OnAddItemEvent(item);
+            innerArray.Add(item);
+            OnAddItemEvent(item);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace netDxf.Collections
 
             foreach (EntityObject item in collection)
             {
-                this.Add(item);
+                Add(item);
             }
         }
 
@@ -215,24 +215,24 @@ namespace netDxf.Collections
         /// <param name="item">The <see cref="EntityObject">entity</see> to insert. The value can not be null.</param>
         public void Insert(int index, EntityObject item)
         {
-            if (index < 0 || index >= this.innerArray.Count)
+            if (index < 0 || index >= innerArray.Count)
             {
-                throw new ArgumentOutOfRangeException(string.Format("The parameter index {0} must be in between {1} and {2}.", index, 0, this.innerArray.Count));
+                throw new ArgumentOutOfRangeException(string.Format("The parameter index {0} must be in between {1} and {2}.", index, 0, innerArray.Count));
             }
 
-            if (this.OnBeforeRemoveItemEvent(this.innerArray[index]))
+            if (OnBeforeRemoveItemEvent(innerArray[index]))
             {
                 return;
             }
 
-            if (this.OnBeforeAddItemEvent(item))
+            if (OnBeforeAddItemEvent(item))
             {
                 throw new ArgumentException("The entity cannot be added to the collection.", nameof(item));
             }
 
-            this.OnRemoveItemEvent(this.innerArray[index]);
-            this.innerArray.Insert(index, item);
-            this.OnAddItemEvent(item);
+            OnRemoveItemEvent(innerArray[index]);
+            innerArray.Insert(index, item);
+            OnAddItemEvent(item);
         }
 
         /// <summary>
@@ -242,15 +242,15 @@ namespace netDxf.Collections
         /// <returns>True if <see cref="EntityObject">entity</see> is successfully removed; otherwise, false.</returns>
         public bool Remove(EntityObject item)
         {
-            if (this.OnBeforeRemoveItemEvent(item))
+            if (OnBeforeRemoveItemEvent(item))
             {
                 return false;
             }
 
-            bool ok = this.innerArray.Remove(item);
+            bool ok = innerArray.Remove(item);
             if (ok)
             {
-                this.OnRemoveItemEvent(item);
+                OnRemoveItemEvent(item);
             }
 
             return ok;
@@ -270,7 +270,7 @@ namespace netDxf.Collections
 
             foreach (EntityObject item in items)
             {
-                this.Remove(item);
+                Remove(item);
             }
         }
 
@@ -280,19 +280,19 @@ namespace netDxf.Collections
         /// <param name="index">The zero-based index of the <see cref="EntityObject">entity</see> to remove.</param>
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= this.innerArray.Count)
+            if (index < 0 || index >= innerArray.Count)
             {
-                throw new ArgumentOutOfRangeException(string.Format("The parameter index {0} must be in between {1} and {2}.", index, 0, this.innerArray.Count));
+                throw new ArgumentOutOfRangeException(string.Format("The parameter index {0} must be in between {1} and {2}.", index, 0, innerArray.Count));
             }
 
-            EntityObject remove = this.innerArray[index];
-            if (this.OnBeforeRemoveItemEvent(remove))
+            EntityObject remove = innerArray[index];
+            if (OnBeforeRemoveItemEvent(remove))
             {
                 return;
             }
 
-            this.innerArray.RemoveAt(index);
-            this.OnRemoveItemEvent(remove);
+            innerArray.RemoveAt(index);
+            OnRemoveItemEvent(remove);
         }
 
         /// <summary>
@@ -300,11 +300,11 @@ namespace netDxf.Collections
         /// </summary>
         public void Clear()
         {
-            EntityObject[] entities = new EntityObject[this.innerArray.Count];
-            this.innerArray.CopyTo(entities, 0);
+            EntityObject[] entities = new EntityObject[innerArray.Count];
+            innerArray.CopyTo(entities, 0);
             foreach (EntityObject item in entities)
             {
-                this.Remove(item);
+                Remove(item);
             }
         }
 
@@ -315,7 +315,7 @@ namespace netDxf.Collections
         /// <returns>The zero-based index of the first occurrence of item within the entire collection, if found; otherwise, –1.</returns>
         public int IndexOf(EntityObject item)
         {
-            return this.innerArray.IndexOf(item);
+            return innerArray.IndexOf(item);
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace netDxf.Collections
         /// <returns>True if item is found in the collection; otherwise, false.</returns>
         public bool Contains(EntityObject item)
         {
-            return this.innerArray.Contains(item);
+            return innerArray.Contains(item);
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace netDxf.Collections
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         public void CopyTo(EntityObject[] array, int arrayIndex)
         {
-            this.innerArray.CopyTo(array, arrayIndex);
+            innerArray.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace netDxf.Collections
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<EntityObject> GetEnumerator()
         {
-            return this.innerArray.GetEnumerator();
+            return innerArray.GetEnumerator();
         }
 
         #endregion
@@ -353,17 +353,17 @@ namespace netDxf.Collections
 
         void ICollection<EntityObject>.Add(EntityObject item)
         {
-            this.Add(item);
+            Add(item);
         }
 
         void IList<EntityObject>.Insert(int index, EntityObject item)
         {
-            this.Insert(index, item);
+            Insert(index, item);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion

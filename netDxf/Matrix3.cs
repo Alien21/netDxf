@@ -82,8 +82,8 @@ namespace netDxf
             this.m32 = m32;
             this.m33 = m33;
 
-            this.dirty = true;
-            this.isIdentity = false;
+            dirty = true;
+            isIdentity = false;
         }
 
         #endregion
@@ -125,11 +125,11 @@ namespace netDxf
         /// </summary>
         public double M11
         {
-            get { return this.m11; }
+            get { return m11; }
             set
             {
-                this.m11 = value;
-                this.dirty = true;
+                m11 = value;
+                dirty = true;
             }
         }
 
@@ -138,11 +138,11 @@ namespace netDxf
         /// </summary>
         public double M12
         {
-            get { return this.m12; }
+            get { return m12; }
             set
             {
-                this.m12 = value;
-                this.dirty = true;
+                m12 = value;
+                dirty = true;
             }
         }
 
@@ -151,11 +151,11 @@ namespace netDxf
         /// </summary>
         public double M13
         {
-            get { return this.m13; }
+            get { return m13; }
             set
             {
-                this.m13 = value;
-                this.dirty = true;
+                m13 = value;
+                dirty = true;
             }
         }
 
@@ -164,11 +164,11 @@ namespace netDxf
         /// </summary>
         public double M21
         {
-            get { return this.m21; }
+            get { return m21; }
             set
             {
-                this.m21 = value;
-                this.dirty = true;
+                m21 = value;
+                dirty = true;
             }
         }
 
@@ -177,11 +177,11 @@ namespace netDxf
         /// </summary>
         public double M22
         {
-            get { return this.m22; }
+            get { return m22; }
             set
             {
-                this.m22 = value;
-                this.dirty = true;
+                m22 = value;
+                dirty = true;
             }
         }
 
@@ -190,11 +190,11 @@ namespace netDxf
         /// </summary>
         public double M23
         {
-            get { return this.m23; }
+            get { return m23; }
             set
             {
-                this.m23 = value;
-                this.dirty = true;
+                m23 = value;
+                dirty = true;
             }
         }
 
@@ -203,11 +203,11 @@ namespace netDxf
         /// </summary>
         public double M31
         {
-            get { return this.m31; }
+            get { return m31; }
             set
             {
-                this.m31 = value;
-                this.dirty = true;
+                m31 = value;
+                dirty = true;
             }
         }
 
@@ -216,11 +216,11 @@ namespace netDxf
         /// </summary>
         public double M32
         {
-            get { return this.m32; }
+            get { return m32; }
             set
             {
-                this.m32 = value;
-                this.dirty = true;
+                m32 = value;
+                dirty = true;
             }
         }
 
@@ -229,11 +229,11 @@ namespace netDxf
         /// </summary>
         public double M33
         {
-            get { return this.m33; }
+            get { return m33; }
             set
             {
-                this.m33 = value;
-                this.dirty = true;
+                m33 = value;
+                dirty = true;
             }
         }
 
@@ -251,11 +251,11 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                return this.m11;
+                                return m11;
                             case 1:
-                                return this.m12;
+                                return m12;
                             case 2:
-                                return this.m13;
+                                return m13;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
                         }
@@ -263,11 +263,11 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                return this.m21;
+                                return m21;
                             case 1:
-                                return this.m22;
+                                return m22;
                             case 2:
-                                return this.m23;
+                                return m23;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
                         }
@@ -276,11 +276,11 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                return this.m31;
+                                return m31;
                             case 1:
-                                return this.m32;
+                                return m32;
                             case 2:
-                                return this.m33;
+                                return m33;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
                         }
@@ -297,13 +297,13 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                this.m11 = value;
+                                m11 = value;
                                 break;
                             case 1:
-                                this.m12 = value;
+                                m12 = value;
                                 break;
                             case 2:
-                                this.m13 = value;
+                                m13 = value;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
@@ -314,13 +314,13 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                this.m21 = value;
+                                m21 = value;
                                 break;
                             case 1:
-                                this.m22 = value;
+                                m22 = value;
                                 break;
                             case 2:
-                                this.m23 = value;
+                                m23 = value;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
@@ -331,13 +331,13 @@ namespace netDxf
                         switch (column)
                         {
                             case 0:
-                                this.m31 = value;
+                                m31 = value;
                                 break;
                             case 1:
-                                this.m32 = value;
+                                m32 = value;
                                 break;
                             case 2:
-                                this.m33 = value;
+                                m33 = value;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(column));
@@ -347,7 +347,7 @@ namespace netDxf
                     default:
                         throw new ArgumentOutOfRangeException(nameof(row));
                 }
-                this.dirty = true;
+                dirty = true;
             }
         }
 
@@ -361,66 +361,66 @@ namespace netDxf
         {
             get
             {
-                if (this.dirty)
+                if (dirty)
                 {
-                    this.dirty = false;
+                    dirty = false;
 
                     // row 1
-                    if (!MathHelper.IsOne(this.M11))
+                    if (!MathHelper.IsOne(M11))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
-                    if (!MathHelper.IsZero(this.M12))
+                    if (!MathHelper.IsZero(M12))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
-                    if (!MathHelper.IsZero(this.M13))
+                    if (!MathHelper.IsZero(M13))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
 
                     // row 2
-                    if (!MathHelper.IsZero(this.M21))
+                    if (!MathHelper.IsZero(M21))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
-                    if (!MathHelper.IsOne(this.M22))
+                    if (!MathHelper.IsOne(M22))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
-                    if (!MathHelper.IsZero(this.M23))
+                    if (!MathHelper.IsZero(M23))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
 
                     // row 3
-                    if (!MathHelper.IsZero(this.M31))
+                    if (!MathHelper.IsZero(M31))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
-                    if (!MathHelper.IsZero(this.M32))
+                    if (!MathHelper.IsZero(M32))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
-                    if (!MathHelper.IsOne(this.M33))
+                    if (!MathHelper.IsOne(M33))
                     {
-                        this.isIdentity = false;
-                        return this.isIdentity;
+                        isIdentity = false;
+                        return isIdentity;
                     }
 
-                    this.isIdentity = true;
-                    return this.isIdentity;
+                    isIdentity = true;
+                    return isIdentity;
                 }
 
-                return this.isIdentity;
+                return isIdentity;
 
                 //if (this.dirty)
                 //{
@@ -629,17 +629,17 @@ namespace netDxf
         /// <returns>Determinant.</returns>
         public double Determinant()
         {
-            if (this.IsIdentity)
+            if (IsIdentity)
             {
                 return 1.0;
             }
 
-            return this.m11 * this.m22 * this.m33 +
-                   this.m12 * this.m23 * this.m31 +
-                   this.m13 * this.m21 * this.m32 -
-                   this.m13 * this.m22 * this.m31 -
-                   this.m11 * this.m23 * this.m32 -
-                   this.m12 * this.m21 * this.m33;
+            return m11 * m22 * m33 +
+                   m12 * m23 * m31 +
+                   m13 * m21 * m32 -
+                   m13 * m22 * m31 -
+                   m11 * m23 * m32 -
+                   m12 * m21 * m33;
         }
 
         /// <summary>
@@ -648,12 +648,12 @@ namespace netDxf
         /// <returns>Inverse Matrix3.</returns>
         public Matrix3 Inverse()
         {
-            if (this.IsIdentity)
+            if (IsIdentity)
             {
                 return Identity;
             }
 
-            double det = this.Determinant();
+            double det = Determinant();
             if (MathHelper.IsZero(det))
             {
                 throw new ArithmeticException("The matrix is not invertible.");
@@ -662,15 +662,15 @@ namespace netDxf
             det = 1 / det;
 
             return new Matrix3(
-                det * (this.m22 * this.m33 - this.m23 * this.m32),
-                det * (this.m13 * this.m32 - this.m12 * this.m33),
-                det * (this.m12 * this.m23 - this.m13 * this.m22),
-                det * (this.m23 * this.m31 - this.m21 * this.m33),
-                det * (this.m11 * this.m33 - this.m13 * this.m31),
-                det * (this.m13 * this.m21 - this.m11 * this.m23),
-                det * (this.m21 * this.m32 - this.m22 * this.m31),
-                det * (this.m12 * this.m31 - this.m11 * this.m32),
-                det * (this.m11 * this.m22 - this.m12 * this.m21));
+                det * (m22 * m33 - m23 * m32),
+                det * (m13 * m32 - m12 * m33),
+                det * (m12 * m23 - m13 * m22),
+                det * (m23 * m31 - m21 * m33),
+                det * (m11 * m33 - m13 * m31),
+                det * (m13 * m21 - m11 * m23),
+                det * (m21 * m32 - m22 * m31),
+                det * (m12 * m31 - m11 * m32),
+                det * (m11 * m22 - m12 * m21));
         }
 
         /// <summary>
@@ -679,9 +679,9 @@ namespace netDxf
         /// <returns>Transpose matrix.</returns>
         public Matrix3 Transpose()
         {
-            return this.IsIdentity ? Identity : new Matrix3(this.m11, this.m21, this.m31,
-                                                            this.m12, this.m22, this.m32,
-                                                            this.m13, this.m23, this.m33);
+            return IsIdentity ? Identity : new Matrix3(m11, m21, m31,
+                                                            m12, m22, m32,
+                                                            m13, m23, m33);
         }
 
 
@@ -819,7 +819,7 @@ namespace netDxf
         /// <returns>True if the matrix components are almost equal or false in any other case.</returns>
         public bool Equals(Matrix3 other)
         {
-            return this.Equals(other, MathHelper.Epsilon);
+            return Equals(other, MathHelper.Epsilon);
         }
 
         /// <summary>
@@ -831,15 +831,15 @@ namespace netDxf
         public bool Equals(Matrix3 obj, double threshold)
         {
             return
-                MathHelper.IsEqual(obj.M11, this.M11, threshold) &&
-                MathHelper.IsEqual(obj.M12, this.M12, threshold) &&
-                MathHelper.IsEqual(obj.M13, this.M13, threshold) &&
-                MathHelper.IsEqual(obj.M21, this.M21, threshold) &&
-                MathHelper.IsEqual(obj.M22, this.M22, threshold) &&
-                MathHelper.IsEqual(obj.M23, this.M23, threshold) &&
-                MathHelper.IsEqual(obj.M31, this.M31, threshold) &&
-                MathHelper.IsEqual(obj.M32, this.M32, threshold) &&
-                MathHelper.IsEqual(obj.M33, this.M33, threshold);
+                MathHelper.IsEqual(obj.M11, M11, threshold) &&
+                MathHelper.IsEqual(obj.M12, M12, threshold) &&
+                MathHelper.IsEqual(obj.M13, M13, threshold) &&
+                MathHelper.IsEqual(obj.M21, M21, threshold) &&
+                MathHelper.IsEqual(obj.M22, M22, threshold) &&
+                MathHelper.IsEqual(obj.M23, M23, threshold) &&
+                MathHelper.IsEqual(obj.M31, M31, threshold) &&
+                MathHelper.IsEqual(obj.M32, M32, threshold) &&
+                MathHelper.IsEqual(obj.M33, M33, threshold);
         }
 
         /// <summary>
@@ -851,7 +851,7 @@ namespace netDxf
         {
             if (obj is Matrix3 matrix)
             {
-                return this.Equals(matrix);
+                return Equals(matrix);
             }
             return false;
         }
@@ -863,9 +863,9 @@ namespace netDxf
         public override int GetHashCode()
         {
             return
-                this.M11.GetHashCode() ^ this.M12.GetHashCode() ^ this.M13.GetHashCode() ^
-                this.M21.GetHashCode() ^ this.M22.GetHashCode() ^ this.M23.GetHashCode() ^
-                this.M31.GetHashCode() ^ this.M32.GetHashCode() ^ this.M33.GetHashCode();
+                M11.GetHashCode() ^ M12.GetHashCode() ^ M13.GetHashCode() ^
+                M21.GetHashCode() ^ M22.GetHashCode() ^ M23.GetHashCode() ^
+                M31.GetHashCode() ^ M32.GetHashCode() ^ M33.GetHashCode();
         }
 
         #endregion
@@ -880,9 +880,9 @@ namespace netDxf
         {
             string separator = Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator;
             StringBuilder s = new StringBuilder();
-            s.Append(string.Format("|{0}{3} {1}{3} {2}|" + Environment.NewLine, this.m11, this.m12, this.m13, separator));
-            s.Append(string.Format("|{0}{3} {1}{3} {2}|" + Environment.NewLine, this.m21, this.m22, this.m23, separator));
-            s.Append(string.Format("|{0}{3} {1}{3} {2}|", this.m31, this.m32, this.m33, separator));
+            s.Append(string.Format("|{0}{3} {1}{3} {2}|" + Environment.NewLine, m11, m12, m13, separator));
+            s.Append(string.Format("|{0}{3} {1}{3} {2}|" + Environment.NewLine, m21, m22, m23, separator));
+            s.Append(string.Format("|{0}{3} {1}{3} {2}|", m31, m32, m33, separator));
             return s.ToString();
         }
 
@@ -895,9 +895,9 @@ namespace netDxf
         {
             string separator = Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator;
             StringBuilder s = new StringBuilder();
-            s.Append(string.Format("|{0}{3} {1}{3} {2}|" + Environment.NewLine, this.m11.ToString(provider), this.m12.ToString(provider), this.m13.ToString(provider), separator));
-            s.Append(string.Format("|{0}{3} {1}{3} {2}|" + Environment.NewLine, this.m21.ToString(provider), this.m22.ToString(provider), this.m23.ToString(provider), separator));
-            s.Append(string.Format("|{0}{3} {1}{3} {2}|", this.m31.ToString(provider), this.m32.ToString(provider), this.m33.ToString(provider), separator));
+            s.Append(string.Format("|{0}{3} {1}{3} {2}|" + Environment.NewLine, m11.ToString(provider), m12.ToString(provider), m13.ToString(provider), separator));
+            s.Append(string.Format("|{0}{3} {1}{3} {2}|" + Environment.NewLine, m21.ToString(provider), m22.ToString(provider), m23.ToString(provider), separator));
+            s.Append(string.Format("|{0}{3} {1}{3} {2}|", m31.ToString(provider), m32.ToString(provider), m33.ToString(provider), separator));
             return s.ToString();
         }
 

@@ -55,7 +55,7 @@ namespace netDxf
         public XData(ApplicationRegistry appReg)
         {
             this.appReg = appReg ?? throw new ArgumentNullException(nameof(appReg));
-            this.xData = new List<XDataRecord>();
+            xData = new List<XDataRecord>();
         }
 
         #endregion
@@ -67,8 +67,8 @@ namespace netDxf
         /// </summary>
         public ApplicationRegistry ApplicationRegistry
         {
-            get { return this.appReg; }
-            internal set { this.appReg = value; }
+            get { return appReg; }
+            internal set { appReg = value; }
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace netDxf
         /// </remarks>
         public List<XDataRecord> XDataRecord
         {
-            get { return this.xData; }
+            get { return xData; }
         }
 
         #endregion
@@ -93,7 +93,7 @@ namespace netDxf
         /// <returns>The string representation.</returns>
         public override string ToString()
         {
-            return this.appReg.Name;
+            return appReg.Name;
         }
 
         #endregion
@@ -106,8 +106,8 @@ namespace netDxf
         /// <returns>A new XData that is a copy of this instance.</returns>
         public object Clone()
         {
-            XData xdata = new XData((ApplicationRegistry) this.appReg.Clone());
-            foreach (XDataRecord record in this.xData)
+            XData xdata = new XData((ApplicationRegistry) appReg.Clone());
+            foreach (XDataRecord record in xData)
             {
                 xdata.XDataRecord.Add(new XDataRecord(record.Code, record.Value));
             }

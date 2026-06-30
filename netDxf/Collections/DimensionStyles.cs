@@ -68,58 +68,58 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (this.List.TryGetValue(item.Name, out DimensionStyle add))
+            if (List.TryGetValue(item.Name, out DimensionStyle add))
             {
                 return add;
             }
 
             if (assignHandle || string.IsNullOrEmpty(item.Handle))
             {
-                this.Owner.NumHandles = item.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = item.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(item.Name, item);
-            this.References.Add(item.Name, new DxfObjectReferences());
+            List.Add(item.Name, item);
+            References.Add(item.Name, new DxfObjectReferences());
 
             // add referenced text style
-            item.TextStyle = this.Owner.TextStyles.Add(item.TextStyle, assignHandle);
-            this.Owner.TextStyles.References[item.TextStyle.Name].Add(item);
+            item.TextStyle = Owner.TextStyles.Add(item.TextStyle, assignHandle);
+            Owner.TextStyles.References[item.TextStyle.Name].Add(item);
 
             // add referenced blocks
             if (item.LeaderArrow != null)
             {
-                item.LeaderArrow = this.Owner.Blocks.Add(item.LeaderArrow, assignHandle);
-                this.Owner.Blocks.References[item.LeaderArrow.Name].Add(item);
+                item.LeaderArrow = Owner.Blocks.Add(item.LeaderArrow, assignHandle);
+                Owner.Blocks.References[item.LeaderArrow.Name].Add(item);
             }
             if (item.DimArrow1 != null)
             {
-                item.DimArrow1 = this.Owner.Blocks.Add(item.DimArrow1, assignHandle);
-                this.Owner.Blocks.References[item.DimArrow1.Name].Add(item);
+                item.DimArrow1 = Owner.Blocks.Add(item.DimArrow1, assignHandle);
+                Owner.Blocks.References[item.DimArrow1.Name].Add(item);
             }
             if (item.DimArrow2 != null)
             {
-                item.DimArrow2 = this.Owner.Blocks.Add(item.DimArrow2, assignHandle);
-                this.Owner.Blocks.References[item.DimArrow2.Name].Add(item);
+                item.DimArrow2 = Owner.Blocks.Add(item.DimArrow2, assignHandle);
+                Owner.Blocks.References[item.DimArrow2.Name].Add(item);
             }
 
             // add referenced line types
-            item.DimLineLinetype = this.Owner.Linetypes.Add(item.DimLineLinetype, assignHandle);
-            this.Owner.Linetypes.References[item.DimLineLinetype.Name].Add(item);
+            item.DimLineLinetype = Owner.Linetypes.Add(item.DimLineLinetype, assignHandle);
+            Owner.Linetypes.References[item.DimLineLinetype.Name].Add(item);
 
-            item.ExtLine1Linetype = this.Owner.Linetypes.Add(item.ExtLine1Linetype, assignHandle);
-            this.Owner.Linetypes.References[item.ExtLine1Linetype.Name].Add(item);
+            item.ExtLine1Linetype = Owner.Linetypes.Add(item.ExtLine1Linetype, assignHandle);
+            Owner.Linetypes.References[item.ExtLine1Linetype.Name].Add(item);
 
-            item.ExtLine2Linetype = this.Owner.Linetypes.Add(item.ExtLine2Linetype, assignHandle);
-            this.Owner.Linetypes.References[item.ExtLine2Linetype.Name].Add(item);
+            item.ExtLine2Linetype = Owner.Linetypes.Add(item.ExtLine2Linetype, assignHandle);
+            Owner.Linetypes.References[item.ExtLine2Linetype.Name].Add(item);
 
             item.Owner = this;
 
-            item.NameChanged += this.Item_NameChanged;
-            item.LinetypeChanged += this.DimensionStyleLinetypeChanged;
-            item.TextStyleChanged += this.DimensionStyleTextStyleChanged;
-            item.BlockChanged += this.DimensionStyleBlockChanged;
+            item.NameChanged += Item_NameChanged;
+            item.LinetypeChanged += DimensionStyleLinetypeChanged;
+            item.TextStyleChanged += DimensionStyleTextStyleChanged;
+            item.BlockChanged += DimensionStyleBlockChanged;
 
-            this.Owner.AddedObjects.Add(item.Handle, item);
+            Owner.AddedObjects.Add(item.Handle, item);
 
             return item;
         }
@@ -132,7 +132,7 @@ namespace netDxf.Collections
         /// <remarks>Reserved dimension styles or any other referenced by objects cannot be removed.</remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -158,46 +158,46 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (this.HasReferences(item))
+            if (HasReferences(item))
             {
                 return false;
             }
 
-            this.Owner.AddedObjects.Remove(item.Handle);
+            Owner.AddedObjects.Remove(item.Handle);
 
             // remove referenced text style
-            this.Owner.TextStyles.References[item.TextStyle.Name].Remove(item);
+            Owner.TextStyles.References[item.TextStyle.Name].Remove(item);
 
             // remove referenced blocks
             if (item.LeaderArrow != null)
             {
-                this.Owner.Blocks.References[item.LeaderArrow.Name].Remove(item);
+                Owner.Blocks.References[item.LeaderArrow.Name].Remove(item);
             }
             if (item.DimArrow1 != null)
             {
-                this.Owner.Blocks.References[item.DimArrow1.Name].Remove(item);
+                Owner.Blocks.References[item.DimArrow1.Name].Remove(item);
             }
 
             if (item.DimArrow2 != null)
             {
-                this.Owner.Blocks.References[item.DimArrow2.Name].Remove(item);
+                Owner.Blocks.References[item.DimArrow2.Name].Remove(item);
             }
 
             // remove referenced line types
-            this.Owner.Linetypes.References[item.DimLineLinetype.Name].Remove(item);
-            this.Owner.Linetypes.References[item.ExtLine1Linetype.Name].Remove(item);
-            this.Owner.Linetypes.References[item.ExtLine2Linetype.Name].Remove(item);
+            Owner.Linetypes.References[item.DimLineLinetype.Name].Remove(item);
+            Owner.Linetypes.References[item.ExtLine1Linetype.Name].Remove(item);
+            Owner.Linetypes.References[item.ExtLine2Linetype.Name].Remove(item);
 
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
-            item.LinetypeChanged -= this.DimensionStyleLinetypeChanged;
-            item.TextStyleChanged -= this.DimensionStyleTextStyleChanged;
-            item.BlockChanged -= this.DimensionStyleBlockChanged;
+            item.NameChanged -= Item_NameChanged;
+            item.LinetypeChanged -= DimensionStyleLinetypeChanged;
+            item.TextStyleChanged -= DimensionStyleTextStyleChanged;
+            item.BlockChanged -= DimensionStyleBlockChanged;
 
             return true;
         }
@@ -208,46 +208,46 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another dimension style with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (DimensionStyle) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (DimensionStyle) sender);
 
-            List<DxfObjectReference> refs = this.GetReferences(sender.Name);
-            this.References.Remove(sender.Name);
-            this.References.Add(e.NewValue, new DxfObjectReferences());
-            this.References[e.NewValue].Add(refs);
+            List<DxfObjectReference> refs = GetReferences(sender.Name);
+            References.Remove(sender.Name);
+            References.Add(e.NewValue, new DxfObjectReferences());
+            References[e.NewValue].Add(refs);
         }
 
         private void DimensionStyleLinetypeChanged(TableObject sender, TableObjectChangedEventArgs<Linetype> e)
         {
-            this.Owner.Linetypes.References[e.OldValue.Name].Remove(sender);
-            e.NewValue = this.Owner.Linetypes.Add(e.NewValue);
-            this.Owner.Linetypes.References[e.NewValue.Name].Add(sender);
+            Owner.Linetypes.References[e.OldValue.Name].Remove(sender);
+            e.NewValue = Owner.Linetypes.Add(e.NewValue);
+            Owner.Linetypes.References[e.NewValue.Name].Add(sender);
         }
 
         private void DimensionStyleTextStyleChanged(TableObject sender, TableObjectChangedEventArgs<TextStyle> e)
         {
-            this.Owner.TextStyles.References[e.OldValue.Name].Remove(sender);
+            Owner.TextStyles.References[e.OldValue.Name].Remove(sender);
 
-            e.NewValue = this.Owner.TextStyles.Add(e.NewValue);
-            this.Owner.TextStyles.References[e.NewValue.Name].Add(sender);
+            e.NewValue = Owner.TextStyles.Add(e.NewValue);
+            Owner.TextStyles.References[e.NewValue.Name].Add(sender);
         }
 
         private void DimensionStyleBlockChanged(TableObject sender, TableObjectChangedEventArgs<Block> e)
         {
             if (e.OldValue != null)
             {
-                this.Owner.Blocks.References[e.OldValue.Name].Remove(sender);
+                Owner.Blocks.References[e.OldValue.Name].Remove(sender);
             }
 
-            e.NewValue = this.Owner.Blocks.Add(e.NewValue);
+            e.NewValue = Owner.Blocks.Add(e.NewValue);
             if (e.NewValue != null)
             {
-                this.Owner.Blocks.References[e.NewValue.Name].Add(sender);
+                Owner.Blocks.References[e.NewValue.Name].Add(sender);
             }
         }
 

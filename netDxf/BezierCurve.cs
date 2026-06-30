@@ -80,7 +80,7 @@ namespace netDxf
         /// </summary>
         public Vector3[] ControlPoints
         {
-            get { return this.controlPoints; }
+            get { return controlPoints; }
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace netDxf
         /// </summary>
         public int Degree
         {
-            get { return this.degree; }
+            get { return degree; }
         }
 
         #endregion

@@ -57,12 +57,12 @@ namespace netDxf.Objects
 
         public int Code
         {
-            get { return this.code; }
+            get { return code; }
         }
 
         public object Value
         {
-            get { return this.value; }
+            get { return value; }
         }
 
         //private static bool CheckCodeValuePair(int code, object value)

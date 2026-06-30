@@ -61,7 +61,7 @@ namespace netDxf.Header
                 throw new ArgumentException("Header variable names always starts with '$'", nameof(name));
             this.name = name;
             this.groupCode = groupCode;
-            this.variable = value;
+            variable = value;
         }
 
         #endregion
@@ -74,7 +74,7 @@ namespace netDxf.Header
         /// <remarks>The header variable name is case insensitive.</remarks>
         public string Name
         {
-            get { return this.name; }
+            get { return name; }
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace netDxf.Header
         /// </summary>
         public short GroupCode
         {
-            get { return this.groupCode; }
+            get { return groupCode; }
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace netDxf.Header
         /// </remarks>
         public object Value
         {
-            get { return this.variable; }
-            set { this.variable = value; }
+            get { return variable; }
+            set { variable = value; }
         }
 
         #endregion
@@ -111,7 +111,7 @@ namespace netDxf.Header
         /// <returns>A string text.</returns>
         public override string ToString()
         {
-            return string.Format("{0}:{1}", this.name, this.variable);
+            return string.Format("{0}:{1}", name, variable);
         }
 
         #endregion

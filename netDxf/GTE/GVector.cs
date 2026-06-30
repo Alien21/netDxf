@@ -51,7 +51,7 @@ namespace netDxf.GTE
         // The tuple is length 'size' and the elements are uninitialized.
         public GVector(int size)
         {
-            this.vector = new double[size];
+            vector = new double[size];
         }
 
         // For 0 <= d <= size, element d is 1 and all others are zero.  If d
@@ -60,14 +60,14 @@ namespace netDxf.GTE
         // MakeUnit(int,int) and Unit(int,int).
         public GVector(int size, int d)
         {
-            this.vector = new double[size];
-            this.MakeUnit(d);
+            vector = new double[size];
+            MakeUnit(d);
         }
 
         public GVector(double[] elements)
         {
-            this.vector = new double[elements.Length];
-            elements.CopyTo(this.vector, 0);
+            vector = new double[elements.Length];
+            elements.CopyTo(vector, 0);
         }
 
         // The copy constructor, destructor, and assignment operator are
@@ -85,18 +85,18 @@ namespace netDxf.GTE
 
         public int Size
         {
-            get { return this.vector.Length; }
+            get { return vector.Length; }
         }
 
         public double this[int i]
         {
-            get { return this.vector[i]; }
-            set { this.vector[i] = value; }
+            get { return vector[i]; }
+            set { vector[i] = value; }
         }
 
         public double[] Vector
         {
-            get { return this.vector; }
+            get { return vector; }
         }
 
         // Comparison (for use by STL containers).
@@ -199,24 +199,24 @@ namespace netDxf.GTE
         // All components are 0.
         public void MakeZero()
         {
-            for (int i = 0; i < this.vector.Length; i++)
+            for (int i = 0; i < vector.Length; i++)
             {
-                this.vector[i] = 0.0;
+                vector[i] = 0.0;
             }
         }
 
         // Component d is 1, all others are zero.
         public void MakeUnit(int d)
         {
-            for (int i = 0; i < this.vector.Length; i++)
+            for (int i = 0; i < vector.Length; i++)
             {
                 if (i == d)
                 {
-                    this.vector[i] = 1.0;
+                    vector[i] = 1.0;
                 }
                 else
                 {
-                    this.vector[i] = 0.0;
+                    vector[i] = 0.0;
                 }
             }
         }
@@ -613,12 +613,12 @@ namespace netDxf.GTE
                 return false;
             }
 
-            if (this.Size != other.Size)
+            if (Size != other.Size)
             {
                 return false;
             }
 
-            int size = this.Size;
+            int size = Size;
             for (int i = 0; i < size; i++)
             {
                 if (Math.Abs(this[i] - other[i]) > double.Epsilon)
@@ -637,12 +637,12 @@ namespace netDxf.GTE
                 return false;
             }
 
-            return obj.GetType() == this.GetType() && this.Equals((GVector) obj);
+            return obj.GetType() == GetType() && Equals((GVector) obj);
         }
 
         public override int GetHashCode()
         {
-            return this.vector.GetHashCode();
+            return vector.GetHashCode();
         }
     }
 }

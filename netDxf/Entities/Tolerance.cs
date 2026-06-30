@@ -43,7 +43,7 @@ namespace netDxf.Entities
         public event ToleranceStyleChangedEventHandler ToleranceStyleChanged;
         protected virtual DimensionStyle OnDimensionStyleChangedEvent(DimensionStyle oldStyle, DimensionStyle newStyle)
         {
-            ToleranceStyleChangedEventHandler ae = this.ToleranceStyleChanged;
+            ToleranceStyleChangedEventHandler ae = ToleranceStyleChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<DimensionStyle> eventArgs = new TableObjectChangedEventArgs<DimensionStyle>(oldStyle, newStyle);
@@ -107,16 +107,16 @@ namespace netDxf.Entities
         public Tolerance(ToleranceEntry tolerance, Vector3 position)
             : base(EntityType.Tolerance, DxfObjectCode.Tolerance)
         {
-            this.entry1 = tolerance;
-            this.entry2 = null;
-            this.projectedToleranceZoneValue = string.Empty;
-            this.showProjectedToleranceZoneSymbol = false;
-            this.datumIdentifier = string.Empty;
+            entry1 = tolerance;
+            entry2 = null;
+            projectedToleranceZoneValue = string.Empty;
+            showProjectedToleranceZoneSymbol = false;
+            datumIdentifier = string.Empty;
 
-            this.style = DimensionStyle.Default;
-            this.textHeight = this.style.TextHeight;
+            style = DimensionStyle.Default;
+            textHeight = style.TextHeight;
             this.position = position;
-            this.rotation = 0.0;
+            rotation = 0.0;
         }
 
         #endregion
@@ -128,8 +128,8 @@ namespace netDxf.Entities
         /// </summary>
         public ToleranceEntry Entry1
         {
-            get { return this.entry1; }
-            set { this.entry1 = value; }
+            get { return entry1; }
+            set { entry1 = value; }
         }
 
         /// <summary>
@@ -137,8 +137,8 @@ namespace netDxf.Entities
         /// </summary>
         public ToleranceEntry Entry2
         {
-            get { return this.entry2; }
-            set { this.entry2 = value; }
+            get { return entry2; }
+            set { entry2 = value; }
         }
 
         /// <summary>
@@ -150,14 +150,14 @@ namespace netDxf.Entities
         /// </remarks>
         public double TextHeight
         {
-            get { return this.textHeight; }
+            get { return textHeight; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "The tolerance text height must be greater than zero.");
                 }
-                this.textHeight = value;
+                textHeight = value;
             }
         }
 
@@ -170,8 +170,8 @@ namespace netDxf.Entities
         /// </remarks>
         public string ProjectedToleranceZoneValue
         {
-            get { return this.projectedToleranceZoneValue; }
-            set { this.projectedToleranceZoneValue = value; }
+            get { return projectedToleranceZoneValue; }
+            set { projectedToleranceZoneValue = value; }
         }
 
         /// <summary>
@@ -179,8 +179,8 @@ namespace netDxf.Entities
         /// </summary>
         public bool ShowProjectedToleranceZoneSymbol
         {
-            get { return this.showProjectedToleranceZoneSymbol; }
-            set { this.showProjectedToleranceZoneSymbol = value; }
+            get { return showProjectedToleranceZoneSymbol; }
+            set { showProjectedToleranceZoneSymbol = value; }
         }
 
         /// <summary>
@@ -192,8 +192,8 @@ namespace netDxf.Entities
         /// </remarks>
         public string DatumIdentifier
         {
-            get { return this.datumIdentifier; }
-            set { this.datumIdentifier = value; }
+            get { return datumIdentifier; }
+            set { datumIdentifier = value; }
         }
 
         /// <summary>
@@ -201,14 +201,14 @@ namespace netDxf.Entities
         /// </summary>
         public DimensionStyle Style
         {
-            get { return this.style; }
+            get { return style; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                this.style = this.OnDimensionStyleChangedEvent(this.style, value);
+                style = OnDimensionStyleChangedEvent(style, value);
             }
         }
 
@@ -217,8 +217,8 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3 Position
         {
-            get { return this.position; }
-            set { this.position = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         /// <summary>
@@ -226,8 +226,8 @@ namespace netDxf.Entities
         /// </summary>
         public double Rotation
         {
-            get { return this.rotation; }
-            set { this.rotation = MathHelper.NormalizeAngle(value); }
+            get { return rotation; }
+            set { rotation = MathHelper.NormalizeAngle(value); }
         }
 
         #endregion
@@ -243,38 +243,38 @@ namespace netDxf.Entities
             StringBuilder value = new StringBuilder();
             bool newLine = false;
 
-            if (this.entry1 != null)
+            if (entry1 != null)
             {
-                value.Append(ToleranceEntryToString(this.entry1));
+                value.Append(ToleranceEntryToString(entry1));
                 newLine = true;
             }
 
-            if (this.entry2 != null)
+            if (entry2 != null)
             {
                 if (newLine)
                     value.Append("^J");
 
-                value.Append(ToleranceEntryToString(this.entry2));
+                value.Append(ToleranceEntryToString(entry2));
                 newLine = true;
             }
 
-            if (!(string.IsNullOrEmpty(this.projectedToleranceZoneValue) && !this.showProjectedToleranceZoneSymbol))
+            if (!(string.IsNullOrEmpty(projectedToleranceZoneValue) && !showProjectedToleranceZoneSymbol))
             {
                 if (newLine)
                     value.Append("^J");
 
-                value.Append(this.projectedToleranceZoneValue);
-                if (this.showProjectedToleranceZoneSymbol)
+                value.Append(projectedToleranceZoneValue);
+                if (showProjectedToleranceZoneSymbol)
                     value.Append("{\\Fgdt;p}");
                 newLine = true;
             }
 
-            if (!string.IsNullOrEmpty(this.datumIdentifier))
+            if (!string.IsNullOrEmpty(datumIdentifier))
             {
                 if (newLine)
                     value.Append("^J");
 
-                value.Append(this.datumIdentifier);
+                value.Append(datumIdentifier);
             }
 
             return value.ToString();
@@ -755,15 +755,15 @@ namespace netDxf.Entities
         /// </remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            Vector3 newPosition = transformation * this.Position + translation;
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newPosition = transformation * Position + translation;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
 
-            Matrix3 transOW = MathHelper.ArbitraryAxis(this.Normal);
-            transOW *= Matrix3.RotationZ(this.Rotation * MathHelper.DegToRad);
+            Matrix3 transOW = MathHelper.ArbitraryAxis(Normal);
+            transOW *= Matrix3.RotationZ(Rotation * MathHelper.DegToRad);
 
             Matrix3 transWO = MathHelper.ArbitraryAxis(newNormal);
             transWO = transWO.Transpose();
@@ -775,16 +775,16 @@ namespace netDxf.Entities
             double newRotation = Vector2.Angle(axisPoint) * MathHelper.RadToDeg;
 
             double scale = axisPoint.Modulus();
-            double newTextHeight = this.TextHeight * scale;
+            double newTextHeight = TextHeight * scale;
             if (MathHelper.IsZero(newTextHeight))
             {
                 newTextHeight = MathHelper.Epsilon;
             }
 
-            this.TextHeight = newTextHeight;
-            this.Position = newPosition;
-            this.Rotation = newRotation;
-            this.Normal = newNormal;
+            TextHeight = newTextHeight;
+            Position = newPosition;
+            Rotation = newRotation;
+            Normal = newNormal;
         }
 
         public override object Clone()
@@ -792,27 +792,27 @@ namespace netDxf.Entities
             Tolerance entity = new Tolerance
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //Tolerance properties
-                Entry1 = (ToleranceEntry) this.entry1?.Clone(),
-                Entry2 = (ToleranceEntry) this.entry2?.Clone(),
-                ProjectedToleranceZoneValue = this.projectedToleranceZoneValue,
-                ShowProjectedToleranceZoneSymbol = this.showProjectedToleranceZoneSymbol,
-                DatumIdentifier = this.datumIdentifier,
-                Style = (DimensionStyle) this.style.Clone(),
-                TextHeight = this.textHeight,
-                Position = this.position,
-                Rotation = this.rotation
+                Entry1 = (ToleranceEntry) entry1?.Clone(),
+                Entry2 = (ToleranceEntry) entry2?.Clone(),
+                ProjectedToleranceZoneValue = projectedToleranceZoneValue,
+                ShowProjectedToleranceZoneSymbol = showProjectedToleranceZoneSymbol,
+                DatumIdentifier = datumIdentifier,
+                Style = (DimensionStyle) style.Clone(),
+                TextHeight = textHeight,
+                Position = position,
+                Rotation = rotation
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }

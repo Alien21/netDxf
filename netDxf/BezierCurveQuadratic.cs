@@ -71,8 +71,8 @@ namespace netDxf
         /// </summary>
         public Vector3 StartPoint
         {
-            get { return this.controlPoints[0]; }
-            set { this.controlPoints[0] = value; }
+            get { return controlPoints[0]; }
+            set { controlPoints[0] = value; }
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace netDxf
         /// </summary>
         public Vector3 ControlPoint
         {
-            get { return this.controlPoints[1]; }
-            set { this.controlPoints[1] = value; }
+            get { return controlPoints[1]; }
+            set { controlPoints[1] = value; }
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace netDxf
         /// </summary>
         public Vector3 EndPoint
         {
-            get { return this.controlPoints[2]; }
-            set { this.controlPoints[2] = value; }
+            get { return controlPoints[2]; }
+            set { controlPoints[2] = value; }
         }
 
         #endregion
@@ -110,7 +110,7 @@ namespace netDxf
             }
 
             double c = 1.0 - t;
-            return c * c * this.StartPoint + 2 * t * c * this.ControlPoint + t * t * this.EndPoint;
+            return c * c * StartPoint + 2 * t * c * ControlPoint + t * t * EndPoint;
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace netDxf
             }
 
             double c = 1.0 - t;
-            return Vector3.Normalize(c * this.StartPoint + (1 - 2 * t) * this.ControlPoint + t * this.EndPoint);
+            return Vector3.Normalize(c * StartPoint + (1 - 2 * t) * ControlPoint + t * EndPoint);
         }
 
         /// <summary>
@@ -141,14 +141,14 @@ namespace netDxf
                 throw new ArgumentOutOfRangeException(nameof(t), t, "The parameter t must be between 0.0 and 1.0.");
             }
 
-            Vector3 p12 = (this.ControlPoint - this.StartPoint) * t + this.StartPoint;
-            Vector3 p23 = (this.EndPoint - this.ControlPoint) * t + this.ControlPoint;
+            Vector3 p12 = (ControlPoint - StartPoint) * t + StartPoint;
+            Vector3 p23 = (EndPoint - ControlPoint) * t + ControlPoint;
             Vector3 breakPoint = (p23 - p12) * t + p12;
 
             return new[]
             {
-                new BezierCurveQuadratic(this.StartPoint, p12, breakPoint),
-                new BezierCurveQuadratic(breakPoint, p23, this.EndPoint)
+                new BezierCurveQuadratic(StartPoint, p12, breakPoint),
+                new BezierCurveQuadratic(breakPoint, p23, EndPoint)
             };
         }
 
@@ -157,7 +157,7 @@ namespace netDxf
         /// </summary>
         public void Reverse()
         {
-            Array.Reverse(this.controlPoints);
+            Array.Reverse(controlPoints);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace netDxf
             for (int i = 0; i < precision; i++)
             {
                 double t = delta * i;
-                vertexes.Add(this.CalculatePoint(t));
+                vertexes.Add(CalculatePoint(t));
             }
 
             return vertexes;

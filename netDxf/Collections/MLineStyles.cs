@@ -68,32 +68,32 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(style));
             }
 
-            if (this.List.TryGetValue(style.Name, out MLineStyle add))
+            if (List.TryGetValue(style.Name, out MLineStyle add))
             {
                 return add;
             }
 
             if (assignHandle || string.IsNullOrEmpty(style.Handle))
             {
-                this.Owner.NumHandles = style.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = style.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(style.Name, style);
-            this.References.Add(style.Name, new DxfObjectReferences());
+            List.Add(style.Name, style);
+            References.Add(style.Name, new DxfObjectReferences());
             foreach (MLineStyleElement element in style.Elements)
             {
-                element.Linetype = this.Owner.Linetypes.Add(element.Linetype);
-                this.Owner.Linetypes.References[element.Linetype.Name].Add(style);
+                element.Linetype = Owner.Linetypes.Add(element.Linetype);
+                Owner.Linetypes.References[element.Linetype.Name].Add(style);
             }
 
             style.Owner = this;
 
-            style.NameChanged += this.Item_NameChanged;
-            style.MLineStyleElementAdded += this.MLineStyle_ElementAdded;
-            style.MLineStyleElementRemoved += this.MLineStyle_ElementRemoved;
-            style.MLineStyleElementLinetypeChanged += this.MLineStyle_ElementLinetypeChanged;
+            style.NameChanged += Item_NameChanged;
+            style.MLineStyleElementAdded += MLineStyle_ElementAdded;
+            style.MLineStyleElementRemoved += MLineStyle_ElementRemoved;
+            style.MLineStyleElementLinetypeChanged += MLineStyle_ElementLinetypeChanged;
 
-            this.Owner.AddedObjects.Add(style.Handle, style);
+            Owner.AddedObjects.Add(style.Handle, style);
 
             return style;
         }
@@ -106,7 +106,7 @@ namespace netDxf.Collections
         /// <remarks>Reserved multiline styles or any other referenced by objects cannot be removed.</remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -132,27 +132,27 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (this.HasReferences(item))
+            if (HasReferences(item))
             {
                 return false;
             }
 
             foreach (MLineStyleElement element in item.Elements)
             {
-                this.Owner.Linetypes.References[element.Linetype.Name].Remove(item);
+                Owner.Linetypes.References[element.Linetype.Name].Remove(item);
             }
 
-            this.Owner.AddedObjects.Remove(item.Handle);
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            Owner.AddedObjects.Remove(item.Handle);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
-            item.MLineStyleElementAdded -= this.MLineStyle_ElementAdded;
-            item.MLineStyleElementRemoved -= this.MLineStyle_ElementRemoved;
-            item.MLineStyleElementLinetypeChanged -= this.MLineStyle_ElementLinetypeChanged;
+            item.NameChanged -= Item_NameChanged;
+            item.MLineStyleElementAdded -= MLineStyle_ElementAdded;
+            item.MLineStyleElementRemoved -= MLineStyle_ElementRemoved;
+            item.MLineStyleElementLinetypeChanged -= MLineStyle_ElementLinetypeChanged;
 
             return true;
         }
@@ -163,37 +163,37 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another multiline style with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (MLineStyle) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (MLineStyle) sender);
 
-            List<DxfObjectReference> refs = this.GetReferences(sender.Name);
-            this.References.Remove(sender.Name);
-            this.References.Add(e.NewValue, new DxfObjectReferences());
-            this.References[e.NewValue].Add(refs);
+            List<DxfObjectReference> refs = GetReferences(sender.Name);
+            References.Remove(sender.Name);
+            References.Add(e.NewValue, new DxfObjectReferences());
+            References[e.NewValue].Add(refs);
         }
 
         private void MLineStyle_ElementLinetypeChanged(MLineStyle sender, TableObjectChangedEventArgs<Linetype> e)
         {
-            this.Owner.Linetypes.References[e.OldValue.Name].Remove(sender);
+            Owner.Linetypes.References[e.OldValue.Name].Remove(sender);
 
-            e.NewValue = this.Owner.Linetypes.Add(e.NewValue);
-            this.Owner.Linetypes.References[e.NewValue.Name].Add(sender);
+            e.NewValue = Owner.Linetypes.Add(e.NewValue);
+            Owner.Linetypes.References[e.NewValue.Name].Add(sender);
         }
 
         private void MLineStyle_ElementAdded(MLineStyle sender, MLineStyleElementChangeEventArgs e)
         {
-            e.Item.Linetype = this.Owner.Linetypes.Add(e.Item.Linetype);
-            this.Owner.Linetypes.References[e.Item.Linetype.Name].Add(sender);
+            e.Item.Linetype = Owner.Linetypes.Add(e.Item.Linetype);
+            Owner.Linetypes.References[e.Item.Linetype.Name].Add(sender);
         }
 
         private void MLineStyle_ElementRemoved(MLineStyle sender, MLineStyleElementChangeEventArgs e)
         {
-            this.Owner.Linetypes.References[e.Item.Linetype.Name].Remove(sender);
+            Owner.Linetypes.References[e.Item.Linetype.Name].Remove(sender);
         }
 
         #endregion

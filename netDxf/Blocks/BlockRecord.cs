@@ -61,10 +61,10 @@ namespace netDxf.Blocks
                 throw new ArgumentNullException(nameof(name));
             }
             this.name = name;
-            this.layout = null;
-            this.units = DefaultUnits;
-            this.allowExploding = true;
-            this.scaleUniformly = false;
+            layout = null;
+            units = DefaultUnits;
+            allowExploding = true;
+            scaleUniformly = false;
         }
 
         #endregion
@@ -80,8 +80,8 @@ namespace netDxf.Blocks
         /// </remarks>
         public string Name
         {
-            get { return this.name; }
-            internal set { this.name = value; }
+            get { return name; }
+            internal set { name = value; }
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace netDxf.Blocks
         /// </summary>
         public Layout Layout
         {
-            get { return this.layout; }
-            internal set { this.layout = value; }
+            get { return layout; }
+            internal set { layout = value; }
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace netDxf.Blocks
         /// </summary>
         public DrawingUnits Units
         {
-            get { return this.units; }
-            set { this.units = value; }
+            get { return units; }
+            set { units = value; }
         }
 
         /// <summary>
@@ -120,8 +120,8 @@ namespace netDxf.Blocks
         /// </remarks>
         public bool AllowExploding
         {
-            get { return this.allowExploding; }
-            set { this.allowExploding = value; }
+            get { return allowExploding; }
+            set { allowExploding = value; }
         }
 
         /// <summary>
@@ -132,8 +132,8 @@ namespace netDxf.Blocks
         /// </remarks>
         public bool ScaleUniformly
         {
-            get { return this.scaleUniformly; }
-            set { this.scaleUniformly = value; }
+            get { return scaleUniformly; }
+            set { scaleUniformly = value; }
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace netDxf.Blocks
         /// </remarks>
         public bool IsForInternalUseOnly
         {
-            get { return this.name.StartsWith("*"); }
+            get { return name.StartsWith("*"); }
         }
 
         #endregion
@@ -166,7 +166,7 @@ namespace netDxf.Blocks
         /// <returns>The string representation.</returns>
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
 
         #endregion

@@ -52,87 +52,87 @@ namespace netDxf.GTE
         public NURBSSurface(BasisFunctionInput input0, BasisFunctionInput input1, Vector3[] controls, double[] weights)
             : base(0-0, 1.0, 0.0, 1.0, true)
         {
-            this.basisFunctions = new[] {new BasisFunction(input0), new BasisFunction(input1)};
-            this.numControls = new[] {input0.NumControls, input1.NumControls};
+            basisFunctions = new[] {new BasisFunction(input0), new BasisFunction(input1)};
+            numControls = new[] {input0.NumControls, input1.NumControls};
 
             // The mBasisFunction stores the domain but so does ParametricSurface.
-            this.uMin = this.basisFunctions[0].MinDomain;
-            this.uMax = this.basisFunctions[0].MaxDomain;
-            this.vMin = this.basisFunctions[1].MinDomain;
-            this.vMax = this.basisFunctions[1].MaxDomain;
+            uMin = basisFunctions[0].MinDomain;
+            uMax = basisFunctions[0].MaxDomain;
+            vMin = basisFunctions[1].MinDomain;
+            vMax = basisFunctions[1].MaxDomain;
 
             // The replication of control points for periodic splines is
             // avoided by wrapping the i-loop index in Evaluate.
-            this.controls = new Vector3[this.numControls[0] * this.numControls[1]];
+            this.controls = new Vector3[numControls[0] * numControls[1]];
             if (controls != null)
             {
                 controls.CopyTo(this.controls, 0);
             }
 
-            this.weights = new double[this.numControls[0] * this.numControls[1]];
+            this.weights = new double[numControls[0] * numControls[1]];
             if (weights != null)
             {
                 weights.CopyTo(this.weights, 0);
             }
 
-            this.isConstructed = true;
+            isConstructed = true;
         }
 
         // Member access.  The index 'dim' must be in {0,1}.
         public BasisFunction BasisFunction(int dim)
         {
-            return this.basisFunctions[dim];
+            return basisFunctions[dim];
         }
 
         public int NumControls(int dim)
         {
-            return this.numControls[dim];
+            return numControls[dim];
         }
 
         public Vector3[] Controls
         {
-            get { return this.controls; }
+            get { return controls; }
         }
 
         public double[] Weights
         {
-            get { return this.weights; }
+            get { return weights; }
         }
 
         public void SetControl(int i0, int i1, Vector3 control)
         {
-            if (0 <= i0 && i0 < this.NumControls(0) && 0 <= i1 && i1 < this.NumControls(1))
+            if (0 <= i0 && i0 < NumControls(0) && 0 <= i1 && i1 < NumControls(1))
             {
-                this.controls[i0 + this.numControls[0] * i1] = control;
+                controls[i0 + numControls[0] * i1] = control;
             }
         }
 
         public Vector3 GetControl(int i0, int i1)
         {
-            if (0 <= i0 && i0 < this.NumControls(0) && 0 <= i1 && i1 < this.NumControls(1))
+            if (0 <= i0 && i0 < NumControls(0) && 0 <= i1 && i1 < NumControls(1))
             {
-                return this.controls[i0 + this.numControls[0] * i1];
+                return controls[i0 + numControls[0] * i1];
             }
 
-            return this.controls[0];
+            return controls[0];
         }
 
         public void SetWeight(int i0, int i1, double weight)
         {
-            if (0 <= i0 && i0 < this.NumControls(0) && 0 <= i1 && i1 < this.NumControls(1))
+            if (0 <= i0 && i0 < NumControls(0) && 0 <= i1 && i1 < NumControls(1))
             {
-                this.weights[i0 + this.numControls[0] * i1] = weight;
+                weights[i0 + numControls[0] * i1] = weight;
             }
         }
 
         public double GetWeight(int i0, int i1)
         {
-            if (0 <= i0 && i0 < this.NumControls(0) && 0 <= i1 && i1 < this.NumControls(1))
+            if (0 <= i0 && i0 < NumControls(0) && 0 <= i1 && i1 < NumControls(1))
             {
-                return this.weights[i0 + this.numControls[0] * i1];
+                return weights[i0 + numControls[0] * i1];
             }
 
-            return this.weights[0];
+            return weights[0];
         }
 
         // Evaluation of the surface.  The function supports derivative
@@ -148,39 +148,39 @@ namespace netDxf.GTE
             const int supOrder = SUP_ORDER;
             jet = new Vector3[supOrder];
 
-            if (!this.isConstructed || order >= supOrder)
+            if (!isConstructed || order >= supOrder)
             {
                 // Return a zero-valued jet for invalid state.
                 return;
             }
 
-            this.basisFunctions[0].Evaluate(u, order, out int iumin, out int iumax);
-            this.basisFunctions[1].Evaluate(v, order, out int ivmin, out int ivmax);
+            basisFunctions[0].Evaluate(u, order, out int iumin, out int iumax);
+            basisFunctions[1].Evaluate(v, order, out int ivmin, out int ivmax);
 
             // Compute position.
-            this.Compute(0, 0, iumin, iumax, ivmin, ivmax, out Vector3 x, out double w);
+            Compute(0, 0, iumin, iumax, ivmin, ivmax, out Vector3 x, out double w);
             double invW = 1.0 / w;
             jet[0] = invW * x;
 
             if (order >= 1)
             {
                 // Compute first-order derivatives.
-                this.Compute(1, 0, iumin, iumax, ivmin, ivmax, out Vector3 xDerU, out double wDerU);
+                Compute(1, 0, iumin, iumax, ivmin, ivmax, out Vector3 xDerU, out double wDerU);
                 jet[1] = invW * (xDerU - wDerU * jet[0]);
 
-                this.Compute(0, 1, iumin, iumax, ivmin, ivmax, out Vector3 xDerV, out double wDerV);
+                Compute(0, 1, iumin, iumax, ivmin, ivmax, out Vector3 xDerV, out double wDerV);
                 jet[2] = invW * (xDerV - wDerV * jet[0]);
 
                 if (order >= 2)
                 {
                     // Compute second-order derivatives.
-                    this.Compute(2, 0, iumin, iumax, ivmin, ivmax, out Vector3 xDerUu, out double wDerUU);
+                    Compute(2, 0, iumin, iumax, ivmin, ivmax, out Vector3 xDerUu, out double wDerUU);
                     jet[3] = invW * (xDerUu - 2.0 * wDerU * jet[1] - wDerUU * jet[0]);
 
-                    this.Compute(1, 1, iumin, iumax, ivmin, ivmax, out Vector3 xDerUv, out double wDerUV);
+                    Compute(1, 1, iumin, iumax, ivmin, ivmax, out Vector3 xDerUv, out double wDerUV);
                     jet[4] = invW * (xDerUv - wDerU * jet[2] - wDerV * jet[1] - wDerUV * jet[0]);
 
-                    this.Compute(0, 2, iumin, iumax, ivmin, ivmax, out Vector3 xDerVv, out double wDerVV);
+                    Compute(0, 2, iumin, iumax, ivmin, ivmax, out Vector3 xDerVv, out double wDerVV);
                     jet[5] = invW * (xDerVv - 2.0 * wDerV * jet[2] - wDerVV * jet[0]);
                 }
             }
@@ -194,21 +194,21 @@ namespace netDxf.GTE
             // both aperiodic and periodic splines.  For aperiodic splines, j* = i*
             // always.
 
-            int numControls0 = this.numControls[0];
-            int numControls1 = this.numControls[1];
+            int numControls0 = numControls[0];
+            int numControls1 = numControls[1];
             x = Vector3.Zero;
             w = 0.0;
             for (int iv = ivmin; iv <= ivmax; iv++)
             {
-                double tmpv = this.basisFunctions[1].GetValue(vOrder, iv);
+                double tmpv = basisFunctions[1].GetValue(vOrder, iv);
                 int jv = (iv >= numControls1 ? iv - numControls1 : iv);
                 for (int iu = iumin; iu <= iumax; iu++)
                 {
-                    double tmpu = this.basisFunctions[0].GetValue(uOrder, iu);
+                    double tmpu = basisFunctions[0].GetValue(uOrder, iu);
                     int ju = (iu >= numControls0 ? iu - numControls0 : iu);
                     int index = ju + numControls0 * jv;
-                    double tmp = tmpu * tmpv * this.weights[index];
-                    x += tmp * this.controls[index];
+                    double tmp = tmpu * tmpv * weights[index];
+                    x += tmp * controls[index];
                     w += tmp;
                 }
             }

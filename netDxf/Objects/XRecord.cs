@@ -43,11 +43,11 @@ namespace netDxf.Objects
 
         public XRecord()
         {
-            this.codename = DxfObjectCode.XRecord;
-            this.handle = string.Empty;
-            this.ownerHandle = string.Empty;
-            this.flags = DictionaryCloningFlags.KeepExisting;
-            this.entries = new List<XRecordEntry>();
+            codename = DxfObjectCode.XRecord;
+            handle = string.Empty;
+            ownerHandle = string.Empty;
+            flags = DictionaryCloningFlags.KeepExisting;
+            entries = new List<XRecordEntry>();
         }
 
         #endregion
@@ -56,30 +56,30 @@ namespace netDxf.Objects
 
         public string Handle
         {
-            get { return this.handle; }
-            set { this.handle = value; }
+            get { return handle; }
+            set { handle = value; }
         }
 
         public string OwnerHandle
         {
-            get { return this.ownerHandle; }
-            set { this.ownerHandle = value; }
+            get { return ownerHandle; }
+            set { ownerHandle = value; }
         }
 
         public string Codename
         {
-            get { return this.codename; }
+            get { return codename; }
         }
 
         public DictionaryCloningFlags Flags
         {
-            get { return this.flags; }
-            set { this.flags = value; }
+            get { return flags; }
+            set { flags = value; }
         }
 
         public List<XRecordEntry> Entries
         {
-            get { return this.entries; }
+            get { return entries; }
         }
 
         #endregion

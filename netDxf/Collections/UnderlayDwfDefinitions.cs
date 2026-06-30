@@ -68,24 +68,24 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(underlayDwfDefinition));
             }
 
-            if (this.List.TryGetValue(underlayDwfDefinition.Name, out UnderlayDwfDefinition add))
+            if (List.TryGetValue(underlayDwfDefinition.Name, out UnderlayDwfDefinition add))
             {
                 return add;
             }
 
             if (assignHandle || string.IsNullOrEmpty(underlayDwfDefinition.Handle))
             {
-                this.Owner.NumHandles = underlayDwfDefinition.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = underlayDwfDefinition.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(underlayDwfDefinition.Name, underlayDwfDefinition);
-            this.References.Add(underlayDwfDefinition.Name, new DxfObjectReferences());
+            List.Add(underlayDwfDefinition.Name, underlayDwfDefinition);
+            References.Add(underlayDwfDefinition.Name, new DxfObjectReferences());
 
             underlayDwfDefinition.Owner = this;
 
-            underlayDwfDefinition.NameChanged += this.Item_NameChanged;
+            underlayDwfDefinition.NameChanged += Item_NameChanged;
 
-            this.Owner.AddedObjects.Add(underlayDwfDefinition.Handle, underlayDwfDefinition);
+            Owner.AddedObjects.Add(underlayDwfDefinition.Handle, underlayDwfDefinition);
 
             return underlayDwfDefinition;
         }
@@ -98,7 +98,7 @@ namespace netDxf.Collections
         /// <remarks>Any underlay definition referenced by objects cannot be removed.</remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -124,19 +124,19 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (this.HasReferences(item))
+            if (HasReferences(item))
             {
                 return false;
             }
 
-            this.Owner.AddedObjects.Remove(item.Handle);
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            Owner.AddedObjects.Remove(item.Handle);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
+            item.NameChanged -= Item_NameChanged;
 
             return true;
         }
@@ -147,18 +147,18 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another DWF underlay definition with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (UnderlayDwfDefinition) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (UnderlayDwfDefinition) sender);
 
-            List<DxfObjectReference> refs = this.GetReferences(sender.Name);
-            this.References.Remove(sender.Name);
-            this.References.Add(e.NewValue, new DxfObjectReferences());
-            this.References[e.NewValue].Add(refs);
+            List<DxfObjectReference> refs = GetReferences(sender.Name);
+            References.Remove(sender.Name);
+            References.Add(e.NewValue, new DxfObjectReferences());
+            References[e.NewValue].Add(refs);
         }
 
         #endregion

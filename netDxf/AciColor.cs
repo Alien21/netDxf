@@ -450,8 +450,8 @@ namespace netDxf
             this.r = r;
             this.g = g;
             this.b = b;
-            this.useTrueColor = true;
-            this.index = RgbToAci(this.r, this.g, this.b);
+            useTrueColor = true;
+            index = RgbToAci(this.r, this.g, this.b);
         }
 
         /// <summary>
@@ -489,8 +489,8 @@ namespace netDxf
             this.r = (byte) Math.Round(r * 255);
             this.g = (byte) Math.Round(g * 255);
             this.b = (byte) Math.Round(b * 255);
-            this.useTrueColor = true;
-            this.index = RgbToAci(this.r, this.g, this.b);
+            useTrueColor = true;
+            index = RgbToAci(this.r, this.g, this.b);
         }
 
         /// <summary>
@@ -520,10 +520,10 @@ namespace netDxf
             }
 
             byte[] rgb = IndexRgb[(byte) index];
-            this.r = rgb[0];
-            this.g = rgb[1];
-            this.b = rgb[2];
-            this.useTrueColor = false;
+            r = rgb[0];
+            g = rgb[1];
+            b = rgb[2];
+            useTrueColor = false;
             this.index = index;
         }
 
@@ -536,7 +536,7 @@ namespace netDxf
         /// </summary>
         public bool IsByLayer
         {
-            get { return this.index == 256; }
+            get { return index == 256; }
         }
 
         /// <summary>
@@ -544,7 +544,7 @@ namespace netDxf
         /// </summary>
         public bool IsByBlock
         {
-            get { return this.index == 0; }
+            get { return index == 0; }
         }
 
         /// <summary>
@@ -552,7 +552,7 @@ namespace netDxf
         /// </summary>
         public byte R
         {
-            get { return this.r; }
+            get { return r; }
         }
 
         /// <summary>
@@ -560,7 +560,7 @@ namespace netDxf
         /// </summary>
         public byte G
         {
-            get { return this.g; }
+            get { return g; }
         }
 
         /// <summary>
@@ -568,7 +568,7 @@ namespace netDxf
         /// </summary>
         public byte B
         {
-            get { return this.b; }
+            get { return b; }
         }
 
         /// <summary>
@@ -580,8 +580,8 @@ namespace netDxf
         /// </remarks>
         public bool UseTrueColor
         {
-            get { return this.useTrueColor; }
-            set { this.useTrueColor = value; }
+            get { return useTrueColor; }
+            set { useTrueColor = value; }
         }
 
         /// <summary>
@@ -593,7 +593,7 @@ namespace netDxf
         /// </remarks>
         public short Index
         {
-            get { return this.index; }
+            get { return index; }
             set
             {
                 if (value <= 0 || value >= 256)
@@ -601,12 +601,12 @@ namespace netDxf
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Accepted color index values range from 1 to 255.");
                 }
 
-                this.index = value;
-                byte[] rgb = IndexRgb[(byte) this.index];
-                this.r = rgb[0];
-                this.g = rgb[1];
-                this.b = rgb[2];
-                this.useTrueColor = false;
+                index = value;
+                byte[] rgb = IndexRgb[(byte) index];
+                r = rgb[0];
+                g = rgb[1];
+                b = rgb[2];
+                useTrueColor = false;
             }
         }
 
@@ -829,11 +829,11 @@ namespace netDxf
         /// </remarks>
         public Color ToColor()
         {
-            if (this.index < 1 || this.index > 255) //default color definition for ByLayer and ByBlock colors
+            if (index < 1 || index > 255) //default color definition for ByLayer and ByBlock colors
             {
                 return Color.White;
             }
-            return Color.FromArgb(this.r, this.g, this.b);
+            return Color.FromArgb(r, g, b);
         }
 
         /// <summary>
@@ -842,11 +842,11 @@ namespace netDxf
         /// <param name="color">A <see cref="Color">color</see>.</param>
         public void FromColor(Color color)
         {
-            this.r = color.R;
-            this.g = color.G;
-            this.b = color.B;
-            this.useTrueColor = true;
-            this.index = RgbToAci(this.r, this.g, this.b);
+            r = color.R;
+            g = color.G;
+            b = color.B;
+            useTrueColor = true;
+            index = RgbToAci(r, g, b);
         }
 
         /// <summary>
@@ -919,22 +919,22 @@ namespace netDxf
         /// <returns>The string representation.</returns>
         public override string ToString()
         {
-            if (this.index == 0)
+            if (index == 0)
             {
                 return "ByBlock";
             }
 
-            if (this.index == 256)
+            if (index == 256)
             {
                 return "ByLayer";
             }
 
-            if (this.useTrueColor)
+            if (useTrueColor)
             {
-                return String.Format("{0}{3}{1}{3}{2}", this.r, this.g, this.b, Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
+                return String.Format("{0}{3}{1}{3}{2}", r, g, b, Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator);
             }
 
-            return this.index.ToString(CultureInfo.CurrentCulture);
+            return index.ToString(CultureInfo.CurrentCulture);
         }
 
         #endregion
@@ -949,11 +949,11 @@ namespace netDxf
         {
             AciColor color = new AciColor
             {
-                r = this.r,
-                g = this.g,
-                b = this.b,
-                useTrueColor = this.useTrueColor,
-                index = this.index
+                r = r,
+                g = g,
+                b = b,
+                useTrueColor = useTrueColor,
+                index = index
             };
 
             return color;
@@ -975,7 +975,7 @@ namespace netDxf
                 return false;
             }
 
-            return (other.r == this.r) && (other.g == this.g) && (other.b == this.b);
+            return (other.r == r) && (other.g == g) && (other.b == b);
         }
 
         #endregion

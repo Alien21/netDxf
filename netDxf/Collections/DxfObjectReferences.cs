@@ -33,23 +33,23 @@ namespace netDxf.Collections
 
         public DxfObjectReferences()
         {
-            this.references = new Dictionary<DxfObject, int>();
+            references = new Dictionary<DxfObject, int>();
         }
 
         public bool IsEmpty()
         {
-            return this.references.Count == 0;
+            return references.Count == 0;
         }
 
         public void Add(DxfObject item)
         {
-            if (this.references.ContainsKey(item))
+            if (references.ContainsKey(item))
             {
-                this.references[item] += 1;
+                references[item] += 1;
             }
             else
             {
-                this.references.Add(item, 1);
+                references.Add(item, 1);
             }
         }
 
@@ -57,26 +57,26 @@ namespace netDxf.Collections
         {
             foreach (DxfObjectReference newReference in refs)
             {
-                if (this.references.ContainsKey(newReference.Reference))
+                if (references.ContainsKey(newReference.Reference))
                 {
-                    this.references[newReference.Reference] += newReference.Uses;
+                    references[newReference.Reference] += newReference.Uses;
                 }
                 else
                 {
-                    this.references.Add(newReference.Reference, newReference.Uses);
+                    references.Add(newReference.Reference, newReference.Uses);
                 }
             }
         }
 
         public bool Remove(DxfObject item)
         {
-            if (this.references.ContainsKey(item))
+            if (references.ContainsKey(item))
             {
-                this.references[item] -= 1;
+                references[item] -= 1;
 
-                if (this.references[item] == 0)
+                if (references[item] == 0)
                 {
-                    this.references.Remove(item);
+                    references.Remove(item);
                 }
 
                 return true;
@@ -88,7 +88,7 @@ namespace netDxf.Collections
         public List<DxfObjectReference> ToList()
         {
             List<DxfObjectReference> refs = new List<DxfObjectReference>();
-            foreach (KeyValuePair<DxfObject, int> pair in this.references)
+            foreach (KeyValuePair<DxfObject, int> pair in references)
             {
                 refs.Add(new DxfObjectReference(pair.Key, pair.Value));
             }

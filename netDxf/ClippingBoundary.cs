@@ -56,8 +56,8 @@ namespace netDxf
         /// <param name="height">Rectangle height.</param>
         public ClippingBoundary(double x, double y, double width, double height)
         {
-            this.type = ClippingBoundaryType.Rectangular;
-            this.vertexes = new List<Vector2> {new Vector2(x, y), new Vector2(x + width, y + height)};
+            type = ClippingBoundaryType.Rectangular;
+            vertexes = new List<Vector2> {new Vector2(x, y), new Vector2(x + width, y + height)};
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace netDxf
         /// <param name="secondCorner">Rectangle second corner.</param>
         public ClippingBoundary(Vector2 firstCorner, Vector2 secondCorner)
         {
-            this.type = ClippingBoundaryType.Rectangular;
-            this.vertexes = new List<Vector2> {firstCorner, secondCorner};
+            type = ClippingBoundaryType.Rectangular;
+            vertexes = new List<Vector2> {firstCorner, secondCorner};
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace netDxf
         /// <param name="vertexes">The list of vertexes of the polygonal boundary.</param>
         public ClippingBoundary(IEnumerable<Vector2> vertexes)
         {
-            this.type = ClippingBoundaryType.Polygonal;
+            type = ClippingBoundaryType.Polygonal;
             this.vertexes = new List<Vector2>(vertexes);
             if (this.vertexes.Count < 3)
             {
@@ -94,7 +94,7 @@ namespace netDxf
         /// </summary>
         public ClippingBoundaryType Type
         {
-            get { return this.type; }
+            get { return type; }
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace netDxf
         /// </summary>
         public IReadOnlyList<Vector2> Vertexes
         {
-            get { return this.vertexes; }
+            get { return vertexes; }
         }
 
         #endregion
@@ -115,9 +115,9 @@ namespace netDxf
         /// <returns>A new ClippingBoundary that is a copy of this instance.</returns>
         public object Clone()
         {
-            return this.type == ClippingBoundaryType.Rectangular
-                ? new ClippingBoundary(this.vertexes[0], this.vertexes[1])
-                : new ClippingBoundary(this.vertexes);
+            return type == ClippingBoundaryType.Rectangular
+                ? new ClippingBoundary(vertexes[0], vertexes[1])
+                : new ClippingBoundary(vertexes);
         }
 
         #endregion

@@ -101,8 +101,8 @@ namespace netDxf.GTE
 
             public Info(int numBits, double[] product)
             {
-                this.NumBits = numBits;
-                this.Product = product;
+                NumBits = numBits;
+                Product = product;
             }
         };
 

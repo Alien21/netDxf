@@ -72,7 +72,7 @@ namespace netDxf
         /// </summary>
         public Transparency()
         {
-            this.transparency = -1;
+            transparency = -1;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace netDxf
             {
                 throw new ArgumentOutOfRangeException(nameof(value), value, "Accepted transparency values range from 0 to 90.");
             }
-            this.transparency = value;
+            transparency = value;
         }
 
         #endregion
@@ -100,7 +100,7 @@ namespace netDxf
         /// </summary>
         public bool IsByLayer
         {
-            get { return this.transparency == -1; }
+            get { return transparency == -1; }
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace netDxf
         /// </summary>
         public bool IsByBlock
         {
-            get { return this.transparency == 100; }
+            get { return transparency == 100; }
         }
 
         /// <summary>
@@ -119,14 +119,14 @@ namespace netDxf
         /// </remarks>
         public short Value
         {
-            get { return this.transparency; }
+            get { return transparency; }
             set
             {
                 if (value < 0 || value > 90)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Accepted transparency values range from 0 to 90.");
                 }
-                this.transparency = value;
+                transparency = value;
             }
         }
 
@@ -195,7 +195,7 @@ namespace netDxf
         /// <returns>A new transparency that is a copy of this instance.</returns>
         public object Clone()
         {
-            return FromCadIndex(this.transparency);
+            return FromCadIndex(transparency);
         }
 
         #endregion
@@ -214,7 +214,7 @@ namespace netDxf
                 return false;
             }
 
-            return other.transparency == this.transparency;
+            return other.transparency == transparency;
         }
 
         #endregion
@@ -227,17 +227,17 @@ namespace netDxf
         /// <returns>The string representation.</returns>
         public override string ToString()
         {
-            if (this.transparency == -1)
+            if (transparency == -1)
             {
                 return "ByLayer";
             }
 
-            if (this.transparency == 100)
+            if (transparency == 100)
             {
                 return "ByBlock";
             }
 
-            return this.transparency.ToString(CultureInfo.CurrentCulture);
+            return transparency.ToString(CultureInfo.CurrentCulture);
         }
 
         #endregion

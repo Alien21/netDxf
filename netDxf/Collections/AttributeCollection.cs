@@ -49,7 +49,7 @@ namespace netDxf.Collections
         /// </summary>
         public AttributeCollection()
         {
-            this.innerArray = new List<Attribute>();
+            innerArray = new List<Attribute>();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace netDxf.Collections
             {
                 throw new ArgumentNullException(nameof(attributes));
             }
-            this.innerArray = new List<Attribute>(attributes);
+            innerArray = new List<Attribute>(attributes);
         }
 
         #endregion
@@ -74,7 +74,7 @@ namespace netDxf.Collections
         /// </summary>
         public int Count
         {
-            get { return this.innerArray.Count; }
+            get { return innerArray.Count; }
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace netDxf.Collections
         /// <returns>The object at the specified index.</returns>
         public Attribute this[int index]
         {
-            get { return this.innerArray[index]; }
+            get { return innerArray[index]; }
         }
 
         #endregion
@@ -106,7 +106,7 @@ namespace netDxf.Collections
         /// <returns>True if attribute is found in the collection; otherwise, false.</returns>
         public bool Contains(Attribute item)
         {
-            return this.innerArray.Contains(item);
+            return innerArray.Contains(item);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace netDxf.Collections
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         public void CopyTo(Attribute[] array, int arrayIndex)
         {
-            this.innerArray.CopyTo(array, arrayIndex);
+            innerArray.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace netDxf.Collections
         /// <returns>The zero-based index of the first occurrence of item within the entire collection, if found; otherwise, –1.</returns>
         public int IndexOf(Attribute item)
         {
-            return this.innerArray.IndexOf(item);
+            return innerArray.IndexOf(item);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace netDxf.Collections
             {
                 return null;
             }
-            foreach (Attribute att in this.innerArray)
+            foreach (Attribute att in innerArray)
             {
                 if (att.Definition != null)
                 {
@@ -160,7 +160,7 @@ namespace netDxf.Collections
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<Attribute> GetEnumerator()
         {
-            return this.innerArray.GetEnumerator();
+            return innerArray.GetEnumerator();
         }
 
         #endregion
@@ -169,7 +169,7 @@ namespace netDxf.Collections
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion

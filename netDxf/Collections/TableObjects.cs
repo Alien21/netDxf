@@ -56,20 +56,20 @@ namespace netDxf.Collections
         protected TableObjects(DxfDocument document, string codeName, string handle)
             : base(codeName)
         {
-            this.list = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
-            this.references = new Dictionary<string, DxfObjectReferences>(StringComparer.OrdinalIgnoreCase);
-            this.Owner = document;
+            list = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
+            references = new Dictionary<string, DxfObjectReferences>(StringComparer.OrdinalIgnoreCase);
+            Owner = document;
 
             if (string.IsNullOrEmpty(handle))
             {
-                this.Owner.NumHandles = base.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = base.AssignHandle(Owner.NumHandles);
             }
             else
             {
-                this.Handle = handle;
+                Handle = handle;
             }
 
-            this.Owner.AddedObjects.Add(this.Handle, this);
+            Owner.AddedObjects.Add(Handle, this);
         }
 
         #endregion
@@ -84,7 +84,7 @@ namespace netDxf.Collections
         /// <remarks>Table object names are case insensitive.</remarks>
         public T this[string name]
         {
-            get { return this.list.TryGetValue(name, out T item) ? item : null; }
+            get { return list.TryGetValue(name, out T item) ? item : null; }
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace netDxf.Collections
         /// </summary>
         public ICollection<T> Items
         {
-            get { return this.list.Values; }
+            get { return list.Values; }
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace netDxf.Collections
         /// </summary>
         public ICollection<string> Names
         {
-            get { return this.list.Keys; }
+            get { return list.Keys; }
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace netDxf.Collections
         /// </summary>
         public int Count
         {
-            get { return this.list.Count; }
+            get { return list.Count; }
         }
 
         /// <summary>
@@ -126,12 +126,12 @@ namespace netDxf.Collections
 
         internal Dictionary<string, T> List
         {
-            get { return this.list; }
+            get { return list; }
         }
 
         internal Dictionary<string, DxfObjectReferences> References
         {
-            get { return this.references; }
+            get { return references; }
         }
 
         #endregion
@@ -147,7 +147,7 @@ namespace netDxf.Collections
         /// </returns>
         public bool HasReferences(string name)
         {
-            return !this.references[name].IsEmpty();
+            return !references[name].IsEmpty();
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace netDxf.Collections
         /// </returns>
         public bool HasReferences(T item)
         {
-            return !this.references[item.Name].IsEmpty();
+            return !references[item.Name].IsEmpty();
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace netDxf.Collections
         /// </remarks>
         public List<DxfObjectReference> GetReferences(string name)
         {
-            return this.references[name].ToList();
+            return references[name].ToList();
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace netDxf.Collections
         /// </remarks>
         public List<DxfObjectReference> GetReferences(T item)
         {
-            return this.references[item.Name].ToList();
+            return references[item.Name].ToList();
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace netDxf.Collections
         /// <returns>True is a table object exists with the specified name, false otherwise.</returns>
         public bool Contains(string name)
         {
-            return this.list.ContainsKey(name);
+            return list.ContainsKey(name);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace netDxf.Collections
         /// <returns>True is a table object exists, false otherwise.</returns>
         public bool Contains(T item)
         {
-            return this.list.ContainsValue(item);
+            return list.ContainsValue(item);
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace netDxf.Collections
         /// <returns>True if the table contains an element with the specified name; otherwise, false.</returns>
         public bool TryGetValue(string name, out T item)
         {
-            return this.list.TryGetValue(name, out item);
+            return list.TryGetValue(name, out item);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(item));
             }
 
-            return this.Add(item, true);
+            return Add(item, true);
         }
 
         internal abstract T Add(T item, bool assignHandle);
@@ -263,11 +263,11 @@ namespace netDxf.Collections
         /// </summary>
         public void Clear()
         {
-            string[] names = new string[this.list.Count];
-            this.list.Keys.CopyTo(names, 0);
+            string[] names = new string[list.Count];
+            list.Keys.CopyTo(names, 0);
             foreach (string o in names)
             {
-                this.Remove(o);
+                Remove(o);
             }
         }
 
@@ -281,7 +281,7 @@ namespace netDxf.Collections
         /// <returns>An enumerator for the table object collection.</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return this.list.Values.GetEnumerator();
+            return list.Values.GetEnumerator();
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace netDxf.Collections
         /// <returns>An enumerator for the table object collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.list.Values.GetEnumerator();
+            return list.Values.GetEnumerator();
         }
 
         #endregion

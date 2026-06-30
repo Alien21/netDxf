@@ -118,9 +118,9 @@ namespace netDxf.Collections
         /// </returns>
         internal override Layout Add(Layout layout, bool assignHandle)
         {
-            if (this.List.Count >= MaxCapacity)
+            if (List.Count >= MaxCapacity)
             {
-                throw new OverflowException(string.Format("Table overflow. The maximum number of elements the table {0} can have is {1}", this.CodeName, MaxCapacity));
+                throw new OverflowException(string.Format("Table overflow. The maximum number of elements the table {0} can have is {1}", CodeName, MaxCapacity));
             }
 
             if (layout == null)
@@ -128,7 +128,7 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(layout));
             }
 
-            if (this.List.TryGetValue(layout.Name, out Layout add))
+            if (List.TryGetValue(layout.Name, out Layout add))
             {
                 return add;
             }
@@ -141,19 +141,19 @@ namespace netDxf.Collections
             if (layout.IsPaperSpace && associatedBlock == null)
             {
                 // the PaperSpace block names follow the naming Paper_Space, Paper_Space0, Paper_Space1, ...
-                string spaceName = this.List.Count == 1 ? Block.DefaultPaperSpaceName : string.Concat(Block.DefaultPaperSpaceName, this.List.Count - 2);
+                string spaceName = List.Count == 1 ? Block.DefaultPaperSpaceName : string.Concat(Block.DefaultPaperSpaceName, List.Count - 2);
                 associatedBlock = new Block(spaceName, null, null, false);
                 if (layout.TabOrder == 0)
                 {
-                    layout.TabOrder = (short) this.List.Count;
+                    layout.TabOrder = (short) List.Count;
                 }
             }
 
-            associatedBlock = this.Owner.Blocks.Add(associatedBlock);
+            associatedBlock = Owner.Blocks.Add(associatedBlock);
 
             layout.AssociatedBlock = associatedBlock;
             associatedBlock.Record.Layout = layout;
-            this.Owner.Blocks.References[associatedBlock.Name].Add(layout);
+            Owner.Blocks.References[associatedBlock.Name].Add(layout);
 
             if (layout.Viewport != null)
             {
@@ -162,16 +162,16 @@ namespace netDxf.Collections
 
             if (assignHandle || string.IsNullOrEmpty(layout.Handle))
             {
-                this.Owner.NumHandles = layout.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = layout.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(layout.Name, layout);
-            this.References.Add(layout.Name, new DxfObjectReferences());
-            this.References[layout.Name].Add(associatedBlock);
+            List.Add(layout.Name, layout);
+            References.Add(layout.Name, new DxfObjectReferences());
+            References[layout.Name].Add(associatedBlock);
 
-            layout.NameChanged += this.Item_NameChanged;
+            layout.NameChanged += Item_NameChanged;
 
-            this.Owner.AddedObjects.Add(layout.Handle, layout);
+            Owner.AddedObjects.Add(layout.Handle, layout);
 
             return layout;
         }
@@ -188,7 +188,7 @@ namespace netDxf.Collections
         /// </remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -242,21 +242,21 @@ namespace netDxf.Collections
             //}
 
             // remove the associated block of the Layout that is being removed
-            this.Owner.Blocks.References[item.AssociatedBlock.Name].Remove(item);
-            this.Owner.Blocks.Remove(item.AssociatedBlock);
+            Owner.Blocks.References[item.AssociatedBlock.Name].Remove(item);
+            Owner.Blocks.Remove(item.AssociatedBlock);
             item.AssociatedBlock = null;
 
             // remove the layout
-            this.Owner.AddedObjects.Remove(item.Handle);
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            Owner.AddedObjects.Remove(item.Handle);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
+            item.NameChanged -= Item_NameChanged;
 
-            this.RenameAssociatedBlocks();
+            RenameAssociatedBlocks();
 
             return true;
         }
@@ -268,7 +268,7 @@ namespace netDxf.Collections
         internal void RenameAssociatedBlocks()
         {
             List<int> names = new List<int>();
-            foreach (Layout l in this.List.Values)
+            foreach (Layout l in List.Values)
             {
                 if (l.IsPaperSpace)
                 {
@@ -289,7 +289,7 @@ namespace netDxf.Collections
             {
                 string originalName = names[i] == -1 ? Block.PaperSpace.Name : string.Concat(Block.PaperSpace.Name, names[i]);
                 string newName = i == 0 ? Block.PaperSpace.Name : string.Concat(Block.PaperSpace.Name, i - 1);
-                this.Owner.Blocks[originalName].SetName(newName, false);
+                Owner.Blocks[originalName].SetName(newName, false);
             }
         }
 
@@ -299,13 +299,13 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another layout with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (Layout) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (Layout) sender);
         }
 
         #endregion

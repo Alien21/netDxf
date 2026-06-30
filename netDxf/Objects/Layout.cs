@@ -99,16 +99,16 @@ namespace netDxf.Objects
 
             if (name.Equals(ModelSpaceName, StringComparison.OrdinalIgnoreCase))
             {
-                this.IsReserved = true;
-                this.isPaperSpace = false;
-                this.viewport = null;
+                IsReserved = true;
+                isPaperSpace = false;
+                viewport = null;
                 plotSettings.Flags = PlotFlags.Initializing | PlotFlags.UpdatePaper | PlotFlags.ModelType | PlotFlags.DrawViewportsFirst | PlotFlags.PrintLineweights | PlotFlags.PlotPlotStyles | PlotFlags.UseStandardScale;
             }
             else
             {
-                this.IsReserved = false;
-                this.isPaperSpace = true;
-                this.viewport = new Viewport(1)
+                IsReserved = false;
+                isPaperSpace = true;
+                viewport = new Viewport(1)
                 {
                     ViewCenter = new Vector2(50.0, 100.0),
                     Status = ViewportStatusFlags.AdaptiveGridDisplay |
@@ -118,18 +118,18 @@ namespace netDxf.Objects
                 };
             }
 
-            this.tabOrder = 0;
+            tabOrder = 0;
             this.associatedBlock = associatedBlock;
-            this.plot = plotSettings;
-            this.minLimit = new Vector2(-20.0, -7.5);
-            this.maxLimit = new Vector2(277.0, 202.5);
-            this.basePoint = Vector3.Zero;
-            this.minExtents = new Vector3(25.7, 19.5, 0.0);
-            this.maxExtents = new Vector3(231.3, 175.5, 0.0);
-            this.elevation = 0;
-            this.origin = Vector3.Zero;
-            this.xAxis = Vector3.UnitX;
-            this.yAxis = Vector3.UnitY;
+            plot = plotSettings;
+            minLimit = new Vector2(-20.0, -7.5);
+            maxLimit = new Vector2(277.0, 202.5);
+            basePoint = Vector3.Zero;
+            minExtents = new Vector3(25.7, 19.5, 0.0);
+            maxExtents = new Vector3(231.3, 175.5, 0.0);
+            elevation = 0;
+            origin = Vector3.Zero;
+            xAxis = Vector3.UnitX;
+            yAxis = Vector3.UnitY;
         }
 
         #endregion
@@ -146,14 +146,14 @@ namespace netDxf.Objects
         /// </remarks>
         public short TabOrder
         {
-            get { return this.tabOrder; }
+            get { return tabOrder; }
             set
             {
                 if (value <= 0)
                 {
                     throw new ArgumentException("The tab order index must be greater than zero.", nameof(value));
                 }
-                this.tabOrder = value;
+                tabOrder = value;
             }
         }
 
@@ -162,8 +162,8 @@ namespace netDxf.Objects
         /// </summary>
         public PlotSettings PlotSettings
         {
-            get { return this.plot; }
-            set { this.plot = value; }
+            get { return plot; }
+            set { plot = value; }
         }
 
         /// <summary>
@@ -171,8 +171,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector2 MinLimit
         {
-            get { return this.minLimit; }
-            set { this.minLimit = value; }
+            get { return minLimit; }
+            set { minLimit = value; }
         }
 
         /// <summary>
@@ -180,8 +180,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector2 MaxLimit
         {
-            get { return this.maxLimit; }
-            set { this.maxLimit = value; }
+            get { return maxLimit; }
+            set { maxLimit = value; }
         }
 
         /// <summary>
@@ -189,8 +189,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector3 MinExtents
         {
-            get { return this.minExtents; }
-            set { this.minExtents = value; }
+            get { return minExtents; }
+            set { minExtents = value; }
         }
 
         /// <summary>
@@ -198,8 +198,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector3 MaxExtents
         {
-            get { return this.maxExtents; }
-            set { this.maxExtents = value; }
+            get { return maxExtents; }
+            set { maxExtents = value; }
         }
 
         /// <summary>
@@ -207,8 +207,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector3 BasePoint
         {
-            get { return this.basePoint; }
-            set { this.basePoint = value; }
+            get { return basePoint; }
+            set { basePoint = value; }
         }
 
         /// <summary>
@@ -216,8 +216,8 @@ namespace netDxf.Objects
         /// </summary>
         public double Elevation
         {
-            get { return this.elevation; }
-            set { this.elevation = value; }
+            get { return elevation; }
+            set { elevation = value; }
         }
 
         /// <summary>
@@ -225,8 +225,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector3 UcsOrigin
         {
-            get { return this.origin; }
-            set { this.origin = value; }
+            get { return origin; }
+            set { origin = value; }
         }
 
         /// <summary>
@@ -234,8 +234,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector3 UcsXAxis
         {
-            get { return this.xAxis; }
-            set { this.xAxis = value; }
+            get { return xAxis; }
+            set { xAxis = value; }
         }
 
         /// <summary>
@@ -243,8 +243,8 @@ namespace netDxf.Objects
         /// </summary>
         public Vector3 UcsYAxis
         {
-            get { return this.yAxis; }
-            set { this.yAxis = value; }
+            get { return yAxis; }
+            set { yAxis = value; }
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace netDxf.Objects
         /// </summary>
         public bool IsPaperSpace
         {
-            get { return this.isPaperSpace; }
+            get { return isPaperSpace; }
         }
 
         /// <summary>
@@ -262,8 +262,8 @@ namespace netDxf.Objects
         /// <remarks>The ModelSpace layout does not require a viewport and it will always return null.</remarks>
         public Viewport Viewport
         {
-            get { return this.viewport; }
-            internal set { this.viewport = value; }
+            get { return viewport; }
+            internal set { viewport = value; }
         }
 
         /// <summary>
@@ -280,8 +280,8 @@ namespace netDxf.Objects
         /// </summary>
         public Block AssociatedBlock
         {
-            get { return this.associatedBlock; }
-            internal set { this.associatedBlock = value; }
+            get { return associatedBlock; }
+            internal set { associatedBlock = value; }
         }
 
         #endregion
@@ -300,7 +300,7 @@ namespace netDxf.Objects
         /// </remarks>
         public override bool HasReferences()
         {
-            return this.Owner != null && this.Owner.HasReferences(this.Name);
+            return Owner != null && Owner.HasReferences(Name);
         }
 
         /// <summary>
@@ -315,7 +315,7 @@ namespace netDxf.Objects
         /// </remarks>
         public override List<DxfObjectReference> GetReferences()
         {
-            return this.Owner?.GetReferences(this.Name);
+            return Owner?.GetReferences(Name);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace netDxf.Objects
         /// </remarks>
         public override TableObject Clone(string newName)
         {
-            if (!this.IsPaperSpace)
+            if (!IsPaperSpace)
             {
                 throw new NotSupportedException("The Model layout cannot be cloned.");
             }
@@ -339,22 +339,22 @@ namespace netDxf.Objects
                 throw new ArgumentException("The layout name \"Model\" is reserved for the ModelSpace.");
             }
 
-            Layout copy = new Layout(newName, null, (PlotSettings) this.plot.Clone())
+            Layout copy = new Layout(newName, null, (PlotSettings) plot.Clone())
             {
-                TabOrder = this.tabOrder,
-                MinLimit = this.minLimit,
-                MaxLimit = this.maxLimit,
-                BasePoint = this.basePoint,
-                MinExtents = this.minExtents,
-                MaxExtents = this.maxExtents,
-                Elevation = this.elevation,
-                UcsOrigin = this.origin,
-                UcsXAxis = this.xAxis,
-                UcsYAxis = this.yAxis,
-                Viewport = (Viewport) this.viewport.Clone()
+                TabOrder = tabOrder,
+                MinLimit = minLimit,
+                MaxLimit = maxLimit,
+                BasePoint = basePoint,
+                MinExtents = minExtents,
+                MaxExtents = maxExtents,
+                Elevation = elevation,
+                UcsOrigin = origin,
+                UcsXAxis = xAxis,
+                UcsYAxis = yAxis,
+                Viewport = (Viewport) viewport.Clone()
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 copy.XData.Add((XData)data.Clone());
             }
@@ -372,7 +372,7 @@ namespace netDxf.Objects
         /// </remarks>
         public override object Clone()
         {
-            return this.Clone(this.Name);
+            return Clone(Name);
         }
 
         /// <summary>
@@ -386,10 +386,10 @@ namespace netDxf.Objects
         /// </remarks>
         internal override long AssignHandle(long entityNumber)
         {
-            entityNumber = this.Owner.AssignHandle(entityNumber);
-            if (this.isPaperSpace)
+            entityNumber = Owner.AssignHandle(entityNumber);
+            if (isPaperSpace)
             {
-                entityNumber = this.viewport.AssignHandle(entityNumber);
+                entityNumber = viewport.AssignHandle(entityNumber);
             }
             return base.AssignHandle(entityNumber);
         }
@@ -414,7 +414,7 @@ namespace netDxf.Objects
                 throw new ArgumentNullException(nameof(other));
             }
 
-            return this.tabOrder.CompareTo(other.tabOrder);
+            return tabOrder.CompareTo(other.tabOrder);
         }
 
         #endregion

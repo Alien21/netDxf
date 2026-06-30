@@ -75,21 +75,21 @@ namespace netDxf.Objects
                     {
                         throw new ArgumentException("The underlay type and the file extension do not match.", nameof(file));
                     }
-                    this.CodeName = DxfObjectCode.UnderlayDgnDefinition;
+                    CodeName = DxfObjectCode.UnderlayDgnDefinition;
                     break;
                 case UnderlayType.DWF:
                     if (!ext.Equals(".DWF", StringComparison.OrdinalIgnoreCase))
                     {
                         throw new ArgumentException("The underlay type and the file extension do not match.", nameof(file));
                     }
-                    this.CodeName = DxfObjectCode.UnderlayDwfDefinition;
+                    CodeName = DxfObjectCode.UnderlayDwfDefinition;
                     break;
                 case UnderlayType.PDF:
                     if (!ext.Equals(".PDF", StringComparison.OrdinalIgnoreCase))
                     {
                         throw new ArgumentException("The underlay type and the file extension do not match.", nameof(file));
                     }
-                    this.CodeName = DxfObjectCode.UnderlayPdfDefinition;
+                    CodeName = DxfObjectCode.UnderlayPdfDefinition;
                     break;
             }
 
@@ -106,7 +106,7 @@ namespace netDxf.Objects
         /// </summary>
         public UnderlayType Type
         {
-            get { return this.type; }
+            get { return type; }
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace netDxf.Objects
         /// </remarks>
         public string File
         {
-            get { return this.file; }
+            get { return file; }
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -132,32 +132,32 @@ namespace netDxf.Objects
 
                 string ext = Path.GetExtension(value);
 
-                switch (this.type)
+                switch (type)
                 {
                     case UnderlayType.DGN:
                         if (!ext.Equals(".DGN", StringComparison.OrdinalIgnoreCase))
                         {
                             throw new ArgumentException("The underlay type and the file extension do not match.", nameof(value));
                         }
-                        this.CodeName = DxfObjectCode.UnderlayDgnDefinition;
+                        CodeName = DxfObjectCode.UnderlayDgnDefinition;
                         break;
                     case UnderlayType.DWF:
                         if (!ext.Equals(".DWF", StringComparison.OrdinalIgnoreCase))
                         {
                             throw new ArgumentException("The underlay type and the file extension do not match.", nameof(value));
                         }
-                        this.CodeName = DxfObjectCode.UnderlayDwfDefinition;
+                        CodeName = DxfObjectCode.UnderlayDwfDefinition;
                         break;
                     case UnderlayType.PDF:
                         if (!ext.Equals(".PDF", StringComparison.OrdinalIgnoreCase))
                         {
                             throw new ArgumentException("The underlay type and the file extension do not match.", nameof(value));
                         }
-                        this.CodeName = DxfObjectCode.UnderlayPdfDefinition;
+                        CodeName = DxfObjectCode.UnderlayPdfDefinition;
                         break;
                 }
 
-                this.file = value;
+                file = value;
             }
         }
 

@@ -42,7 +42,7 @@ namespace netDxf.Entities
         public event PolyfaceMeshFaceLayerChangedEventHandler PolyfaceMeshFaceLayerChanged;
         protected virtual Layer OnPolyfaceMeshFaceLayerChangedEvent(Layer oldLayer, Layer newLayer)
         {
-            PolyfaceMeshFaceLayerChangedEventHandler ae = this.PolyfaceMeshFaceLayerChanged;
+            PolyfaceMeshFaceLayerChangedEventHandler ae = PolyfaceMeshFaceLayerChanged;
             if (ae != null)
             {
                 TableObjectChangedEventArgs<Layer> eventArgs = new TableObjectChangedEventArgs<Layer>(oldLayer, newLayer);
@@ -72,7 +72,7 @@ namespace netDxf.Entities
         public PolyfaceMesh(IEnumerable<Vector3> vertexes, IEnumerable<short[]> faces)
             : base(EntityType.PolyfaceMesh, DxfObjectCode.Polyline)
         {
-            this.flags = PolylineTypeFlags.PolyfaceMesh;
+            flags = PolylineTypeFlags.PolyfaceMesh;
             if (vertexes == null)
             {
                 throw new ArgumentNullException(nameof(vertexes));
@@ -100,7 +100,7 @@ namespace netDxf.Entities
             }
             foreach (PolyfaceMeshFace face in this.faces)
             {
-                face.LayerChanged += this.PolyfaceMeshFace_LayerChanged;
+                face.LayerChanged += PolyfaceMeshFace_LayerChanged;
             }
         }
 
@@ -112,7 +112,7 @@ namespace netDxf.Entities
         public PolyfaceMesh(IEnumerable<Vector3> vertexes, IEnumerable<PolyfaceMeshFace> faces)
             : base(EntityType.PolyfaceMesh, DxfObjectCode.Polyline)
         {
-            this.flags = PolylineTypeFlags.PolyfaceMesh;
+            flags = PolylineTypeFlags.PolyfaceMesh;
             if (vertexes == null)
             {
                 throw new ArgumentNullException(nameof(vertexes));
@@ -136,7 +136,7 @@ namespace netDxf.Entities
 
             foreach (PolyfaceMeshFace face in this.faces)
             {
-                face.LayerChanged += this.PolyfaceMeshFace_LayerChanged;
+                face.LayerChanged += PolyfaceMeshFace_LayerChanged;
             }
         }
 
@@ -149,7 +149,7 @@ namespace netDxf.Entities
         /// </summary>
         public Vector3[] Vertexes
         {
-            get { return this.vertexes; }
+            get { return vertexes; }
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace netDxf.Entities
         /// </summary>
         public IReadOnlyList<PolyfaceMeshFace> Faces
         {
-            get { return this.faces; }
+            get { return faces; }
         }
 
         #endregion
@@ -169,8 +169,8 @@ namespace netDxf.Entities
         /// </summary>
         internal PolylineTypeFlags Flags
         {
-            get { return this.flags; }
-            set { this.flags = value; }
+            get { return flags; }
+            set { flags = value; }
         }
 
         #endregion
@@ -186,23 +186,23 @@ namespace netDxf.Entities
         {
             List<EntityObject> entities = new List<EntityObject>();
 
-            foreach (PolyfaceMeshFace face in this.faces)
+            foreach (PolyfaceMeshFace face in faces)
             {
-                AciColor faceColor = face.Color == null ? this.Color : face.Color;
-                Layer faceLayer = face.Layer == null ? this.Layer : face.Layer;
+                AciColor faceColor = face.Color == null ? Color : face.Color;
+                Layer faceLayer = face.Layer == null ? Layer : face.Layer;
 
                 if (face.VertexIndexes.Length == 1)
                 {
                     Point point = new Point
                     {
                         Layer = (Layer) faceLayer.Clone(),
-                        Linetype = (Linetype) this.Linetype.Clone(),
+                        Linetype = (Linetype) Linetype.Clone(),
                         Color = (AciColor) faceColor.Clone(),
-                        Lineweight = this.Lineweight,
-                        Transparency = (Transparency) this.Transparency.Clone(),
-                        LinetypeScale = this.LinetypeScale,
-                        Normal = this.Normal,
-                        Position = this.Vertexes[Math.Abs(face.VertexIndexes[0]) - 1],
+                        Lineweight = Lineweight,
+                        Transparency = (Transparency) Transparency.Clone(),
+                        LinetypeScale = LinetypeScale,
+                        Normal = Normal,
+                        Position = Vertexes[Math.Abs(face.VertexIndexes[0]) - 1],
                     };
                     entities.Add(point);
                     continue;
@@ -212,14 +212,14 @@ namespace netDxf.Entities
                     Line line = new Line
                     {
                         Layer = (Layer) faceLayer.Clone(),
-                        Linetype = (Linetype) this.Linetype.Clone(),
+                        Linetype = (Linetype) Linetype.Clone(),
                         Color = (AciColor) faceColor.Clone(),
-                        Lineweight = this.Lineweight,
-                        Transparency = (Transparency) this.Transparency.Clone(),
-                        LinetypeScale = this.LinetypeScale,
-                        Normal = this.Normal,
-                        StartPoint = this.Vertexes[Math.Abs(face.VertexIndexes[0]) - 1],
-                        EndPoint = this.Vertexes[Math.Abs(face.VertexIndexes[1]) - 1],
+                        Lineweight = Lineweight,
+                        Transparency = (Transparency) Transparency.Clone(),
+                        LinetypeScale = LinetypeScale,
+                        Normal = Normal,
+                        StartPoint = Vertexes[Math.Abs(face.VertexIndexes[0]) - 1],
+                        EndPoint = Vertexes[Math.Abs(face.VertexIndexes[1]) - 1],
                     };
                     entities.Add(line);
                     continue;
@@ -253,20 +253,20 @@ namespace netDxf.Entities
                     edgeVisibility |= Face3DEdgeFlags.Fourth;
                 }
 
-                Vector3 v1 = this.Vertexes[Math.Abs(indexV1) - 1];
-                Vector3 v2 = this.Vertexes[Math.Abs(indexV2) - 1];
-                Vector3 v3 = this.Vertexes[Math.Abs(indexV3) - 1];
-                Vector3 v4 = this.Vertexes[Math.Abs(indexV4) - 1];
+                Vector3 v1 = Vertexes[Math.Abs(indexV1) - 1];
+                Vector3 v2 = Vertexes[Math.Abs(indexV2) - 1];
+                Vector3 v3 = Vertexes[Math.Abs(indexV3) - 1];
+                Vector3 v4 = Vertexes[Math.Abs(indexV4) - 1];
 
                 Face3D face3D = new Face3D
                 {
                     Layer = (Layer) faceLayer.Clone(),
-                    Linetype = (Linetype) this.Linetype.Clone(),
+                    Linetype = (Linetype) Linetype.Clone(),
                     Color = (AciColor) faceColor.Clone(),
-                    Lineweight = this.Lineweight,
-                    Transparency = (Transparency) this.Transparency.Clone(),
-                    LinetypeScale = this.LinetypeScale,
-                    Normal = this.Normal,
+                    Lineweight = Lineweight,
+                    Transparency = (Transparency) Transparency.Clone(),
+                    LinetypeScale = LinetypeScale,
+                    Normal = Normal,
                     FirstVertex = v1,
                     SecondVertex = v2,
                     ThirdVertex = v3,
@@ -292,17 +292,17 @@ namespace netDxf.Entities
         /// <remarks>Matrix3 adopts the convention of using column vectors to represent a transformation matrix.</remarks>
         public override void TransformBy(Matrix3 transformation, Vector3 translation)
         {
-            for (int i = 0; i < this.vertexes.Length; i++)
+            for (int i = 0; i < vertexes.Length; i++)
             {
-                this.vertexes[i] = transformation * this.vertexes[i] + translation;
+                vertexes[i] = transformation * vertexes[i] + translation;
             }
 
-            Vector3 newNormal = transformation * this.Normal;
+            Vector3 newNormal = transformation * Normal;
             if (Vector3.Equals(Vector3.Zero, newNormal))
             {
-                newNormal = this.Normal;
+                newNormal = Normal;
             }
-            this.Normal = newNormal;
+            Normal = newNormal;
         }
 
         /// <summary>
@@ -311,23 +311,23 @@ namespace netDxf.Entities
         /// <returns>A new PolyfaceMesh that is a copy of this instance.</returns>
         public override object Clone()
         {
-            PolyfaceMesh entity = new PolyfaceMesh(this.vertexes, this.faces)
+            PolyfaceMesh entity = new PolyfaceMesh(vertexes, faces)
             {
                 //EntityObject properties
-                Layer = (Layer) this.Layer.Clone(),
-                Linetype = (Linetype) this.Linetype.Clone(),
-                Color = (AciColor) this.Color.Clone(),
-                Lineweight = this.Lineweight,
-                Transparency = (Transparency) this.Transparency.Clone(),
-                LinetypeScale = this.LinetypeScale,
-                Normal = this.Normal,
-                IsVisible = this.IsVisible,
+                Layer = (Layer) Layer.Clone(),
+                Linetype = (Linetype) Linetype.Clone(),
+                Color = (AciColor) Color.Clone(),
+                Lineweight = Lineweight,
+                Transparency = (Transparency) Transparency.Clone(),
+                LinetypeScale = LinetypeScale,
+                Normal = Normal,
+                IsVisible = IsVisible,
                 //PolyfaceMesh properties
-                Flags = this.flags
+                Flags = flags
 
             };
 
-            foreach (XData data in this.XData.Values)
+            foreach (XData data in XData.Values)
             {
                 entity.XData.Add((XData) data.Clone());
             }
@@ -341,7 +341,7 @@ namespace netDxf.Entities
 
         private void PolyfaceMeshFace_LayerChanged(PolyfaceMeshFace sender, TableObjectChangedEventArgs<Layer> e)
         {
-            e.NewValue = this.OnPolyfaceMeshFaceLayerChangedEvent(e.OldValue, e.NewValue);
+            e.NewValue = OnPolyfaceMeshFaceLayerChangedEvent(e.OldValue, e.NewValue);
         }
 
         #endregion

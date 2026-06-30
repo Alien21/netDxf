@@ -49,7 +49,7 @@ namespace netDxf.Collections
 
         private bool BeforeAddItemEvent(KeyValuePair<TKey, TValue> item)
         {
-            BeforeAddItemEventHandler ae = this.BeforeAddItem;
+            BeforeAddItemEventHandler ae = BeforeAddItem;
             if (ae != null)
             {
                 ObservableDictionaryEventArgs<TKey, TValue> e = new ObservableDictionaryEventArgs<TKey, TValue>(item);
@@ -61,14 +61,14 @@ namespace netDxf.Collections
 
         private void AddItemEvent(KeyValuePair<TKey, TValue> item)
         {
-            AddItemEventHandler ae = this.AddItem;
+            AddItemEventHandler ae = AddItem;
             if (ae != null)
                 ae(this, new ObservableDictionaryEventArgs<TKey, TValue>(item));
         }
 
         private bool BeforeRemoveItemEvent(KeyValuePair<TKey, TValue> item)
         {
-            BeforeRemoveItemEventHandler ae = this.BeforeRemoveItem;
+            BeforeRemoveItemEventHandler ae = BeforeRemoveItem;
             if (ae != null)
             {
                 ObservableDictionaryEventArgs<TKey, TValue> e = new ObservableDictionaryEventArgs<TKey, TValue>(item);
@@ -80,7 +80,7 @@ namespace netDxf.Collections
 
         private void RemoveItemEvent(KeyValuePair<TKey, TValue> item)
         {
-            RemoveItemEventHandler ae = this.RemoveItem;
+            RemoveItemEventHandler ae = RemoveItem;
             if (ae != null)
                 ae(this, new ObservableDictionaryEventArgs<TKey, TValue>(item));
         }
@@ -97,22 +97,22 @@ namespace netDxf.Collections
 
         public ObservableDictionary()
         {
-            this.innerDictionary = new Dictionary<TKey, TValue>();
+            innerDictionary = new Dictionary<TKey, TValue>();
         }
 
         public ObservableDictionary(int capacity)
         {
-            this.innerDictionary = new Dictionary<TKey, TValue>(capacity);
+            innerDictionary = new Dictionary<TKey, TValue>(capacity);
         }
 
         public ObservableDictionary(IEqualityComparer<TKey> comparer)
         {
-            this.innerDictionary = new Dictionary<TKey, TValue>(comparer);
+            innerDictionary = new Dictionary<TKey, TValue>(comparer);
         }
 
         public ObservableDictionary(int capacity, IEqualityComparer<TKey> comparer)
         {
-            this.innerDictionary = new Dictionary<TKey, TValue>(capacity, comparer);
+            innerDictionary = new Dictionary<TKey, TValue>(capacity, comparer);
         }
 
         #endregion
@@ -121,41 +121,41 @@ namespace netDxf.Collections
 
         public TValue this[TKey key]
         {
-            get { return this.innerDictionary[key]; }
+            get { return innerDictionary[key]; }
             set
             {
-                KeyValuePair<TKey, TValue> remove = new KeyValuePair<TKey, TValue>(key, this.innerDictionary[key]);
+                KeyValuePair<TKey, TValue> remove = new KeyValuePair<TKey, TValue>(key, innerDictionary[key]);
                 KeyValuePair<TKey, TValue> add = new KeyValuePair<TKey, TValue>(key, value);
 
-                if (this.BeforeRemoveItemEvent(remove))
+                if (BeforeRemoveItemEvent(remove))
                 {
                     return;
                 }
 
-                if (this.BeforeAddItemEvent(add))
+                if (BeforeAddItemEvent(add))
                 {
                     return;
                 }
 
-                this.innerDictionary[key] = value;
-                this.AddItemEvent(add);
-                this.RemoveItemEvent(remove);
+                innerDictionary[key] = value;
+                AddItemEvent(add);
+                RemoveItemEvent(remove);
             }
         }
 
         public ICollection<TKey> Keys
         {
-            get { return this.innerDictionary.Keys; }
+            get { return innerDictionary.Keys; }
         }
 
         public ICollection<TValue> Values
         {
-            get { return this.innerDictionary.Values; }
+            get { return innerDictionary.Values; }
         }
 
         public int Count
         {
-            get { return this.innerDictionary.Count; }
+            get { return innerDictionary.Count; }
         }
 
         public bool IsReadOnly
@@ -170,91 +170,91 @@ namespace netDxf.Collections
         public void Add(TKey key, TValue value)
         {
             KeyValuePair<TKey, TValue> add = new KeyValuePair<TKey, TValue>(key, value);
-            if (this.BeforeAddItemEvent(add))
+            if (BeforeAddItemEvent(add))
             {
                 throw new ArgumentException("The item cannot be added to the dictionary.", nameof(value));
             }
-            this.innerDictionary.Add(key, value);
-            this.AddItemEvent(add);
+            innerDictionary.Add(key, value);
+            AddItemEvent(add);
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
-            this.Add(item.Key, item.Value);
+            Add(item.Key, item.Value);
         }
 
         public bool Remove(TKey key)
         {
-            if (!this.innerDictionary.ContainsKey(key))
+            if (!innerDictionary.ContainsKey(key))
             {
                 return false;
             }
 
-            KeyValuePair<TKey, TValue> remove = new KeyValuePair<TKey, TValue>(key, this.innerDictionary[key]);
-            if (this.BeforeRemoveItemEvent(remove))
+            KeyValuePair<TKey, TValue> remove = new KeyValuePair<TKey, TValue>(key, innerDictionary[key]);
+            if (BeforeRemoveItemEvent(remove))
             {
                 return false;
             }
 
-            this.innerDictionary.Remove(key);
-            this.RemoveItemEvent(remove);
+            innerDictionary.Remove(key);
+            RemoveItemEvent(remove);
 
             return true;
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            if (!ReferenceEquals(item.Value, this.innerDictionary[item.Key]))
+            if (!ReferenceEquals(item.Value, innerDictionary[item.Key]))
             {
                 return false;
             }
 
-            return this.Remove(item.Key);
+            return Remove(item.Key);
         }
 
         public void Clear()
         {
-            TKey[] keys = new TKey[this.innerDictionary.Count];
-            this.innerDictionary.Keys.CopyTo(keys, 0);
+            TKey[] keys = new TKey[innerDictionary.Count];
+            innerDictionary.Keys.CopyTo(keys, 0);
             foreach (TKey key in keys)
             {
-                this.Remove(key);
+                Remove(key);
             }
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
-            return ((IDictionary<TKey, TValue>) this.innerDictionary).Contains(item);
+            return ((IDictionary<TKey, TValue>) innerDictionary).Contains(item);
         }
 
         public bool ContainsKey(TKey key)
         {
-            return this.innerDictionary.ContainsKey(key);
+            return innerDictionary.ContainsKey(key);
         }
 
         public bool ContainsValue(TValue value)
         {
-            return this.innerDictionary.ContainsValue(value);
+            return innerDictionary.ContainsValue(value);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            return this.innerDictionary.TryGetValue(key, out value);
+            return innerDictionary.TryGetValue(key, out value);
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            ((IDictionary<TKey, TValue>) this.innerDictionary).CopyTo(array, arrayIndex);
+            ((IDictionary<TKey, TValue>) innerDictionary).CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return this.innerDictionary.GetEnumerator();
+            return innerDictionary.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion

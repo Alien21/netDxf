@@ -67,24 +67,24 @@ namespace netDxf.Collections
                 throw new ArgumentNullException(nameof(view));
             }
 
-            if (this.List.TryGetValue(view.Name, out View add))
+            if (List.TryGetValue(view.Name, out View add))
             {
                 return add;
             }
 
             if (assignHandle || string.IsNullOrEmpty(view.Handle))
             {
-                this.Owner.NumHandles = view.AssignHandle(this.Owner.NumHandles);
+                Owner.NumHandles = view.AssignHandle(Owner.NumHandles);
             }
 
-            this.List.Add(view.Name, view);
-            this.References.Add(view.Name, new DxfObjectReferences());
+            List.Add(view.Name, view);
+            References.Add(view.Name, new DxfObjectReferences());
 
             view.Owner = this;
 
-            view.NameChanged += this.Item_NameChanged;
+            view.NameChanged += Item_NameChanged;
 
-            this.Owner.AddedObjects.Add(view.Handle, view);
+            Owner.AddedObjects.Add(view.Handle, view);
 
             return view;
         }
@@ -97,7 +97,7 @@ namespace netDxf.Collections
         /// <remarks>Reserved views or any other referenced by objects cannot be removed.</remarks>
         public override bool Remove(string name)
         {
-            return this.Remove(this[name]);
+            return Remove(this[name]);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (!this.Contains(item))
+            if (!Contains(item))
             {
                 return false;
             }
@@ -123,19 +123,19 @@ namespace netDxf.Collections
                 return false;
             }
 
-            if (this.HasReferences(item))
+            if (HasReferences(item))
             {
                 return false;
             }
 
-            this.Owner.AddedObjects.Remove(item.Handle);
-            this.References.Remove(item.Name);
-            this.List.Remove(item.Name);
+            Owner.AddedObjects.Remove(item.Handle);
+            References.Remove(item.Name);
+            List.Remove(item.Name);
 
             item.Handle = null;
             item.Owner = null;
 
-            item.NameChanged -= this.Item_NameChanged;
+            item.NameChanged -= Item_NameChanged;
 
             return true;
         }
@@ -146,18 +146,18 @@ namespace netDxf.Collections
 
         private void Item_NameChanged(TableObject sender, TableObjectChangedEventArgs<string> e)
         {
-            if (this.Contains(e.NewValue))
+            if (Contains(e.NewValue))
             {
                 throw new ArgumentException("There is already another View with the same name.");
             }
 
-            this.List.Remove(sender.Name);
-            this.List.Add(e.NewValue, (View) sender);
+            List.Remove(sender.Name);
+            List.Add(e.NewValue, (View) sender);
 
-            List<DxfObjectReference> refs = this.GetReferences(sender.Name);
-            this.References.Remove(sender.Name);
-            this.References.Add(e.NewValue, new DxfObjectReferences());
-            this.References[e.NewValue].Add(refs);
+            List<DxfObjectReference> refs = GetReferences(sender.Name);
+            References.Remove(sender.Name);
+            References.Add(e.NewValue, new DxfObjectReferences());
+            References[e.NewValue].Add(refs);
         }
 
         #endregion
