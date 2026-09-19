@@ -6561,6 +6561,13 @@
             </summary>
             <param name="edges">List of edges that makes a loop for the hatch boundary paths.</param>
         </member>
+        <member name="M:netDxf.Entities.HatchBoundaryPath.#ctor(System.Collections.Generic.IEnumerable{netDxf.Entities.HatchBoundaryPath.Edge},netDxf.Entities.HatchBoundaryPathTypeFlags)">
+            <summary>
+            Initializes a boundary path with an explicit boundary role.
+            </summary>
+            <param name="edges">Edges that form the boundary loop.</param>
+            <param name="pathType">Boundary role flags; the Polyline flag is derived from the edges.</param>
+        </member>
         <member name="P:netDxf.Entities.HatchBoundaryPath.Edges">
             <summary>
             Gets the list of edges that makes a loop for the hatch boundary path.

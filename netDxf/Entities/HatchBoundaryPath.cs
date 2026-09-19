@@ -809,6 +809,18 @@ namespace netDxf.Entities
             }
         }
 
+        /// <summary>
+        /// Initializes a boundary path with an explicit boundary role.
+        /// </summary>
+        /// <param name="edges">Edges that form the boundary loop.</param>
+        /// <param name="pathType">Boundary role flags; the Polyline flag is derived from the edges.</param>
+        public HatchBoundaryPath(IEnumerable<Edge> edges, HatchBoundaryPathTypeFlags pathType)
+            : this(edges)
+        {
+            this.pathType = (pathType & ~HatchBoundaryPathTypeFlags.Polyline)
+                | (this.pathType & HatchBoundaryPathTypeFlags.Polyline);
+        }
+
         #endregion
 
         #region public properties
@@ -966,7 +978,7 @@ namespace netDxf.Entities
                 copyEdges.Add((Edge) edge.Clone());
             }
 
-            return new HatchBoundaryPath(copyEdges);
+            return new HatchBoundaryPath(copyEdges, pathType);
         }
 
         #endregion
