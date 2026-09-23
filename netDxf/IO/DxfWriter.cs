@@ -2643,23 +2643,36 @@ namespace netDxf.IO
         {
             chunk.Write(100, SubclassMarker.Spline);
 
-            short flags = (short) SplineTypeFlags.Rational;
-            if (spline.IsClosed) flags += (short) SplineTypeFlags.Closed;
-            if (spline.IsClosedPeriodic) flags = (short) SplineTypeFlags.ClosedPeriodicSpline + (short) SplineTypeFlags.Closed;
-            
-            flags += (short) spline.CreationMethod;
-            flags += (short) spline.KnotParameterization;
+            // Counts describe the points actually emitted below, including the periodic prefix.
+            short numberOfKnots = checked((short) spline.Knots.Length);
+            short numberOfControlPoints = checked((short) (spline.ControlPoints.Length + (spline.IsClosedPeriodic ? spline.Degree : 0)));
+            short numberOfFitPoints = checked((short) spline.FitPoints.Count);
+            bool planarXY = spline.ControlPoints.All(point => point.Z == spline.ControlPoints[0].Z) &&
+                            spline.FitPoints.All(point => point.Z == spline.ControlPoints[0].Z);
 
-            chunk.Write(70, flags);
+            SplineTypeFlags flags = SplineTypeFlags.Rational;
+            if (spline.IsClosed || spline.IsClosedPeriodic) flags |= SplineTypeFlags.Closed;
+            if (spline.IsClosedPeriodic)
+                flags |= SplineTypeFlags.Periodic | SplineTypeFlags.ClosedPeriodicSpline;
+            if (planarXY) flags |= SplineTypeFlags.Planar;
+            // CreationMethod is an ordinal enum, not a DXF bit mask. Its ControlPoints=1
+            // must never toggle Closed or carry into Periodic. Keep existing extended
+            // parameterization/periodic metadata for readers using the reduced point list.
+            if (spline.CreationMethod == SplineCreationMethod.FitPoints)
+                flags |= SplineTypeFlags.FitPointCreationMethod;
+            flags |= (SplineTypeFlags) spline.KnotParameterization;
+
+            if (planarXY)
+            {
+                chunk.Write(210, 0.0);
+                chunk.Write(220, 0.0);
+                chunk.Write(230, 1.0);
+            }
+            chunk.Write(70, (short) flags);
             chunk.Write(71, spline.Degree);
-
-            // the next three codes are purely cosmetic and writing them causes more bad than good.
-            // internally AutoCad allows for an integer number of knots, control points, and fit points;
-            // but for some weird decision they decided to define them in the DXF with codes 72, 73, and 74 (16-bit integer value), a short.
-            // I guess this is the result of legacy code, nevertheless AutoCad do not use those values when importing Spline entities
-            //this.chunk.Write(72, numberOfKnots);
-            //this.chunk.Write(73, numberOfControlPoints);
-            //this.chunk.Write(74, numberOfFitPoints);
+            chunk.Write(72, numberOfKnots);
+            chunk.Write(73, numberOfControlPoints);
+            chunk.Write(74, numberOfFitPoints);
 
             chunk.Write(42, spline.KnotTolerance);
             chunk.Write(43, spline.CtrlPointTolerance);
