@@ -513,8 +513,15 @@ namespace netDxf
             DxfReader dxfReader = new DxfReader();
             
 #if DEBUG
-            DxfDocument document = dxfReader.Read(stream, folders);
-            stream.Close();
+            DxfDocument document;
+            try
+            {
+                document = dxfReader.Read(stream, folders);
+            }
+            finally
+            {
+                stream.Close();
+            }
 #else
             DxfDocument document;
             try
